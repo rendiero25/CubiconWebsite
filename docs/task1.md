@@ -379,17 +379,17 @@ Centang semua sebelum mulai coding fitur:
 - [ ] GitHub repo dibuat
 
 ### Local Setup
-- [ ] Node.js v18+ terinstall
-- [ ] Project React + Vite berhasil dibuat
-- [ ] Semua npm dependencies terinstall
-- [ ] Tailwind terkonfigurasi dengan warna + font Cubicon
+- [x] Node.js v18+ terinstall
+- [x] Project React + Vite berhasil dibuat
+- [x] Semua npm dependencies terinstall
+- [x] Tailwind terkonfigurasi dengan warna + font Cubicon
 - [x] `.env.local` sudah diisi dengan semua keys
-- [ ] Folder structure sudah dibuat
-- [ ] React Router sudah setup + semua route terdaftar
+- [x] Folder structure sudah dibuat
+- [x] React Router sudah setup + semua route terdaftar
 - [x] Supabase client sudah dibuat
-- [ ] Vercel CLI terinstall + linked ke repo
-- [ ] `npm run dev` berjalan tanpa error
-- [ ] First commit sudah di-push ke GitHub
+- [x] Vercel CLI terinstall + linked ke repo
+- [x] `npm run dev` berjalan tanpa error
+- [x] First commit sudah di-push ke GitHub
 
 ---
 
