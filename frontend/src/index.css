@@ -1,0 +1,27 @@
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Epilogue:wght@400;500;600&display=swap');
+@import "tailwindcss";
+
+:root {
+  --font-display: 'Syne', sans-serif;
+  --font-body: 'Epilogue', sans-serif;
+  --color-bg: #F5F7FF;
+  --color-primary: #3B5BDB;
+  --color-text: #1A1A1A;
+  --color-border: #000000;
+  --color-secondary: #E8EDFF;
+}
+
+body {
+  background-color: var(--color-bg);
+  font-family: var(--font-body);
+  color: var(--color-text);
+}
+
+@theme {
+  --font-display: 'Syne', sans-serif;
+  --font-body: 'Epilogue', sans-serif;
+  --color-electric-blue: #3B5BDB;
+  --color-light-blue: #E8EDFF;
+  --color-off-white: #F5F7FF;
+  --color-near-black: #1A1A1A;
+}
