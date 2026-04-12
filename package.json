@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "description": "Cubicon — AI-powered 3D isometric icon generator",
   "scripts": {
-    "build": "cd frontend && npm run build",
-    "start": "cd backend && npm start",
+    "build": "cd frontend && npm install && npm run build && cd ../backend && npm install --omit=dev",
+    "start": "node backend/src/index.js",
     "dev:frontend": "cd frontend && npm run dev",
     "dev:backend": "cd backend && npm run dev"
   }
