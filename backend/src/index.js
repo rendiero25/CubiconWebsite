@@ -34,5 +34,7 @@ app.get('*', (req, res) => {
 })
 
 app.listen(PORT, () => {
-  console.log(`Cubicon server running at http://localhost:${PORT}`)
+  const env = process.env.NODE_ENV ?? 'development'
+  console.log(`Cubicon server running at http://localhost:${PORT} [${env}]`)
+  console.log(`Frontend origin: ${process.env.FRONTEND_URL ?? 'http://localhost:5173'}`)
 })

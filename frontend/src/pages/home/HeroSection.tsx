@@ -100,7 +100,7 @@ export default function HeroSection() {
           />
           <button
             onClick={handleGenerate}
-            className="font-display font-bold text-sm bg-[#3B5BDB] text-white border-2 border-black px-6 py-3 rounded-md shadow-[4px_4px_0px_#000] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-all flex items-center gap-2 whitespace-nowrap"
+            className="cursor-pointer font-display font-bold text-sm bg-[#3B5BDB] text-white border-2 border-black px-6 py-3 rounded-md shadow-[4px_4px_0px_#000] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-all flex items-center gap-2 whitespace-nowrap"
           >
             Generate
             <ArrowRight size={16} />

@@ -134,7 +134,7 @@ export default function PricingSection() {
             <button
               onClick={() => navigate('/signup')}
               className={clsx(
-                'font-display font-bold text-sm border-2 border-black px-4 py-2.5 rounded-md transition-all hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none',
+                'cursor-pointer font-display font-bold text-sm border-2 border-black px-4 py-2.5 rounded-md transition-all hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none',
                 plan.highlight
                   ? 'bg-white text-[#3B5BDB] shadow-[3px_3px_0px_#000]'
                   : 'bg-[#3B5BDB] text-white shadow-[3px_3px_0px_#000]'

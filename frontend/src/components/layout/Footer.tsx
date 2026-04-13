@@ -29,7 +29,7 @@ export default function Footer() {
           <div className="flex flex-col gap-3">
             <Link
               to="/"
-              className="font-display font-extrabold text-2xl text-white tracking-tight w-fit"
+              className="cursor-pointer font-display font-extrabold text-2xl text-white tracking-tight w-fit"
             >
               cubicon
             </Link>
@@ -43,7 +43,7 @@ export default function Footer() {
                   key={label}
                   href={href}
                   aria-label={label}
-                  className="w-9 h-9 flex items-center justify-center border-2 border-white/30 rounded-md hover:border-white hover:bg-white hover:text-[#1A1A1A] transition-all"
+                  className="cursor-pointer w-9 h-9 flex items-center justify-center border-2 border-white/30 rounded-md hover:border-white hover:bg-white hover:text-[#1A1A1A] transition-all"
                 >
                   <Icon size={16} />
                 </a>
@@ -60,7 +60,7 @@ export default function Footer() {
               <Link
                 key={link.href}
                 to={link.href}
-                className="font-body text-sm text-white/70 hover:text-white transition-colors w-fit"
+                className="cursor-pointer font-body text-sm text-white/70 hover:text-white transition-colors w-fit"
               >
                 {link.label}
               </Link>
@@ -76,14 +76,14 @@ export default function Footer() {
               <Link
                 key={link.href}
                 to={link.href}
-                className="font-body text-sm text-white/70 hover:text-white transition-colors w-fit"
+                className="cursor-pointer font-body text-sm text-white/70 hover:text-white transition-colors w-fit"
               >
                 {link.label}
               </Link>
             ))}
             <a
               href="mailto:hello@cubicon.app"
-              className="font-body text-sm text-white/70 hover:text-white transition-colors w-fit mt-1"
+              className="cursor-pointer font-body text-sm text-white/70 hover:text-white transition-colors w-fit mt-1"
             >
               hello@cubicon.app
             </a>

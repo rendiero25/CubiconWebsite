@@ -75,8 +75,7 @@ export default function FaqSection() {
               className="faq-item border-2 border-black rounded-md bg-white shadow-[4px_4px_0px_#000] overflow-hidden"
             >
               <button
-                className="w-full flex items-center justify-between gap-4 px-5 py-4 text-left"
-                onClick={() => toggle(i)}
+              className="cursor-pointer w-full flex items-center justify-between gap-4 px-5 py-4 text-left"
               >
                 <span className="font-display font-semibold text-sm md:text-base text-[#1A1A1A]">
                   {item.question}

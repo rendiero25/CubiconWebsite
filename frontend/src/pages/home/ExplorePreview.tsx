@@ -60,7 +60,7 @@ export default function ExplorePreview() {
           </div>
           <button
             onClick={() => navigate('/explore')}
-            className="font-display font-bold text-sm bg-white border-2 border-black px-4 py-2 rounded-md shadow-[4px_4px_0px_#000] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-all flex items-center gap-2 whitespace-nowrap"
+            className="cursor-pointer font-display font-bold text-sm bg-white border-2 border-black px-4 py-2 rounded-md shadow-[4px_4px_0px_#000] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-all flex items-center gap-2 whitespace-nowrap"
           >
             View All
             <ArrowRight size={14} />
@@ -106,7 +106,7 @@ export default function ExplorePreview() {
               <div className="absolute inset-0 bg-[#3B5BDB]/90 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
                 <button
                   onClick={() => navigate(`/app?prompt=${encodeURIComponent(icon.label)}`)}
-                  className="font-display font-bold text-xs text-white border-2 border-white px-3 py-2 rounded-md flex items-center gap-1.5 hover:bg-white hover:text-[#3B5BDB] transition-colors"
+                  className="cursor-pointer font-display font-bold text-xs text-white border-2 border-white px-3 py-2 rounded-md flex items-center gap-1.5 hover:bg-white hover:text-[#3B5BDB] transition-colors"
                 >
                   <RefreshCw size={12} />
                   Generate Similar

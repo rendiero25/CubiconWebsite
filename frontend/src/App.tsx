@@ -6,6 +6,10 @@ import Signup from './pages/Signup'
 import Dashboard from './pages/Dashboard'
 import Pricing from './pages/Pricing'
 import Explore from './pages/Explore'
+import Features from './pages/Features'
+import Contact from './pages/Contact'
+import Privacy from './pages/Privacy'
+import Terms from './pages/Terms'
 
 function App() {
   return (
@@ -18,6 +22,10 @@ function App() {
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/pricing" element={<Pricing />} />
         <Route path="/explore" element={<Explore />} />
+        <Route path="/features" element={<Features />} />
+        <Route path="/contact" element={<Contact />} />
+        <Route path="/privacy" element={<Privacy />} />
+        <Route path="/terms" element={<Terms />} />
       </Routes>
     </BrowserRouter>
   )
