@@ -11,6 +11,7 @@ import { useCredits } from '../hooks/useCredits'
 import { useAuth } from '../hooks/useAuth'
 import { recordAdminUsage } from '../hooks/useAdminUsage'
 import { generateIcon } from '../api/generate'
+import { removeBackground } from '@imgly/background-removal'
 import type { FormState, GenerateState, GenerateResult } from './generate/types'
 import { getBatchLines, calcCost } from './generate/types'
 
@@ -146,7 +147,16 @@ export default function GenerateApp() {
         const results = await Promise.all(
           lines.map((prompt) => generateIcon({ prompt, ...baseParams })),
         )
-        setResult({ imageUrls: results.map((r) => r.imageUrl ?? '') })
+        const imageUrls = await Promise.all(
+          results.map(async (r) => {
+            if (activeForm.background === 'transparent' && r.imageUrl) {
+              const blob = await removeBackground(r.imageUrl)
+              return URL.createObjectURL(blob)
+            }
+            return r.imageUrl ?? ''
+          }),
+        )
+        setResult({ imageUrls })
         if (isAdmin) {
           recordAdminUsage({
             timestamp: new Date().toISOString(),
@@ -158,6 +168,10 @@ export default function GenerateApp() {
         }
       } else {
         const r = await generateIcon({ prompt: activeForm.prompt, ...baseParams })
+        if (activeForm.background === 'transparent' && r.imageUrl) {
+          const blob = await removeBackground(r.imageUrl)
+          r.imageUrl = URL.createObjectURL(blob)
+        }
         setResult(r)
         if (isAdmin) {
           recordAdminUsage({
@@ -194,7 +208,7 @@ export default function GenerateApp() {
       <main className="flex-1 flex flex-col lg:flex-row gap-6 max-w-7xl mx-auto w-full px-4 md:px-8 lg:px-16 py-6">
         {/* Left Panel */}
         <aside className="w-full lg:w-100 lg:shrink-0">
-          <div className="border-2 border-black rounded-md bg-white shadow-[4px_4px_0px_#000] p-5 lg:sticky lg:top-24 lg:max-h-[calc(100vh-7rem)] lg:overflow-y-auto">
+          <div className="p-5 lg:sticky lg:top-24 lg:max-h-[calc(100vh-7rem)] lg:overflow-y-auto">
             <LeftPanel
               form={form}
               onChange={setField}
@@ -212,7 +226,7 @@ export default function GenerateApp() {
 
         {/* Right Panel */}
         <section className="flex-1 min-w-0">
-          <div className="border-2 border-black rounded-md bg-white shadow-[4px_4px_0px_#000] p-5 lg:sticky lg:top-24 lg:min-h-[calc(100vh-7rem)]">
+          <div className="border-2 border-black rounded-md bg-white shadow-[4px_4px_0px_#000] p-5 lg:sticky lg:top-24 lg:h-[calc(100vh-7rem)] overflow-hidden">
             <RightPanel
               generateState={generateState}
               result={result}

@@ -17,16 +17,86 @@ if (!geminiKey) {
   console.warn('[Cubicon] Gemini API key is not set. Icon generation will fail.')
 }
 
-const genAI = new GoogleGenerativeAI(geminiKey ?? '')
-
 const CREDIT_COST = { '1K': 1, '2K': 2, '4K': 3 }
+
+const STYLE_PROMPTS = {
+  'clay-pastel':
+    'soft 3D clay render style, pastel colors, smooth rounded shapes, matte finish, cute and friendly aesthetic',
+  glassmorphism:
+    'glassmorphism style, frosted glass material, translucent surfaces, subtle reflections, modern and sleek',
+  'flat-minimal':
+    'flat design style, minimal detail, bold solid colors, clean geometric shapes, simple and modern',
+  'neon-glow':
+    'neon glow style, vibrant neon colors, glowing light effects, dark background contrast, cyberpunk aesthetic',
+  'retro-pixel':
+    'retro pixel art style, 16-bit or 8-bit aesthetic, crisp pixels, limited color palette, nostalgic game art',
+  metallic:
+    'metallic chrome style, shiny metal material, specular highlights, industrial and premium feel',
+}
+
+/**
+ * Build a comprehensive Gemini prompt from icon generation params.
+ */
+function buildPrompt({ prompt, style, resolution, background, bgColor, bgGradient }) {
+  const styleDesc = STYLE_PROMPTS[style] || STYLE_PROMPTS['clay-pastel']
+
+  let bgDesc
+  if (background === 'transparent') {
+    bgDesc = 'transparent background, no background'
+  } else if (background === 'gradient' && bgGradient?.length === 2) {
+    bgDesc = `gradient background from ${bgGradient[0]} to ${bgGradient[1]}`
+  } else {
+    bgDesc = `solid ${bgColor || '#ffffff'} background`
+  }
+
+  const resDesc = resolution === '4K' ? 'ultra high detail' : resolution === '2K' ? 'high detail' : 'clean detail'
+
+  return [
+    `Create a single 3D isometric icon of: ${prompt}.`,
+    `Style: ${styleDesc}.`,
+    `Background: ${bgDesc}.`,
+    `Quality: ${resDesc}, sharp edges, centered composition, square aspect ratio.`,
+    'The icon should be professional, visually striking, and suitable for app or product use.',
+    'Do not include any text, labels, or watermarks in the image.',
+  ].join(' ')
+}
+
+/**
+ * Call Gemini image generation model and return base64 data URL.
+ */
+async function callGemini({ prompt, style, resolution, background, bgColor, bgGradient, isAdmin }) {
+  const apiKey = isAdmin ? adminFreeKey : geminiKey
+  const ai = new GoogleGenerativeAI(apiKey ?? '')
+
+  const model = ai.getGenerativeModel({
+    model: 'gemini-3.1-flash-image-preview',
+  })
+
+  const fullPrompt = buildPrompt({ prompt, style, resolution, background, bgColor, bgGradient })
+
+  const result = await model.generateContent({
+    contents: [{ role: 'user', parts: [{ text: fullPrompt }] }],
+    generationConfig: {
+      responseModalities: ['IMAGE'],
+    },
+  })
+
+  const parts = result.response.candidates?.[0]?.content?.parts ?? []
+  const imagePart = parts.find((p) => p.inlineData)
+
+  if (!imagePart) {
+    throw new Error('Gemini did not return an image. Check model availability and API key.')
+  }
+
+  const { data: base64, mimeType } = imagePart.inlineData
+  return `data:${mimeType};base64,${base64}`
+}
 
 /**
  * Deduct credits server-side using the service role key.
  * Returns the new balance or throws on failure.
  */
 async function deductCredits(userId, amount) {
-  // Read current balance
   const { data, error: readErr } = await supabase
     .from('credits')
     .select('balance')
@@ -70,7 +140,7 @@ async function addCredits(userId, amount) {
 
 router.post('/', async (req, res) => {
   try {
-    const { prompt, style, resolution, background, userId, isAdmin } = req.body
+    const { prompt, style, resolution, background, bgColor, bgGradient, userId, isAdmin } = req.body
 
     if (!prompt) {
       return res.status(400).json({ error: 'Prompt is required' })
@@ -93,20 +163,15 @@ router.post('/', async (req, res) => {
       }
     }
 
-    // TODO Task 7: call Gemini API and return real imageUrl
-    // When isAdmin, use adminFreeKey instead of the standard geminiKey
-    // const activeGenAI = isAdmin ? new GoogleGenerativeAI(adminFreeKey) : genAI
-
-    // Placeholder SVG until Gemini is wired up
-    const label = (prompt ?? '').slice(0, 18)
-    const svg = [
-      '<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">',
-      '<rect width="512" height="512" rx="72" fill="#3B5BDB"/>',
-      '<text x="256" y="300" font-family="sans-serif" font-size="200" text-anchor="middle" dominant-baseline="middle" fill="white">🎨</text>',
-      `<text x="256" y="440" font-family="sans-serif" font-size="32" font-weight="600" text-anchor="middle" fill="rgba(255,255,255,0.75)">${label}</text>`,
-      '</svg>',
-    ].join('')
-    const imageUrl = `data:image/svg+xml;base64,${Buffer.from(svg).toString('base64')}`
+    const imageUrl = await callGemini({
+      prompt,
+      style,
+      resolution,
+      background,
+      bgColor,
+      bgGradient,
+      isAdmin,
+    })
 
     res.json({
       imageUrl,
@@ -115,7 +180,7 @@ router.post('/', async (req, res) => {
     })
   } catch (err) {
     console.error('Generate error:', err.message)
-    res.status(500).json({ error: 'Failed to generate icon' })
+    res.status(500).json({ error: err.message || 'Failed to generate icon' })
   }
 })
 

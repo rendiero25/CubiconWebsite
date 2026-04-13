@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react'
+import clsx from 'clsx'
 import gsap from 'gsap'
 import { Download, RefreshCw, Share2 } from 'lucide-react'
 import JSZip from 'jszip'
@@ -20,6 +21,7 @@ export default function RightPanel({
   onShareToExplore,
 }: Props) {
   const cubeRef = useRef<HTMLDivElement>(null)
+  const previewBg = form.background === 'transparent' ? 'bg-white' : 'bg-[#E8EDFF]'
 
   useEffect(() => {
     if (generateState !== 'loading' || !cubeRef.current) return
@@ -81,7 +83,7 @@ export default function RightPanel({
           {result.imageUrls.map((url, i) => (
             <div
               key={i}
-              className="border-2 border-black rounded-md overflow-hidden aspect-square bg-[#E8EDFF] flex items-center justify-center"
+              className={clsx('rounded-md overflow-hidden aspect-square flex items-center justify-center', previewBg)}
             >
               {url ? (
                 <img
@@ -117,13 +119,13 @@ export default function RightPanel({
 
   /* ── Single result ── */
   return (
-    <div className="flex flex-col gap-4 h-full">
-      <div className="flex-1 border-2 border-black rounded-md bg-[#E8EDFF] flex items-center justify-center min-h-[300px]">
+    <div className="relative w-full min-h-96 lg:h-full rounded-md overflow-hidden">
+      <div className={clsx('absolute inset-0 flex items-center justify-center', previewBg)}>
         {result?.imageUrl ? (
           <img
             src={result.imageUrl}
             alt="Generated icon"
-            className="max-w-full max-h-full object-contain p-6"
+            className="max-w-full max-h-full object-contain"
           />
         ) : (
           <div className="flex flex-col items-center gap-3 p-10">
@@ -136,32 +138,33 @@ export default function RightPanel({
           </div>
         )}
       </div>
-      <div className="flex gap-2 flex-wrap">
-        {result?.imageUrl ? (
+
+      {result?.imageUrl && (
+        <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-2">
           <a
             href={result.imageUrl}
             download="cubicon-icon.png"
-            className="cursor-pointer flex items-center gap-2 font-display font-bold text-sm px-4 py-2.5 bg-[#3B5BDB] text-white border-2 border-black rounded-md shadow-[4px_4px_0px_#000] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-all"
+            className="cursor-pointer flex items-center gap-1.5 font-display font-bold text-xs px-3 py-2 bg-[#3B5BDB] text-white border-2 border-black rounded-md shadow-[3px_3px_0px_#000] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-all"
           >
-            <Download size={16} />
-            Download PNG
+            <Download size={13} />
+            Download
           </a>
-        ) : null}
-        <button
-          onClick={onRegenerate}
-          className="flex items-center gap-2 font-body font-medium text-sm px-4 py-2.5 border-2 border-black rounded-md bg-white shadow-[2px_2px_0px_#000] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-all"
-        >
-          <RefreshCw size={16} />
-          Regenerate
-        </button>
-        <button
-          onClick={onShareToExplore}
-          className="flex items-center gap-2 font-body font-medium text-sm px-4 py-2.5 border-2 border-black rounded-md bg-white shadow-[2px_2px_0px_#000] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-all"
-        >
-          <Share2 size={16} />
-          Share to Explore
-        </button>
-      </div>
+          <button
+            onClick={onRegenerate}
+            className="cursor-pointer flex items-center gap-1.5 font-body font-medium text-xs px-3 py-2 border-2 border-black rounded-md bg-white shadow-[3px_3px_0px_#000] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-all"
+          >
+            <RefreshCw size={13} />
+            Regenerate
+          </button>
+          <button
+            onClick={onShareToExplore}
+            className="cursor-pointer flex items-center gap-1.5 font-body font-medium text-xs px-3 py-2 border-2 border-black rounded-md bg-white shadow-[3px_3px_0px_#000] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-all"
+          >
+            <Share2 size={13} />
+            Share
+          </button>
+        </div>
+      )}
     </div>
   )
 }

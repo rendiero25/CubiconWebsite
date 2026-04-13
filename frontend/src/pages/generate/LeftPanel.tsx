@@ -3,7 +3,6 @@ import StepMode from './StepMode'
 import StepPrompt from './StepPrompt'
 import StepStyle from './StepStyle'
 import StepResolution from './StepResolution'
-import StepBackground from './StepBackground'
 import StepReference from './StepReference'
 import type { FormState, GenerateState } from './types'
 import { calcCost } from './types'
@@ -55,14 +54,6 @@ export default function LeftPanel({
         onChange={(v) => onChange('resolution', v)}
         isFreeUser={isFreeUser}
         onLocked={onLocked}
-      />
-      <StepBackground
-        value={form.background}
-        bgColor={form.bgColor}
-        bgGradient={form.bgGradient}
-        onChange={(v) => onChange('background', v)}
-        onBgColorChange={(v) => onChange('bgColor', v)}
-        onBgGradientChange={(v) => onChange('bgGradient', v)}
       />
       <StepReference file={form.referenceFile} onChange={(v) => onChange('referenceFile', v)} />
 
