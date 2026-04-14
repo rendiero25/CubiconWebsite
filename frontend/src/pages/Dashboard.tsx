@@ -1,20 +1,16 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
-import { Zap, Download, Globe, Lock, Trash2, Settings, Wand2, LayoutGrid, ImageOff, User, Shield, BarChart2, RefreshCw, Activity } from 'lucide-react'
+import { Zap, Download, Globe, Lock, Trash2, Settings, Wand2, LayoutGrid, ImageOff, User, Shield, BarChart2, RefreshCw, ChevronLeft, ChevronRight, PlusCircle, Pencil, Check, X as XIcon } from 'lucide-react'
 import clsx from 'clsx'
 import Navbar from '../components/layout/Navbar'
 import Footer from '../components/layout/Footer'
 import { supabase } from '../api/supabase'
-import { getCredits } from '../api/credits'
+import { getCredits, topUpCredits } from '../api/credits'
 import type { PublicIcon } from '../api/icons'
 import { useAuth } from '../hooks/useAuth'
-import { useAdminUsage } from '../hooks/useAdminUsage'
+import { CREDIT_COST } from './generate/types'
 
-// Gemini free-tier limits (AI Studio, as of 2025)
-// https://ai.google.dev/pricing
-const GEMINI_MODEL = 'gemini-2.0-flash-preview-image-generation'
-const GEMINI_FREE_RPD = 1500  // requests per day
-const GEMINI_FREE_RPM = 10    // requests per minute
+const MONITORING_PAGE_SIZE = 10
 
 type TabKey = 'history' | 'settings' | 'profile' | 'monitoring'
 
@@ -24,9 +20,7 @@ interface DashboardIcon extends PublicIcon {
 
 export default function Dashboard() {
   const { user, isAdmin } = useAuth()
-  const { log: adminLog, totalSaved: adminTotalSaved, clear: clearAdminLog } = useAdminUsage()
   const adminTodayKey = new Date().toISOString().split('T')[0]
-  const adminTodayCount = adminLog.filter((e) => e.timestamp.startsWith(adminTodayKey)).length
   const [tab, setTab] = useState<TabKey>('history')
   const [userId, setUserId] = useState<string | null>(null)
   const [credits, setCredits] = useState<number | null>(null)
@@ -36,6 +30,40 @@ export default function Dashboard() {
   const [defaultPublic, setDefaultPublic] = useState(false)
   const [savingSettings, setSavingSettings] = useState(false)
   const [refreshingCredits, setRefreshingCredits] = useState(false)
+  const [refreshingIcons, setRefreshingIcons] = useState(false)
+  const [monitoringPage, setMonitoringPage] = useState(1)
+  const [topUpAmount, setTopUpAmount] = useState('')
+  const [isTopping, setIsTopping] = useState(false)
+  const [topUpError, setTopUpError] = useState<string | null>(null)
+  const [topUpSuccess, setTopUpSuccess] = useState<string | null>(null)
+  // Profile editing
+  const [displayName, setDisplayName] = useState('')
+  const [editingName, setEditingName] = useState(false)
+  const [nameInput, setNameInput] = useState('')
+  const [savingName, setSavingName] = useState(false)
+  const [nameError, setNameError] = useState<string | null>(null)
+  const iconChannelRef = useRef<ReturnType<typeof supabase.channel> | null>(null)
+
+  const loadIcons = async (uid: string) => {
+    const { data, error: iconErr } = await supabase
+      .from('icons')
+      .select('id, prompt, style, resolution, url, is_public, created_at, user_id')
+      .eq('user_id', uid)
+      .order('created_at', { ascending: false })
+    if (iconErr) throw new Error(iconErr.message)
+    setIcons((data ?? []).map((ic: PublicIcon & { is_public?: boolean }) => ({ ...ic, selected: false })))
+  }
+
+  const refreshIcons = async () => {
+    if (!userId) return
+    setRefreshingIcons(true)
+    try {
+      await loadIcons(userId)
+      setMonitoringPage(1)
+    } finally {
+      setRefreshingIcons(false)
+    }
+  }
 
   const refreshCredits = async () => {
     if (!userId) return
@@ -47,7 +75,28 @@ export default function Dashboard() {
     }
   }
 
-  // Auth + load data
+  const handleTopUp = async () => {
+    const amount = Number(topUpAmount)
+    if (!Number.isInteger(amount) || amount <= 0) {
+      setTopUpError('Masukkan angka bulat positif')
+      return
+    }
+    try {
+      setIsTopping(true)
+      setTopUpError(null)
+      setTopUpSuccess(null)
+      const newBalance = await topUpCredits(amount)
+      setCredits(newBalance)
+      setTopUpAmount('')
+      setTopUpSuccess(`+${amount} credit berhasil ditambahkan. Saldo baru: ${newBalance}`)
+    } catch (err) {
+      setTopUpError(err instanceof Error ? err.message : 'Gagal top-up credit')
+    } finally {
+      setIsTopping(false)
+    }
+  }
+
+  // Auth + load data + Realtime icon subscription
   useEffect(() => {
     async function load() {
       try {
@@ -57,13 +106,38 @@ export default function Dashboard() {
         setUserId(user.id)
         const bal = await getCredits(user.id)
         setCredits(bal)
-        const { data, error: iconErr } = await supabase
-          .from('icons')
-          .select('id, prompt, style, resolution, url, is_public, created_at, user_id')
-          .eq('user_id', user.id)
-          .order('created_at', { ascending: false })
-        if (iconErr) throw new Error(iconErr.message)
-        setIcons((data ?? []).map((ic: PublicIcon & { is_public?: boolean }) => ({ ...ic, selected: false })))
+        // Load display name from users table
+        const { data: userData } = await supabase
+          .from('users')
+          .select('name')
+          .eq('id', user.id)
+          .maybeSingle()
+        setDisplayName(userData?.name ?? user.user_metadata?.full_name ?? user.user_metadata?.name ?? user.email?.split('@')[0] ?? '')
+        await loadIcons(user.id)
+
+        // Realtime: auto-update History tab when icons are inserted/deleted
+        if (iconChannelRef.current) supabase.removeChannel(iconChannelRef.current)
+        iconChannelRef.current = supabase
+          .channel(`icons-dashboard-${user.id}`)
+          .on(
+            'postgres_changes',
+            { event: 'INSERT', schema: 'public', table: 'icons', filter: `user_id=eq.${user.id}` },
+            (payload) => {
+              setIcons((prev) => {
+                // Avoid duplicates if icon already in state
+                if (prev.some((ic) => ic.id === payload.new.id)) return prev
+                return [{ ...(payload.new as PublicIcon), selected: false }, ...prev]
+              })
+            },
+          )
+          .on(
+            'postgres_changes',
+            { event: 'DELETE', schema: 'public', table: 'icons', filter: `user_id=eq.${user.id}` },
+            (payload) => {
+              setIcons((prev) => prev.filter((ic) => ic.id !== payload.old.id))
+            },
+          )
+          .subscribe()
       } catch (err) {
         setError(err instanceof Error ? err.message : 'Failed to load dashboard')
       } finally {
@@ -71,6 +145,9 @@ export default function Dashboard() {
       }
     }
     load()
+    return () => {
+      if (iconChannelRef.current) supabase.removeChannel(iconChannelRef.current)
+    }
   }, [])
 
   const allSelected = icons.length > 0 && icons.every((i) => i.selected)
@@ -101,6 +178,35 @@ export default function Dashboard() {
       await supabase.from('users').update({ default_public: defaultPublic }).eq('id', userId)
     } finally {
       setSavingSettings(false)
+    }
+  }
+
+  const startEditName = () => {
+    setNameInput(displayName)
+    setNameError(null)
+    setEditingName(true)
+  }
+
+  const cancelEditName = () => {
+    setEditingName(false)
+    setNameError(null)
+  }
+
+  const saveDisplayName = async () => {
+    const trimmed = nameInput.trim()
+    if (!trimmed) { setNameError('Nama tidak boleh kosong'); return }
+    if (trimmed.length > 50) { setNameError('Maks. 50 karakter'); return }
+    if (!userId) return
+    try {
+      setSavingName(true)
+      setNameError(null)
+      await supabase.from('users').update({ name: trimmed }).eq('id', userId)
+      setDisplayName(trimmed)
+      setEditingName(false)
+    } catch (err) {
+      setNameError(err instanceof Error ? err.message : 'Gagal menyimpan')
+    } finally {
+      setSavingName(false)
     }
   }
 
@@ -321,19 +427,56 @@ export default function Dashboard() {
           {/* Profile Tab */}
           {tab === 'profile' && (
             <div className="max-w-lg flex flex-col gap-5">
-              {/* Avatar card */}
+              {/* Avatar + name card */}
               <div className="border-2 border-black rounded-md bg-white shadow-[4px_4px_0_#000] p-6 flex flex-col items-center gap-4">
                 <div className="w-20 h-20 bg-electric-blue border-2 border-black rounded-full flex items-center justify-center shadow-[3px_3px_0_#000]">
                   <span className="font-display font-bold text-2xl text-white">
-                    {(user?.user_metadata?.full_name || user?.user_metadata?.name || user?.email || '?')
+                    {(displayName || user?.email || '?')
                       .split(' ').slice(0, 2).map((w: string) => w[0]?.toUpperCase() ?? '').join('')}
                   </span>
                 </div>
-                <div className="text-center">
-                  <p className="font-display font-bold text-xl text-near-black">
-                    {user?.user_metadata?.full_name || user?.user_metadata?.name || user?.email?.split('@')[0] || 'User'}
-                  </p>
-                  <p className="font-body text-sm text-near-black/60 mt-0.5">{user?.email}</p>
+                <div className="text-center w-full">
+                  {editingName ? (
+                    <div className="flex flex-col items-center gap-2">
+                      <input
+                        type="text"
+                        value={nameInput}
+                        onChange={(e) => setNameInput(e.target.value)}
+                        onKeyDown={(e) => { if (e.key === 'Enter') saveDisplayName(); if (e.key === 'Escape') cancelEditName() }}
+                        maxLength={50}
+                        autoFocus
+                        className="border-2 border-black rounded-md px-3 py-1.5 font-display font-bold text-lg text-near-black text-center w-full focus:outline-none focus:border-electric-blue"
+                      />
+                      {nameError && <p className="font-body text-xs text-red-600">{nameError}</p>}
+                      <div className="flex gap-2">
+                        <button
+                          onClick={saveDisplayName}
+                          disabled={savingName}
+                          className="cursor-pointer flex items-center gap-1 border-2 border-black rounded-md px-3 py-1 font-display font-bold text-xs bg-electric-blue text-white shadow-[2px_2px_0_#000] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-all disabled:opacity-50"
+                        >
+                          <Check size={12} /> {savingName ? 'Menyimpan...' : 'Simpan'}
+                        </button>
+                        <button
+                          onClick={cancelEditName}
+                          className="cursor-pointer flex items-center gap-1 border-2 border-black rounded-md px-3 py-1 font-body text-xs bg-white hover:bg-light-blue transition-colors"
+                        >
+                          <XIcon size={12} /> Batal
+                        </button>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="flex items-center justify-center gap-2">
+                      <p className="font-display font-bold text-xl text-near-black">{displayName || '—'}</p>
+                      <button
+                        onClick={startEditName}
+                        className="cursor-pointer p-1 rounded hover:bg-light-blue transition-colors"
+                        title="Edit nama"
+                      >
+                        <Pencil size={14} className="text-near-black/40 hover:text-electric-blue" />
+                      </button>
+                    </div>
+                  )}
+                  <p className="font-body text-sm text-near-black/60 mt-1">{user?.email}</p>
                   {isAdmin && (
                     <span className="inline-flex items-center gap-1.5 mt-2 bg-yellow-50 border-2 border-yellow-400 text-yellow-700 font-display font-bold text-xs px-2.5 py-1 rounded-md">
                       <Shield size={11} /> Admin
@@ -342,16 +485,39 @@ export default function Dashboard() {
                 </div>
               </div>
 
+              {/* Stats */}
+              <div className="grid grid-cols-3 gap-3">
+                {[
+                  { label: 'Total Ikon', value: icons.length },
+                  { label: 'Dipublikasi', value: icons.filter(i => i.is_public).length },
+                  { label: 'Saldo Credit', value: credits ?? '—' },
+                ].map(({ label, value }) => (
+                  <div key={label} className="border-2 border-black rounded-md bg-white shadow-[3px_3px_0_#000] p-4 text-center">
+                    <p className="font-display font-bold text-2xl text-near-black">{value}</p>
+                    <p className="font-body text-[11px] text-near-black/50 mt-0.5">{label}</p>
+                  </div>
+                ))}
+              </div>
+
               {/* Account details */}
               <div className="border-2 border-black rounded-md bg-white shadow-[4px_4px_0_#000] p-6 flex flex-col gap-3">
-                <h2 className="font-display font-semibold text-lg text-near-black">Account details</h2>
+                <h2 className="font-display font-semibold text-lg text-near-black">Detail Akun</h2>
                 <div className="flex flex-col">
+                  <div className="flex items-center justify-between py-3 border-b border-black/10">
+                    <span className="font-body text-sm text-near-black/60">Username</span>
+                    <div className="flex items-center gap-2">
+                      <span className="font-body text-sm font-medium text-near-black">{displayName || '—'}</span>
+                      <button onClick={startEditName} className="cursor-pointer p-0.5 rounded hover:bg-light-blue transition-colors">
+                        <Pencil size={12} className="text-near-black/30 hover:text-electric-blue" />
+                      </button>
+                    </div>
+                  </div>
                   <div className="flex items-center justify-between py-3 border-b border-black/10">
                     <span className="font-body text-sm text-near-black/60">Email</span>
                     <span className="font-body text-sm font-medium text-near-black">{user?.email}</span>
                   </div>
                   <div className="flex items-center justify-between py-3 border-b border-black/10">
-                    <span className="font-body text-sm text-near-black/60">Member since</span>
+                    <span className="font-body text-sm text-near-black/60">Bergabung sejak</span>
                     <span className="font-body text-sm font-medium text-near-black">
                       {user?.created_at
                         ? new Date(user.created_at).toLocaleDateString('id-ID', { year: 'numeric', month: 'long', day: 'numeric' })
@@ -359,14 +525,14 @@ export default function Dashboard() {
                     </span>
                   </div>
                   <div className="flex items-center justify-between py-3">
-                    <span className="font-body text-sm text-near-black/60">Credits balance</span>
+                    <span className="font-body text-sm text-near-black/60">Saldo Credit</span>
                     <div className="flex items-center gap-2">
                       <span className="flex items-center gap-1.5 border-2 border-black rounded-md px-2.5 py-1 bg-light-blue font-body font-semibold text-sm text-near-black">
                         <Zap size={12} className="text-electric-blue" />
                         {credits !== null ? credits : '—'}
                       </span>
                       <Link to="/pricing" className="font-body text-xs font-medium text-electric-blue underline underline-offset-2">
-                        Buy more
+                        Beli lagi
                       </Link>
                     </div>
                   </div>
@@ -375,8 +541,8 @@ export default function Dashboard() {
 
               {/* Sign out */}
               <div className="border-2 border-black rounded-md bg-white shadow-[4px_4px_0_#000] p-6 flex flex-col gap-3">
-                <h2 className="font-display font-semibold text-lg text-near-black">Sign out</h2>
-                <p className="font-body text-sm text-near-black/60">You&apos;ll be redirected to login after signing out.</p>
+                <h2 className="font-display font-semibold text-lg text-near-black">Keluar</h2>
+                <p className="font-body text-sm text-near-black/60">Kamu akan diarahkan ke halaman login setelah keluar.</p>
                 <button
                   onClick={() => supabase.auth.signOut()}
                   className="cursor-pointer self-start border-2 border-red-400 font-body text-sm font-medium px-4 py-2 rounded-md text-red-600 bg-red-50 hover:bg-red-100 transition-colors"
@@ -388,155 +554,171 @@ export default function Dashboard() {
           )}
 
           {/* Monitoring Tab — Admin only */}
-          {tab === 'monitoring' && isAdmin && (
-            <div className="flex flex-col gap-5">
-              {/* Stat cards */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                {/* Current balance — from Supabase (reflects real free credits added) */}
-                <div className="border-2 border-yellow-400 rounded-md bg-yellow-50 shadow-[4px_4px_0_#000] p-5 sm:col-span-2 lg:col-span-1">
-                  <div className="flex items-center justify-between mb-1.5">
-                    <p className="font-body text-xs font-medium text-yellow-700">Saldo Credit Saat Ini</p>
-                    <button
-                      onClick={refreshCredits}
-                      disabled={refreshingCredits}
-                      className="cursor-pointer p-1 rounded hover:bg-yellow-100 transition-colors disabled:opacity-50"
-                      title="Refresh saldo"
-                    >
-                      <RefreshCw size={12} className={clsx('text-yellow-600', refreshingCredits && 'animate-spin')} />
-                    </button>
+          {tab === 'monitoring' && isAdmin && (() => {
+            const adminTodayCount = icons.filter((i) => i.created_at.startsWith(adminTodayKey)).length
+            const creditBalance = credits ?? 0
+            const totalPages = Math.max(1, Math.ceil(icons.length / MONITORING_PAGE_SIZE))
+            const pagedIcons = icons.slice(
+              (monitoringPage - 1) * MONITORING_PAGE_SIZE,
+              monitoringPage * MONITORING_PAGE_SIZE,
+            )
+            return (
+              <div className="flex flex-col gap-5">
+                {/* Stat cards */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                  {/* Saldo — from Supabase */}
+                  <div className="border-2 border-yellow-400 rounded-md bg-yellow-50 shadow-[4px_4px_0_#000] p-5">
+                    <div className="flex items-center justify-between mb-1.5">
+                      <p className="font-body text-xs font-medium text-yellow-700">Saldo Credit</p>
+                      <button
+                        onClick={refreshCredits}
+                        disabled={refreshingCredits}
+                        className="cursor-pointer p-1 rounded hover:bg-yellow-100 transition-colors disabled:opacity-50"
+                        title="Refresh saldo"
+                      >
+                        <RefreshCw size={12} className={clsx('text-yellow-600', refreshingCredits && 'animate-spin')} />
+                      </button>
+                    </div>
+                    <p className="font-display font-bold text-3xl text-yellow-700">{creditBalance}</p>
+                    <p className="font-body text-[10px] text-yellow-600/70 mt-1">Supabase · real-time</p>
                   </div>
-                  <p className="font-display font-bold text-3xl text-yellow-700">{credits ?? '—'}</p>
-                  <p className="font-body text-[10px] text-yellow-600/70 mt-1">dari Supabase · real-time</p>
+
+                  {/* Capacity cards */}
+                  {([['1K', CREDIT_COST['1K']], ['2K', CREDIT_COST['2K']], ['4K', CREDIT_COST['4K']]] as const).map(([res, cost]) => (
+                    <div key={res} className="border-2 border-black rounded-md bg-white shadow-[4px_4px_0_#000] p-5">
+                      <p className="font-body text-xs font-medium text-near-black/50 mb-1.5">Kapasitas {res}</p>
+                      <p className="font-display font-bold text-3xl text-near-black">{Math.floor(creditBalance / cost)}</p>
+                      <p className="font-body text-[10px] text-near-black/40 mt-1">{cost} credit/ikon</p>
+                    </div>
+                  ))}
                 </div>
-                {[
-                  { label: 'Total Gratis Diterima', value: `+${adminTotalSaved} cr`, sub: 'dari Google API' },
-                  { label: 'Total Generasi', value: adminLog.length, sub: 'semua waktu' },
-                  { label: 'Generasi Hari Ini', value: adminTodayCount, sub: new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'short' }) },
-                ].map(({ label, value, sub }) => (
-                  <div key={label} className="border-2 border-black rounded-md bg-white shadow-[4px_4px_0_#000] p-5">
-                    <p className="font-body text-xs font-medium text-near-black/50 mb-1.5">{label}</p>
-                    <p className="font-display font-bold text-3xl text-near-black">{value}</p>
-                    <p className="font-body text-[10px] text-near-black/40 mt-1">{sub}</p>
+
+                {/* Top-up credit card */}
+                <div className="border-2 border-black rounded-md bg-white shadow-[4px_4px_0_#000] p-5">
+                  <div className="flex items-center gap-2 mb-4">
+                    <PlusCircle size={16} className="text-electric-blue" />
+                    <h2 className="font-display font-semibold text-base text-near-black">Isi Credit (Dev)</h2>
                   </div>
-                ))}
-              </div>
-
-              {/* Google Gemini Free Quota */}
-              {(() => {
-                const todayPercent = Math.min(100, Math.round((adminTodayCount / GEMINI_FREE_RPD) * 100))
-                const remaining = Math.max(0, GEMINI_FREE_RPD - adminTodayCount)
-                const barColor = todayPercent >= 90 ? 'bg-red-500' : todayPercent >= 70 ? 'bg-yellow-400' : 'bg-green-500'
-                return (
-                  <div className="border-2 border-black rounded-md bg-white shadow-[4px_4px_0_#000] p-5">
-                    <div className="flex items-center gap-2 mb-4">
-                      <Activity size={16} className="text-electric-blue" />
-                      <h2 className="font-display font-semibold text-base text-near-black">Google Gemini Free Quota</h2>
-                      <span className="ml-auto font-body text-[10px] text-near-black/40">Estimasi · per browser</span>
-                    </div>
-
-                    {/* Model info */}
-                    <div className="mb-4 flex items-center justify-between p-3 bg-near-black/5 border border-black/10 rounded-md">
-                      <span className="font-body text-xs text-near-black/50">Model</span>
-                      <span className="font-body text-xs font-semibold text-near-black">{GEMINI_MODEL}</span>
-                    </div>
-
-                    {/* RPD progress */}
-                    <div className="mb-4">
-                      <div className="flex justify-between items-baseline mb-1.5">
-                        <p className="font-body text-xs font-medium text-near-black">Requests Per Day (RPD)</p>
-                        <p className="font-body text-xs font-bold text-near-black">{adminTodayCount} / {GEMINI_FREE_RPD}</p>
-                      </div>
-                      <div className="h-3 border-2 border-black rounded-full overflow-hidden bg-near-black/5">
-                        <div className={clsx('h-full transition-all', barColor)} style={{ width: `${todayPercent}%` }} />
-                      </div>
-                      <div className="flex justify-between mt-1">
-                        <p className="font-body text-[10px] text-near-black/40">{todayPercent}% terpakai hari ini</p>
-                        <p className={clsx('font-body text-[10px] font-semibold', remaining === 0 ? 'text-red-500' : 'text-green-600')}>
-                          {remaining} sisa
-                        </p>
-                      </div>
-                    </div>
-
-                    {/* RPM + reset info */}
-                    <div className="grid grid-cols-2 gap-3">
-                      <div className="p-3 border border-black/10 rounded-md bg-near-black/5">
-                        <p className="font-body text-[10px] text-near-black/50 mb-0.5">Rate Limit</p>
-                        <p className="font-body text-sm font-bold text-near-black">{GEMINI_FREE_RPM} RPM</p>
-                      </div>
-                      <div className="p-3 border border-black/10 rounded-md bg-near-black/5">
-                        <p className="font-body text-[10px] text-near-black/50 mb-0.5">Reset Quota</p>
-                        <p className="font-body text-sm font-bold text-near-black">00:00 UTC</p>
-                      </div>
-                    </div>
-
-                    {remaining === 0 && (
-                      <p className="mt-3 font-body text-xs text-red-600 bg-red-50 border border-red-200 rounded-md px-3 py-2">
-                        Quota harian habis. Akan reset tengah malam UTC.
-                      </p>
-                    )}
-                    <p className="mt-3 font-body text-[10px] text-near-black/30">
-                      Tracking berbasis browser lokal. Cek quota aktual di Google AI Studio.
-                    </p>
-                  </div>
-                )
-              })()}
-
-              {/* Usage table */}
-              <div className="border-2 border-black rounded-md bg-white shadow-[4px_4px_0_#000] overflow-hidden">
-                <div className="flex items-center justify-between px-5 py-4 border-b-2 border-black bg-yellow-50">
-                  <div className="flex items-center gap-2">
-                    <BarChart2 size={16} className="text-yellow-600" />
-                    <h2 className="font-display font-semibold text-base text-near-black">Riwayat Penggunaan Gratis</h2>
-                  </div>
-                  {adminLog.length > 0 && (
+                  <div className="flex flex-col sm:flex-row gap-3">
+                    <input
+                      type="number"
+                      min={1}
+                      max={10000}
+                      value={topUpAmount}
+                      onChange={(e) => { setTopUpAmount(e.target.value); setTopUpError(null); setTopUpSuccess(null) }}
+                      placeholder="Jumlah credit (maks. 10.000)"
+                      className="border-2 border-black rounded-md px-3 py-2 font-body text-sm text-near-black bg-white focus:outline-none focus:border-electric-blue w-full sm:max-w-xs"
+                    />
                     <button
-                      onClick={clearAdminLog}
-                      className="cursor-pointer flex items-center gap-1.5 border-2 border-red-400 rounded-md px-3 py-1.5 font-body text-xs font-medium text-red-600 bg-red-50 hover:bg-red-100 transition-colors"
+                      onClick={handleTopUp}
+                      disabled={isTopping || !topUpAmount}
+                      className="cursor-pointer flex items-center gap-2 border-2 border-black font-display font-bold text-sm px-5 py-2 rounded-md bg-electric-blue text-white shadow-[3px_3px_0_#000] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-all disabled:opacity-50 disabled:cursor-not-allowed shrink-0"
                     >
-                      <Trash2 size={12} /> Hapus Semua
+                      <PlusCircle size={14} />
+                      {isTopping ? 'Menyimpan...' : 'Isi Credit'}
                     </button>
+                  </div>
+                  {topUpError && (
+                    <p className="mt-2 font-body text-xs text-red-600 bg-red-50 border border-red-200 rounded-md px-3 py-2">{topUpError}</p>
+                  )}
+                  {topUpSuccess && (
+                    <p className="mt-2 font-body text-xs text-green-700 bg-green-50 border border-green-200 rounded-md px-3 py-2">{topUpSuccess}</p>
                   )}
                 </div>
-                {adminLog.length === 0 ? (
-                  <div className="py-16 flex flex-col items-center gap-3">
-                    <BarChart2 size={28} className="text-near-black/20" />
-                    <p className="font-body text-sm text-near-black/50">Belum ada generasi gratis.</p>
+
+                {/* Usage history — real data from Supabase icons */}
+                <div className="border-2 border-black rounded-md bg-white shadow-[4px_4px_0_#000] overflow-hidden">
+                  <div className="flex flex-wrap items-center gap-3 px-5 py-4 border-b-2 border-black bg-yellow-50">
+                    <div className="flex items-center gap-2">
+                      <BarChart2 size={16} className="text-yellow-600" />
+                      <h2 className="font-display font-semibold text-base text-near-black">Riwayat Generasi</h2>
+                    </div>
+                    <div className="flex gap-2 ml-auto items-center">
+                      <span className="font-body text-xs font-medium border-2 border-black rounded-md px-2.5 py-1 bg-white">
+                        Total: <span className="font-bold">{icons.length}</span>
+                      </span>
+                      <span className="font-body text-xs font-medium border-2 border-yellow-400 rounded-md px-2.5 py-1 bg-yellow-50 text-yellow-700">
+                        Hari ini: <span className="font-bold">{adminTodayCount}</span>
+                      </span>
+                      <button
+                        onClick={refreshIcons}
+                        disabled={refreshingIcons}
+                        className="cursor-pointer p-1 rounded hover:bg-yellow-100 transition-colors disabled:opacity-50"
+                        title="Refresh riwayat"
+                      >
+                        <RefreshCw size={12} className={clsx('text-yellow-600', refreshingIcons && 'animate-spin')} />
+                      </button>
+                    </div>
                   </div>
-                ) : (
-                  <div className="overflow-x-auto">
-                    <table className="w-full">
-                      <thead>
-                        <tr className="border-b-2 border-black bg-near-black/5">
-                          <th className="px-4 py-3 text-left font-display font-semibold text-xs text-near-black/60">Waktu</th>
-                          <th className="px-4 py-3 text-left font-display font-semibold text-xs text-near-black/60">Prompt</th>
-                          <th className="px-4 py-3 text-left font-display font-semibold text-xs text-near-black/60">Style</th>
-                          <th className="px-4 py-3 text-left font-display font-semibold text-xs text-near-black/60">Res</th>
-                          <th className="px-4 py-3 text-right font-display font-semibold text-xs text-near-black/60">Credit Saved</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {adminLog.map((entry) => (
-                          <tr key={entry.id} className="border-b border-black/10 hover:bg-yellow-50/40 transition-colors">
-                            <td className="px-4 py-3 font-body text-xs text-near-black/50 whitespace-nowrap">
-                              {new Date(entry.timestamp).toLocaleString('id-ID', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}
-                            </td>
-                            <td className="px-4 py-3 font-body text-xs text-near-black max-w-50 truncate">{entry.prompt}</td>
-                            <td className="px-4 py-3 font-body text-xs text-near-black/70">{entry.style}</td>
-                            <td className="px-4 py-3">
-                              <span className="font-body text-[10px] font-semibold text-electric-blue border border-electric-blue/30 rounded px-1.5 py-0.5 bg-light-blue">{entry.resolution}</span>
-                            </td>
-                            <td className="px-4 py-3 text-right">
-                              <span className="font-body text-xs font-semibold text-yellow-600 bg-yellow-50 border border-yellow-300 rounded px-1.5 py-0.5">+{entry.creditsSaved}</span>
-                            </td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
-                )}
+
+                  {icons.length === 0 ? (
+                    <div className="py-16 flex flex-col items-center gap-3">
+                      <BarChart2 size={28} className="text-near-black/20" />
+                      <p className="font-body text-sm text-near-black/50">Belum ada generasi.</p>
+                    </div>
+                  ) : (
+                    <>
+                      <div className="overflow-x-auto">
+                        <table className="w-full">
+                          <thead>
+                            <tr className="border-b-2 border-black bg-near-black/5">
+                              <th className="px-4 py-3 text-left font-display font-semibold text-xs text-near-black/60">Waktu</th>
+                              <th className="px-4 py-3 text-left font-display font-semibold text-xs text-near-black/60">Prompt</th>
+                              <th className="px-4 py-3 text-left font-display font-semibold text-xs text-near-black/60">Style</th>
+                              <th className="px-4 py-3 text-left font-display font-semibold text-xs text-near-black/60">Res</th>
+                              <th className="px-4 py-3 text-right font-display font-semibold text-xs text-near-black/60">Credit</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {pagedIcons.map((icon) => (
+                              <tr key={icon.id} className="border-b border-black/10 hover:bg-yellow-50/40 transition-colors">
+                                <td className="px-4 py-3 font-body text-xs text-near-black/50 whitespace-nowrap">
+                                  {new Date(icon.created_at).toLocaleString('id-ID', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}
+                                </td>
+                                <td className="px-4 py-3 font-body text-xs text-near-black max-w-50 truncate">{icon.prompt}</td>
+                                <td className="px-4 py-3 font-body text-xs text-near-black/70">{icon.style}</td>
+                                <td className="px-4 py-3">
+                                  <span className="font-body text-[10px] font-semibold text-electric-blue border border-electric-blue/30 rounded px-1.5 py-0.5 bg-light-blue">{icon.resolution}</span>
+                                </td>
+                                <td className="px-4 py-3 text-right">
+                                  <span className="font-body text-xs font-semibold text-yellow-600 bg-yellow-50 border border-yellow-300 rounded px-1.5 py-0.5">
+                                    {CREDIT_COST[icon.resolution as keyof typeof CREDIT_COST] ?? 1} cr
+                                  </span>
+                                </td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+
+                      {/* Pagination */}
+                      {totalPages > 1 && (
+                        <div className="flex items-center justify-between px-5 py-3 border-t-2 border-black bg-near-black/5">
+                          <button
+                            onClick={() => setMonitoringPage((p) => Math.max(1, p - 1))}
+                            disabled={monitoringPage === 1}
+                            className="cursor-pointer flex items-center gap-1 border-2 border-black rounded-md px-3 py-1.5 font-body text-xs font-medium bg-white shadow-[2px_2px_0_#000] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-all disabled:opacity-40 disabled:cursor-not-allowed disabled:translate-x-0 disabled:translate-y-0 disabled:shadow-[2px_2px_0_#000]"
+                          >
+                            <ChevronLeft size={12} /> Prev
+                          </button>
+                          <span className="font-body text-xs text-near-black/60">
+                            Halaman <span className="font-bold text-near-black">{monitoringPage}</span> dari <span className="font-bold text-near-black">{totalPages}</span>
+                          </span>
+                          <button
+                            onClick={() => setMonitoringPage((p) => Math.min(totalPages, p + 1))}
+                            disabled={monitoringPage === totalPages}
+                            className="cursor-pointer flex items-center gap-1 border-2 border-black rounded-md px-3 py-1.5 font-body text-xs font-medium bg-white shadow-[2px_2px_0_#000] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-all disabled:opacity-40 disabled:cursor-not-allowed disabled:translate-x-0 disabled:translate-y-0 disabled:shadow-[2px_2px_0_#000]"
+                          >
+                            Next <ChevronRight size={12} />
+                          </button>
+                        </div>
+                      )}
+                    </>
+                  )}
+                </div>
               </div>
-            </div>
-          )}
+            )
+          })()}
 
           {/* Settings Tab */}
           {tab === 'settings' && (

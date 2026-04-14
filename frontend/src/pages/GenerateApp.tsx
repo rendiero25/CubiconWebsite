@@ -11,8 +11,15 @@ import { useCredits } from '../hooks/useCredits'
 import { useAuth } from '../hooks/useAuth'
 import { recordAdminUsage } from '../hooks/useAdminUsage'
 import { generateIcon } from '../api/generate'
+import { uploadIcon, blobUrlToBase64, saveIcon } from '../api/icons'
 import { removeBackground } from '@imgly/background-removal'
 import type { FormState, GenerateState, GenerateResult } from './generate/types'
+
+// Shared config: full-precision ISNet model, PNG output for clean transparency
+const BG_REMOVAL_CONFIG = {
+  model: 'isnet' as const,
+  output: { format: 'image/png' as const, quality: 1 },
+}
 import { getBatchLines, calcCost } from './generate/types'
 
 const DEFAULT_FORM: FormState = {
@@ -89,11 +96,24 @@ export default function GenerateApp() {
     return true
   }
 
+  const persistIcon = useCallback(async (imageUrl: string, prompt: string, style: string, resolution: string, userId: string) => {
+    try {
+      // Blob URLs (from bg removal) must be converted to base64 before sending to backend
+      const dataUrl = imageUrl.startsWith('blob:') ? await blobUrlToBase64(imageUrl) : imageUrl
+      const cloudinaryUrl = await uploadIcon(dataUrl, `icon-${userId.slice(0, 8)}`)
+      await saveIcon({ userId, prompt, style, resolution, url: cloudinaryUrl })
+    } catch (err) {
+      setToast({
+        message: `Icon generated, but save failed: ${(err as Error).message}`,
+        type: 'error',
+      })
+    }
+  }, [])
+
   const handleRequestGenerate = () => {
     if (!validate()) return
     const cost = calcCost(form)
-    // Admin uses free API quota — bypass credit check
-    if (!isAdmin && (credits === null || credits < cost)) {
+    if (credits === null || credits < cost) {
       setShowOutOfCredits(true)
       return
     }
@@ -108,27 +128,15 @@ export default function GenerateApp() {
     setGenerateState('loading')
     setResult(null)
 
-    // Admin: add free credits to balance with green GSAP flash
-    // Non-admin: deduct credits with red GSAP flash
+    // Deduct credits with red GSAP flash (all users, including admin)
     const prevCredits = credits
-    if (isAdmin) {
-      setCredits((prev) => (prev ?? 0) + cost)
-      if (creditBadgeRef.current) {
-        gsap.fromTo(
-          creditBadgeRef.current,
-          { scale: 1.2, color: '#16a34a' },
-          { scale: 1, color: '#1A1A1A', duration: 0.6, ease: 'back.out(1.7)' },
-        )
-      }
-    } else {
-      setCredits((prev) => (prev ?? 0) - cost)
-      if (creditBadgeRef.current) {
-        gsap.fromTo(
-          creditBadgeRef.current,
-          { scale: 1.15, color: '#ef4444' },
-          { scale: 1, color: '#1A1A1A', duration: 0.5, ease: 'back.out(1.7)' },
-        )
-      }
+    setCredits((prev) => (prev ?? 0) - cost)
+    if (creditBadgeRef.current) {
+      gsap.fromTo(
+        creditBadgeRef.current,
+        { scale: 1.15, color: '#ef4444' },
+        { scale: 1, color: '#1A1A1A', duration: 0.5, ease: 'back.out(1.7)' },
+      )
     }
 
     try {
@@ -150,36 +158,49 @@ export default function GenerateApp() {
         const imageUrls = await Promise.all(
           results.map(async (r) => {
             if (activeForm.background === 'transparent' && r.imageUrl) {
-              const blob = await removeBackground(r.imageUrl)
+              const blob = await removeBackground(r.imageUrl, BG_REMOVAL_CONFIG)
               return URL.createObjectURL(blob)
             }
             return r.imageUrl ?? ''
           }),
         )
         setResult({ imageUrls })
+        // Persist each icon to Supabase
+        if (user?.id) {
+          void Promise.allSettled(
+            lines.map(async (prompt, i) => {
+              const finalUrl = imageUrls[i] ?? results[i]?.imageUrl ?? ''
+              await persistIcon(finalUrl, prompt, activeForm.style, activeForm.resolution, user.id)
+            }),
+          )
+        }
         if (isAdmin) {
           recordAdminUsage({
             timestamp: new Date().toISOString(),
             prompt: `[Batch ×${lines.length}] ${lines[0] ?? ''}`,
             style: activeForm.style,
             resolution: activeForm.resolution,
-            creditsSaved: cost,
+            creditsUsed: cost,
           })
         }
       } else {
         const r = await generateIcon({ prompt: activeForm.prompt, ...baseParams })
         if (activeForm.background === 'transparent' && r.imageUrl) {
-          const blob = await removeBackground(r.imageUrl)
+          const blob = await removeBackground(r.imageUrl, BG_REMOVAL_CONFIG)
           r.imageUrl = URL.createObjectURL(blob)
         }
         setResult(r)
+        // Persist icon to Supabase
+        if (user?.id) {
+          void persistIcon(r.imageUrl ?? '', activeForm.prompt, activeForm.style, activeForm.resolution, user.id)
+        }
         if (isAdmin) {
           recordAdminUsage({
             timestamp: new Date().toISOString(),
             prompt: activeForm.prompt,
             style: activeForm.style,
             resolution: activeForm.resolution,
-            creditsSaved: cost,
+            creditsUsed: cost,
           })
         }
       }
@@ -212,7 +233,7 @@ export default function GenerateApp() {
             <LeftPanel
               form={form}
               onChange={setField}
-              credits={credits}
+              credits={credits ?? 0}
               generateState={generateState}
               promptError={promptError}
               shake={shake}
@@ -244,7 +265,7 @@ export default function GenerateApp() {
       {showConfirm && (
         <ConfirmModal
           form={form}
-          credits={credits}
+          credits={credits ?? 0}
           isAdmin={isAdmin}
           onCancel={() => setShowConfirm(false)}
           onConfirm={handleConfirmGenerate}

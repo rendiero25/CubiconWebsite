@@ -6,6 +6,7 @@ const path = require('path')
 
 const generateRoute = require('./routes/generate')
 const uploadRoute = require('./routes/upload')
+const adminRoute = require('./routes/admin')
 
 const app = express()
 const PORT = process.env.PORT || 3001
@@ -20,6 +21,7 @@ app.use(express.json({ limit: '10mb' }))
 // API Routes
 app.use('/api/generate', generateRoute)
 app.use('/api/upload', uploadRoute)
+app.use('/api/admin', adminRoute)
 
 // Health check
 app.get('/api/health', (req, res) => {

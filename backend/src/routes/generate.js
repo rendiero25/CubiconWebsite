@@ -42,7 +42,10 @@ function buildPrompt({ prompt, style, resolution, background, bgColor, bgGradien
 
   let bgDesc
   if (background === 'transparent') {
-    bgDesc = 'transparent background, no background'
+    // Use solid white so client-side background removal gets a clean, uniform
+    // surface to cut — "transparent" prompts produce uneven gray/off-white
+    // gradients that cause ragged edges after removal.
+    bgDesc = 'solid pure white (#ffffff) background, flat and clean, no shadows, no gradients, no vignette'
   } else if (background === 'gradient' && bgGradient?.length === 2) {
     bgDesc = `gradient background from ${bgGradient[0]} to ${bgGradient[1]}`
   } else {
@@ -116,28 +119,6 @@ async function deductCredits(userId, amount) {
   return current - amount
 }
 
-/**
- * Add credits server-side — used for admin free-quota generations.
- * The cost is credited back to the admin's balance so they never run out.
- */
-async function addCredits(userId, amount) {
-  const { data, error: readErr } = await supabase
-    .from('credits')
-    .select('balance')
-    .eq('user_id', userId)
-    .single()
-  if (readErr) throw new Error(readErr.message)
-
-  const current = data?.balance ?? 0
-  const { error: updateErr } = await supabase
-    .from('credits')
-    .update({ balance: current + amount, updated_at: new Date().toISOString() })
-    .eq('user_id', userId)
-  if (updateErr) throw new Error(updateErr.message)
-
-  return current + amount
-}
-
 router.post('/', async (req, res) => {
   try {
     const { prompt, style, resolution, background, bgColor, bgGradient, userId, isAdmin } = req.body
@@ -148,14 +129,8 @@ router.post('/', async (req, res) => {
 
     const cost = CREDIT_COST[resolution] ?? 1
 
-    // Admin uses free API quota — add the cost back as free credits
-    if (userId && isAdmin) {
-      try {
-        await addCredits(userId, cost)
-      } catch (creditErr) {
-        console.warn('[Cubicon] Failed to credit admin balance:', creditErr.message)
-      }
-    } else if (userId && !isAdmin) {
+    // Deduct credits for all authenticated users (including admin)
+    if (userId) {
       try {
         await deductCredits(userId, cost)
       } catch (creditErr) {
@@ -175,8 +150,7 @@ router.post('/', async (req, res) => {
 
     res.json({
       imageUrl,
-      creditsUsed: isAdmin ? 0 : cost,
-      freeQuota: !!isAdmin,
+      creditsUsed: cost,
     })
   } catch (err) {
     console.error('Generate error:', err.message)

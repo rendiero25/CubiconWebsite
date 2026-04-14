@@ -9,6 +9,8 @@ cloudinary.config({
 })
 
 // POST /api/upload
+// Body: { imageBase64: string (data URL or raw base64), fileName?: string }
+// Returns: { url: string } — Cloudinary secure URL
 router.post('/', async (req, res) => {
   try {
     const { imageBase64, fileName } = req.body
@@ -17,12 +19,17 @@ router.post('/', async (req, res) => {
       return res.status(400).json({ error: 'imageBase64 is required' })
     }
 
-    // TODO Task 13: implement full upload logic
-    // Placeholder response for now
-    res.json({ message: 'Upload endpoint ready' })
+    const uploadResult = await cloudinary.uploader.upload(imageBase64, {
+      public_id: fileName || `cubicon-${Date.now()}`,
+      folder: 'cubicon',
+      resource_type: 'image',
+      overwrite: false,
+    })
+
+    return res.json({ url: uploadResult.secure_url })
   } catch (err) {
     console.error('Upload error:', err.message)
-    res.status(500).json({ error: 'Failed to upload image' })
+    return res.status(500).json({ error: err.message || 'Failed to upload image' })
   }
 })
 

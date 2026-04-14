@@ -8,6 +8,8 @@ import IconCard from './explore/IconCard'
 import ExploreCTA from './explore/ExploreCTA'
 import { getPublicIcons } from '../api/icons'
 import type { PublicIcon } from '../api/icons'
+import { supabase } from '../api/supabase'
+import { useAuth } from '../hooks/useAuth'
 
 interface Filters {
   search: string
@@ -20,6 +22,7 @@ const INITIAL_FILTERS: Filters = { search: '', style: '', resolution: '', sort: 
 const PAGE_SIZE = 20
 
 export default function Explore() {
+  const { user } = useAuth()
   const [icons, setIcons] = useState<PublicIcon[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -61,6 +64,17 @@ export default function Explore() {
 
   const handleFilterChange = (key: string, value: string) => {
     setFilters((prev) => ({ ...prev, [key]: value }))
+  }
+
+  const handleToggleVisibility = async (id: string) => {
+    // Optimistic: remove from explore list immediately (making private)
+    setIcons((prev) => prev.filter((ic) => ic.id !== id))
+    try {
+      await supabase.from('icons').update({ is_public: false }).eq('id', id)
+    } catch {
+      // On failure, re-fetch to restore correct state
+      fetchIcons(filters, 0, false)
+    }
   }
 
   return (
@@ -143,7 +157,12 @@ export default function Explore() {
             <>
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
                 {icons.map((icon) => (
-                  <IconCard key={icon.id} icon={icon} />
+                  <IconCard
+                    key={icon.id}
+                    icon={icon}
+                    isOwner={icon.user_id === user?.id}
+                    onToggleVisibility={handleToggleVisibility}
+                  />
                 ))}
               </div>
 

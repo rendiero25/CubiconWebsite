@@ -8,7 +8,7 @@ export interface AdminUsageEntry {
   prompt: string
   style: string
   resolution: string
-  creditsSaved: number
+  creditsUsed: number
 }
 
 function readLog(): AdminUsageEntry[] {
@@ -46,7 +46,7 @@ export function useAdminUsage() {
     setLog([])
   }, [])
 
-  const totalSaved = log.reduce((s, e) => s + e.creditsSaved, 0)
+  const totalSaved = log.reduce((s, e) => s + e.creditsUsed, 0)
 
   return { log, totalSaved, refresh, clear }
 }

@@ -20,7 +20,7 @@ interface NavbarProps {
 export default function Navbar({ creditBadgeRef }: NavbarProps = {}) {
   const [mobileOpen, setMobileOpen] = useState(false)
   const location = useLocation()
-  const { user, isLoading: authLoading } = useAuth()
+  const { user } = useAuth()
   const { credits } = useCredits()
   const isLoggedIn = user !== null
 
@@ -55,9 +55,7 @@ export default function Navbar({ creditBadgeRef }: NavbarProps = {}) {
 
         {/* Desktop CTA */}
         <div className="hidden md:flex items-center gap-3">
-          {authLoading ? (
-            <div className="w-32 h-9" />
-          ) : isLoggedIn ? (
+          {isLoggedIn ? (
             <>
               <span
                 ref={creditBadgeRef}
@@ -117,7 +115,7 @@ export default function Navbar({ creditBadgeRef }: NavbarProps = {}) {
               </Link>
             ))}
             <div className="flex items-center gap-3 pt-2 border-t border-black/20">
-              {!authLoading && isLoggedIn ? (
+              {isLoggedIn ? (
                 <>
                   <span className="flex items-center gap-1.5 border-2 border-black rounded-md px-3 py-1.5 bg-light-blue font-body font-medium text-sm">
                     <Zap size={14} className="text-electric-blue" />
