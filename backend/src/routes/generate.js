@@ -105,7 +105,9 @@ async function deductCredits(userId, amount) {
     .select('balance')
     .eq('user_id', userId)
     .single()
-  if (readErr) throw new Error(readErr.message)
+
+  // PGRST116 = no row found → treat as 0 balance
+  if (readErr && readErr.code !== 'PGRST116') throw new Error(readErr.message)
 
   const current = data?.balance ?? 0
   if (current < amount) throw new Error('Insufficient credits')
@@ -134,7 +136,9 @@ router.post('/', async (req, res) => {
       try {
         await deductCredits(userId, cost)
       } catch (creditErr) {
-        return res.status(402).json({ error: creditErr.message })
+        const isInsufficientCredits = creditErr.message === 'Insufficient credits'
+        const status = isInsufficientCredits ? 402 : 500
+        return res.status(status).json({ error: creditErr.message })
       }
     }
 

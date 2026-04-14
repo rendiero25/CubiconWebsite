@@ -50,7 +50,7 @@ export default function RightPanel({
   /* ── Empty state ── */
   if (generateState === 'idle' && !result) {
     return (
-      <div className="w-full aspect-square border-2 border-dashed border-black/20 rounded-md flex flex-col items-center justify-center gap-4">
+      <div className="w-full h-full aspect-square border-2 border-dashed border-black/20 rounded-md flex flex-col items-center justify-center gap-4">
         <div className="w-28 h-28 border-2 border-dashed border-black/20 rounded-2xl flex items-center justify-center">
           <span className="text-5xl opacity-20">🎲</span>
         </div>
@@ -64,7 +64,7 @@ export default function RightPanel({
   /* ── Loading state ── */
   if (generateState === 'loading') {
     return (
-      <div className="w-full aspect-square border-2 border-black rounded-md bg-light-blue shadow-[4px_4px_0px_#000] flex flex-col items-center justify-center gap-6">
+      <div className="w-full h-full aspect-square border-2 border-black rounded-md bg-light-blue shadow-[4px_4px_0px_#000] flex flex-col items-center justify-center gap-6">
         <div
           ref={cubeRef}
           className="w-20 h-20 bg-[#3B5BDB] border-2 border-black rounded-xl shadow-[4px_4px_0px_#000]"
@@ -137,15 +137,15 @@ export default function RightPanel({
   }
 
   return (
-    <div className="flex flex-col gap-4 h-full">
-      {/* Icon Preview */}
-      <div className="flex-1 rounded-md overflow-hidden border-2 border-black shadow-[4px_4px_0px_#000]">
-        <div className={clsx('h-full flex items-center justify-center', previewBg)}>
+    <div className="h-full flex flex-col gap-4">
+      {/* Icon Preview — fills remaining vertical space */}
+      <div id='divparent' className="flex-1 min-h-0 w-full rounded-md overflow-hidden">
+        <div className={clsx('w-full h-full flex items-center justify-center', previewBg)}>
           {result?.imageUrl ? (
             <img
               src={result.imageUrl}
               alt="Generated icon"
-              className="w-full h-full object-contain"
+              className="max-w-full max-h-full object-contain"
             />
           ) : (
             <div className="flex flex-col items-center gap-3 p-10">
@@ -162,7 +162,7 @@ export default function RightPanel({
 
       {/* Buttons Below Icon */}
       {result?.imageUrl && (
-        <div className="flex gap-3 flex-wrap">
+        <div className="flex-none flex gap-3 flex-wrap">
           <button
             onClick={handleDownloadIcon}
             className="cursor-pointer flex-1 flex items-center justify-center gap-2 font-display font-bold text-sm py-2.5 bg-[#3B5BDB] text-white border-2 border-black rounded-md shadow-[4px_4px_0px_#000] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-all"

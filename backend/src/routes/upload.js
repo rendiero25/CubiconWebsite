@@ -20,7 +20,7 @@ router.post('/', async (req, res) => {
     }
 
     const uploadResult = await cloudinary.uploader.upload(imageBase64, {
-      public_id: fileName || `cubicon-${Date.now()}`,
+      public_id: `${fileName || 'cubicon'}-${Date.now()}`,
       folder: 'cubicon',
       resource_type: 'image',
       overwrite: false,

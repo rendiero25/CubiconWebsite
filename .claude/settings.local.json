@@ -1,7 +1,10 @@
 {
   "permissions": {
     "allow": [
-      "Bash(node -e \"const pkg = require\\('./node_modules/@imgly/background-removal/package.json'\\); console.log\\(JSON.stringify\\(Object.keys\\(pkg.exports || {}\\), null, 2\\)\\)\")"
+      "Bash(node -e \"const pkg = require\\('./node_modules/@imgly/background-removal/package.json'\\); console.log\\(JSON.stringify\\(Object.keys\\(pkg.exports || {}\\), null, 2\\)\\)\")",
+      "Bash(supabase --version)",
+      "Bash(psql --version)",
+      "Bash(node -e ':*)"
     ]
   }
 }

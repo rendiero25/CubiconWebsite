@@ -15,9 +15,9 @@ import { uploadIcon, blobUrlToBase64, saveIcon } from '../api/icons'
 import { removeBackground } from '@imgly/background-removal'
 import type { FormState, GenerateState, GenerateResult } from './generate/types'
 
-// Shared config: full-precision ISNet model, PNG output for clean transparency
+// isnet_fp16: half-precision ISNet — 2–3× faster than isnet, near-identical accuracy
 const BG_REMOVAL_CONFIG = {
-  model: 'isnet' as const,
+  model: 'isnet_fp16' as const,
   output: { format: 'image/png' as const, quality: 1 },
 }
 import { getBatchLines, calcCost } from './generate/types'
@@ -159,7 +159,8 @@ export default function GenerateApp() {
           results.map(async (r) => {
             if (activeForm.background === 'transparent' && r.imageUrl) {
               const blob = await removeBackground(r.imageUrl, BG_REMOVAL_CONFIG)
-              return URL.createObjectURL(blob)
+              // Convert immediately to base64 to avoid blob URL expiry
+              return blobUrlToBase64(URL.createObjectURL(blob))
             }
             return r.imageUrl ?? ''
           }),
@@ -185,14 +186,17 @@ export default function GenerateApp() {
         }
       } else {
         const r = await generateIcon({ prompt: activeForm.prompt, ...baseParams })
+        let finalImageUrl = r.imageUrl ?? ''
         if (activeForm.background === 'transparent' && r.imageUrl) {
           const blob = await removeBackground(r.imageUrl, BG_REMOVAL_CONFIG)
-          r.imageUrl = URL.createObjectURL(blob)
+          // Convert to base64 immediately — blob URL may be revoked before persistIcon uses it
+          finalImageUrl = await blobUrlToBase64(URL.createObjectURL(blob))
+          r.imageUrl = finalImageUrl
         }
         setResult(r)
         // Persist icon to Supabase
         if (user?.id) {
-          void persistIcon(r.imageUrl ?? '', activeForm.prompt, activeForm.style, activeForm.resolution, user.id)
+          void persistIcon(finalImageUrl, activeForm.prompt, activeForm.style, activeForm.resolution, user.id)
         }
         if (isAdmin) {
           recordAdminUsage({

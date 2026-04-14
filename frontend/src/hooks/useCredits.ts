@@ -7,6 +7,7 @@ export function useCredits() {
   const [isLoading, setIsLoading] = useState(true)
   const [userId, setUserId] = useState<string | null>(null)
   const channelRef = useRef<ReturnType<typeof supabase.channel> | null>(null)
+  const subscribedUidRef = useRef<string | null>(null)
 
   const loadCredits = useCallback(async (uid: string) => {
     setIsLoading(true)
@@ -20,12 +21,19 @@ export function useCredits() {
   }, [])
 
   const subscribeRealtime = useCallback((uid: string) => {
-    // Clean up any existing subscription first
+    // Already subscribed for this uid — skip
+    if (subscribedUidRef.current === uid && channelRef.current) return
+
+    // Tear down any previous channel synchronously before creating a new one
     if (channelRef.current) {
       supabase.removeChannel(channelRef.current)
+      channelRef.current = null
     }
+    subscribedUidRef.current = uid
+
+    // Use a unique channel name with timestamp to avoid reusing a stale channel
     const channel = supabase
-      .channel(`credits-${uid}`)
+      .channel(`credits-${uid}-${Date.now()}`)
       .on(
         'postgres_changes',
         { event: 'UPDATE', schema: 'public', table: 'credits', filter: `user_id=eq.${uid}` },
@@ -39,13 +47,13 @@ export function useCredits() {
   }, [])
 
   useEffect(() => {
-    // getSession() reads from localStorage — near-instant
+    // getSession reads from localStorage — fast path for initial credit load only.
+    // Subscription is set up exclusively via onAuthStateChange to avoid double-subscribe.
     supabase.auth.getSession().then(({ data: { session } }) => {
       const user = session?.user ?? null
       if (!user) { setIsLoading(false); return }
       setUserId(user.id)
       loadCredits(user.id)
-      subscribeRealtime(user.id)
     })
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
@@ -60,6 +68,7 @@ export function useCredits() {
         if (channelRef.current) {
           supabase.removeChannel(channelRef.current)
           channelRef.current = null
+          subscribedUidRef.current = null
         }
       }
     })
@@ -68,6 +77,8 @@ export function useCredits() {
       subscription.unsubscribe()
       if (channelRef.current) {
         supabase.removeChannel(channelRef.current)
+        channelRef.current = null
+        subscribedUidRef.current = null
       }
     }
   }, [loadCredits, subscribeRealtime])

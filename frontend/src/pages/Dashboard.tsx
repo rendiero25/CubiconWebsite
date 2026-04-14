@@ -160,7 +160,11 @@ export default function Dashboard() {
     setIcons((prev) => prev.map((ic) => ({ ...ic, selected: !allSelected })))
 
   const setVisibility = async (ids: string[], isPublic: boolean) => {
-    await supabase.from('icons').update({ is_public: isPublic }).in('id', ids)
+    const { error } = await supabase.from('icons').update({ is_public: isPublic }).in('id', ids)
+    if (error) {
+      console.error('setVisibility error:', error.message)
+      return
+    }
     setIcons((prev) => prev.map((ic) => (ids.includes(ic.id) ? { ...ic, is_public: isPublic } : ic)))
   }
 
@@ -363,12 +367,11 @@ export default function Dashboard() {
                     <div
                       key={icon.id}
                       className={clsx(
-                        'border-2 rounded-md bg-white overflow-hidden transition-all cursor-pointer group',
+                        'border-2 rounded-md bg-white overflow-hidden group',
                         icon.selected
                           ? 'border-electric-blue shadow-[3px_3px_0_#3B5BDB]'
-                          : 'border-black shadow-[3px_3px_0_#000] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none'
+                          : 'border-black shadow-[3px_3px_0_#000]'
                       )}
-                      onClick={() => toggleSelect(icon.id)}
                     >
                       <div className="relative bg-light-blue aspect-square flex items-center justify-center border-b-2 border-black">
                         <img
@@ -378,10 +381,13 @@ export default function Dashboard() {
                           loading="lazy"
                         />
                         {/* Selection indicator */}
-                        <div className={clsx(
-                          'absolute top-2 right-2 w-5 h-5 border-2 border-black rounded flex items-center justify-center transition-all',
-                          icon.selected ? 'bg-electric-blue' : 'bg-white/80'
-                        )}>
+                        <div
+                          className={clsx(
+                            'absolute top-2 right-2 w-5 h-5 border-2 border-black rounded flex items-center justify-center transition-all cursor-pointer',
+                            icon.selected ? 'bg-electric-blue' : 'bg-white/80'
+                          )}
+                          onClick={() => toggleSelect(icon.id)}
+                        >
                           {icon.selected && <span className="text-white text-xs font-bold">✓</span>}
                         </div>
                         {/* Visibility badge */}
@@ -391,30 +397,47 @@ export default function Dashboard() {
                             : <span className="flex items-center gap-1 bg-white border-2 border-black rounded px-1.5 py-0.5 font-body text-[10px] font-semibold"><Lock size={10} /> Private</span>
                           }
                         </div>
-                        {/* Hover actions */}
-                        <div className="absolute inset-0 bg-near-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
-                          <a
-                            href={icon.url}
-                            download
-                            onClick={(e) => e.stopPropagation()}
-                            className="w-8 h-8 bg-white border-2 border-black rounded-md flex items-center justify-center hover:bg-light-blue transition-colors"
-                          >
-                            <Download size={13} />
-                          </a>
-                          <Link
-                            to={`/app?prompt=${encodeURIComponent(icon.prompt)}`}
-                            onClick={(e) => e.stopPropagation()}
-                            className="w-8 h-8 bg-white border-2 border-black rounded-md flex items-center justify-center hover:bg-light-blue transition-colors"
-                          >
-                            <Wand2 size={13} />
-                          </Link>
-                        </div>
                       </div>
-                      <div className="p-3">
+
+                      {/* Always-visible info + actions */}
+                      <div className="p-3 flex flex-col gap-2">
                         <p className="font-body text-xs font-medium text-near-black truncate">{icon.prompt}</p>
-                        <div className="flex gap-1 mt-1.5">
+                        <div className="flex gap-1">
                           <span className="font-body text-[10px] text-near-black/50 border border-black/15 rounded px-1 py-0.5">{icon.style}</span>
                           <span className="font-body text-[10px] font-semibold text-electric-blue border border-electric-blue/30 rounded px-1 py-0.5 bg-light-blue">{icon.resolution}</span>
+                        </div>
+                        <p className="font-body text-[10px] text-near-black/40">
+                          {new Date(icon.created_at).toLocaleString()}
+                        </p>
+                        <a
+                          href={icon.url}
+                          download
+                          className="flex items-center justify-center gap-1.5 border-2 border-black rounded-md py-1.5 font-display font-bold text-[10px] bg-electric-blue text-white shadow-[2px_2px_0_#000] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-all"
+                        >
+                          <Download size={11} /> Download
+                        </a>
+                        <Link
+                          to={`/app?prompt=${encodeURIComponent(icon.prompt)}`}
+                          className="flex items-center justify-center gap-1.5 border-2 border-black rounded-md py-1.5 font-display font-bold text-[10px] bg-white shadow-[2px_2px_0_#000] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-all"
+                        >
+                          <Wand2 size={11} /> Regenerate
+                        </Link>
+                        <div className="flex gap-1.5">
+                          <button
+                            onClick={() => setVisibility([icon.id], !icon.is_public)}
+                            className="cursor-pointer flex-1 flex items-center justify-center gap-1 border-2 border-black rounded-md py-1.5 font-body text-[10px] font-medium bg-white shadow-[2px_2px_0_#000] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-all"
+                          >
+                            {icon.is_public ? <><Lock size={9} /> Private</> : <><Globe size={9} /> Public</>}
+                          </button>
+                          <button
+                            onClick={async () => {
+                              await supabase.from('icons').delete().eq('id', icon.id)
+                              setIcons((prev) => prev.filter((ic) => ic.id !== icon.id))
+                            }}
+                            className="cursor-pointer flex items-center justify-center border-2 border-red-400 rounded-md px-2 py-1.5 font-body text-[10px] font-medium bg-red-50 text-red-600 hover:bg-red-100 transition-colors"
+                          >
+                            <Trash2 size={10} />
+                          </button>
                         </div>
                       </div>
                     </div>
@@ -422,6 +445,7 @@ export default function Dashboard() {
                 </div>
               )}
             </div>
+
           )}
 
           {/* Profile Tab */}
