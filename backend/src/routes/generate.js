@@ -58,7 +58,7 @@ function buildPrompt({ prompt, style, resolution, background, bgColor, bgGradien
     `Create a single 3D isometric icon of: ${prompt}.`,
     `Style: ${styleDesc}.`,
     `Background: ${bgDesc}.`,
-    `Quality: ${resDesc}, sharp edges, centered composition, square aspect ratio.`,
+    `Quality: ${resDesc}, sharp edges, perfectly centered composition, STRICT 1:1 square aspect ratio, the image width and height must be exactly equal.`,
     'The icon should be professional, visually striking, and suitable for app or product use.',
     'Do not include any text, labels, or watermarks in the image.',
   ].join(' ')

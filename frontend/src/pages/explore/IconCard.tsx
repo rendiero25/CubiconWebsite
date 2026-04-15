@@ -12,9 +12,9 @@ export default function IconCard({ icon, isOwner, onToggleVisibility }: IconCard
   const encoded = encodeURIComponent(icon.prompt)
 
   return (
-    <div className="group border-2 border-black rounded-md bg-white shadow-[4px_4px_0px_#000] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-all overflow-hidden">
+    <div className="group hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-all overflow-hidden">
       {/* Image */}
-      <div className="bg-light-blue aspect-square flex items-center justify-center border-b-2 border-black relative overflow-hidden">
+      <div className="aspect-square flex items-center justify-center relative overflow-hidden">
         <img
           src={icon.url}
           alt={icon.prompt}
@@ -41,7 +41,7 @@ export default function IconCard({ icon, isOwner, onToggleVisibility }: IconCard
       </div>
 
       {/* Meta */}
-      <div className="p-3 flex flex-col gap-1.5">
+      {/* <div className="p-3 flex flex-col gap-1.5">
         <p className="font-body text-sm font-medium text-near-black truncate">{icon.prompt}</p>
         <div className="flex gap-1.5 flex-wrap">
           <span className="font-body text-xs text-near-black/60 border border-black/20 rounded px-1.5 py-0.5 bg-off-white">
@@ -51,7 +51,7 @@ export default function IconCard({ icon, isOwner, onToggleVisibility }: IconCard
             {icon.resolution}
           </span>
         </div>
-      </div>
+      </div> */}
     </div>
   )
 }

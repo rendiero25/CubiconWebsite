@@ -42,6 +42,9 @@ export default function Dashboard() {
   const [nameInput, setNameInput] = useState('')
   const [savingName, setSavingName] = useState(false)
   const [nameError, setNameError] = useState<string | null>(null)
+  const [updatingIds, setUpdatingIds] = useState<Set<string>>(new Set())
+  const [visibilityError, setVisibilityError] = useState<string | null>(null)
+  const [visibilitySuccess, setVisibilitySuccess] = useState<string | null>(null)
   const iconChannelRef = useRef<ReturnType<typeof supabase.channel> | null>(null)
 
   const loadIcons = async (uid: string) => {
@@ -132,6 +135,15 @@ export default function Dashboard() {
           )
           .on(
             'postgres_changes',
+            { event: 'UPDATE', schema: 'public', table: 'icons', filter: `user_id=eq.${user.id}` },
+            (payload) => {
+              setIcons((prev) =>
+                prev.map((ic) => (ic.id === payload.new.id ? { ...ic, ...(payload.new as PublicIcon) } : ic))
+              )
+            },
+          )
+          .on(
+            'postgres_changes',
             { event: 'DELETE', schema: 'public', table: 'icons', filter: `user_id=eq.${user.id}` },
             (payload) => {
               setIcons((prev) => prev.filter((ic) => ic.id !== payload.old.id))
@@ -160,12 +172,41 @@ export default function Dashboard() {
     setIcons((prev) => prev.map((ic) => ({ ...ic, selected: !allSelected })))
 
   const setVisibility = async (ids: string[], isPublic: boolean) => {
-    const { error } = await supabase.from('icons').update({ is_public: isPublic }).in('id', ids)
-    if (error) {
-      console.error('setVisibility error:', error.message)
-      return
+    try {
+      setUpdatingIds((prev) => new Set([...prev, ...ids]))
+      setVisibilityError(null)
+      setVisibilitySuccess(null)
+
+      const { data, error } = await supabase
+        .from('icons')
+        .update({ is_public: isPublic })
+        .in('id', ids)
+        .select('id, is_public')
+
+      if (error) throw new Error(error.message)
+      if (!data || data.length === 0) {
+        throw new Error('Update gagal: tidak ada baris yang diubah. Pastikan kamu login dan icon milikmu.')
+      }
+
+      setIcons((prev) => prev.map((ic) => (ids.includes(ic.id) ? { ...ic, is_public: isPublic } : ic)))
+      setVisibilitySuccess(
+        ids.length === 1
+          ? isPublic
+            ? null
+            : 'Icon berhasil dijadikan private'
+          : isPublic
+            ? null
+            : `${ids.length} icon berhasil diprivatkan`
+      )
+    } catch (err) {
+      setVisibilityError(err instanceof Error ? err.message : 'Gagal mengubah visibilitas')
+    } finally {
+      setUpdatingIds((prev) => {
+        const updated = new Set(prev)
+        ids.forEach((id) => updated.delete(id))
+        return updated
+      })
     }
-    setIcons((prev) => prev.map((ic) => (ids.includes(ic.id) ? { ...ic, is_public: isPublic } : ic)))
   }
 
   const deleteSelected = async () => {
@@ -292,39 +333,55 @@ export default function Dashboard() {
             <div className="flex flex-col gap-5">
               {/* Bulk actions */}
               {icons.length > 0 && (
-                <div className="flex flex-wrap items-center gap-3">
-                  <label className="cursor-pointer flex items-center gap-2 font-body text-sm font-medium text-near-black">
-                    <input
-                      type="checkbox"
-                      checked={allSelected}
-                      onChange={toggleSelectAll}
-                      className="w-4 h-4 border-2 border-black rounded accent-electric-blue cursor-pointer"
-                    />
-                    Select All
-                  </label>
-                  {anySelected && (
-                    <>
-                      <button
-                        onClick={() => setVisibility(selectedIds, true)}
-                        className="cursor-pointer flex items-center gap-1.5 border-2 border-black rounded-md px-3 py-1.5 font-body text-xs font-medium bg-white hover:bg-light-blue transition-colors shadow-[2px_2px_0_#000]"
-                      >
-                        <Globe size={12} /> Make Public
-                      </button>
-                      <button
-                        onClick={() => setVisibility(selectedIds, false)}
-                        className="cursor-pointer flex items-center gap-1.5 border-2 border-black rounded-md px-3 py-1.5 font-body text-xs font-medium bg-white hover:bg-light-blue transition-colors shadow-[2px_2px_0_#000]"
-                      >
-                        <Lock size={12} /> Make Private
-                      </button>
-                      <button
-                        onClick={deleteSelected}
-                        className="cursor-pointer flex items-center gap-1.5 border-2 border-red-400 rounded-md px-3 py-1.5 font-body text-xs font-medium bg-red-50 text-red-600 hover:bg-red-100 transition-colors"
-                      >
-                        <Trash2 size={12} /> Delete ({selectedIds.length})
-                      </button>
-                    </>
+                <div className="flex flex-col gap-3">
+                  <div className="flex flex-wrap items-center gap-3">
+                    <label className="cursor-pointer flex items-center gap-2 font-body text-sm font-medium text-near-black">
+                      <input
+                        type="checkbox"
+                        checked={allSelected}
+                        onChange={toggleSelectAll}
+                        className="w-4 h-4 border-2 border-black rounded accent-electric-blue cursor-pointer"
+                      />
+                      Select All
+                    </label>
+                    {anySelected && (
+                      <>
+                        <button
+                          onClick={() => setVisibility(selectedIds, true)}
+                          disabled={updatingIds.size > 0}
+                          className="cursor-pointer flex items-center gap-1.5 border-2 border-black rounded-md px-3 py-1.5 font-body text-xs font-medium bg-white hover:bg-light-blue transition-colors shadow-[2px_2px_0_#000] disabled:opacity-50 disabled:cursor-not-allowed"
+                        >
+                          <Globe size={12} /> {updatingIds.size > 0 ? 'Processing...' : 'Make Public'}
+                        </button>
+                        <button
+                          onClick={() => setVisibility(selectedIds, false)}
+                          disabled={updatingIds.size > 0}
+                          className="cursor-pointer flex items-center gap-1.5 border-2 border-black rounded-md px-3 py-1.5 font-body text-xs font-medium bg-white hover:bg-light-blue transition-colors shadow-[2px_2px_0_#000] disabled:opacity-50 disabled:cursor-not-allowed"
+                        >
+                          <Lock size={12} /> {updatingIds.size > 0 ? 'Processing...' : 'Make Private'}
+                        </button>
+                        <button
+                          onClick={deleteSelected}
+                          className="cursor-pointer flex items-center gap-1.5 border-2 border-red-400 rounded-md px-3 py-1.5 font-body text-xs font-medium bg-red-50 text-red-600 hover:bg-red-100 transition-colors"
+                        >
+                          <Trash2 size={12} /> Delete ({selectedIds.length})
+                        </button>
+                      </>
+                    )}
+                    <span className="font-body text-xs text-near-black/40 ml-auto">{icons.length} icons total</span>
+                  </div>
+                  {visibilityError && (
+                    <div className="flex items-center gap-2 bg-red-50 border-2 border-red-400 rounded-md px-3 py-2 font-body text-xs text-red-600">
+                      <span>❌</span>
+                      <span>{visibilityError}</span>
+                    </div>
                   )}
-                  <span className="font-body text-xs text-near-black/40 ml-auto">{icons.length} icons total</span>
+                  {visibilitySuccess && (
+                    <div className="flex items-center gap-2 bg-green-50 border-2 border-green-400 rounded-md px-3 py-2 font-body text-xs text-green-700">
+                      <span>✓</span>
+                      <span>{visibilitySuccess}</span>
+                    </div>
+                  )}
                 </div>
               )}
 
@@ -425,9 +482,10 @@ export default function Dashboard() {
                         <div className="flex gap-1.5">
                           <button
                             onClick={() => setVisibility([icon.id], !icon.is_public)}
-                            className="cursor-pointer flex-1 flex items-center justify-center gap-1 border-2 border-black rounded-md py-1.5 font-body text-[10px] font-medium bg-white shadow-[2px_2px_0_#000] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-all"
+                            disabled={updatingIds.has(icon.id)}
+                            className="cursor-pointer flex-1 flex items-center justify-center gap-1 border-2 border-black rounded-md py-1.5 font-body text-[10px] font-medium bg-white shadow-[2px_2px_0_#000] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                           >
-                            {icon.is_public ? <><Lock size={9} /> Private</> : <><Globe size={9} /> Public</>}
+                            {updatingIds.has(icon.id) ? '...' : icon.is_public ? <><Lock size={9} /> Private</> : <><Globe size={9} /> Public</>}
                           </button>
                           <button
                             onClick={async () => {
@@ -747,41 +805,6 @@ export default function Dashboard() {
           {/* Settings Tab */}
           {tab === 'settings' && (
             <div className="max-w-lg flex flex-col gap-5">
-              <div className="border-2 border-black rounded-md bg-white shadow-[4px_4px_0_#000] p-6 flex flex-col gap-5">
-                <h2 className="font-display font-semibold text-lg text-near-black">Generate defaults</h2>
-
-                <label className="flex items-center justify-between cursor-pointer gap-4">
-                  <div>
-                    <p className="font-body text-sm font-medium text-near-black">Default visibility: Public</p>
-                    <p className="font-body text-xs text-near-black/50 mt-0.5">
-                      When ON, new icons are shared to Explore automatically.
-                    </p>
-                  </div>
-                  <button
-                    role="switch"
-                    aria-checked={defaultPublic}
-                    onClick={() => setDefaultPublic((v) => !v)}
-                    className={clsx(
-                      'relative w-11 h-6 border-2 border-black rounded-full transition-colors shrink-0',
-                      defaultPublic ? 'bg-electric-blue' : 'bg-near-black/20'
-                    )}
-                  >
-                    <span className={clsx(
-                      'absolute top-0.5 w-4 h-4 bg-white border-2 border-black rounded-full transition-all',
-                      defaultPublic ? 'left-5' : 'left-0.5'
-                    )} />
-                  </button>
-                </label>
-
-                <button
-                  onClick={saveSettings}
-                  disabled={savingSettings}
-                  className="self-start border-2 border-black font-display font-bold text-sm px-5 py-2.5 rounded-md bg-electric-blue text-white shadow-[3px_3px_0_#000] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-all disabled:opacity-50"
-                >
-                  {savingSettings ? 'Saving...' : 'Save Settings'}
-                </button>
-              </div>
-
               <div className="border-2 border-black rounded-md bg-white shadow-[4px_4px_0_#000] p-6 flex flex-col gap-3">
                 <h2 className="font-display font-semibold text-lg text-near-black">Account</h2>
                 <button

@@ -1,4 +1,4 @@
-import { useState, useCallback, useRef } from 'react'
+import { useState, useCallback, useRef, useEffect } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import gsap from 'gsap'
 import Navbar from '../components/layout/Navbar'
@@ -13,6 +13,7 @@ import { recordAdminUsage } from '../hooks/useAdminUsage'
 import { generateIcon } from '../api/generate'
 import { uploadIcon, blobUrlToBase64, saveIcon } from '../api/icons'
 import { removeBackground } from '@imgly/background-removal'
+import { makeSquare } from '../utils/imageUtils'
 import type { FormState, GenerateState, GenerateResult } from './generate/types'
 
 // isnet_fp16: half-precision ISNet — 2–3× faster than isnet, near-identical accuracy
@@ -51,8 +52,17 @@ export default function GenerateApp() {
     ...DEFAULT_FORM,
     prompt: searchParams.get('prompt') ?? '',
   })
-  const [generateState, setGenerateState] = useState<GenerateState>('idle')
-  const [result, setResult] = useState<GenerateResult | null>(null)
+  const [generateState, setGenerateState] = useState<GenerateState>(() => {
+    try {
+      return sessionStorage.getItem('cubicon_result') ? 'success' : 'idle'
+    } catch { return 'idle' }
+  })
+  const [result, setResult] = useState<GenerateResult | null>(() => {
+    try {
+      const saved = sessionStorage.getItem('cubicon_result')
+      return saved ? (JSON.parse(saved) as GenerateResult) : null
+    } catch { return null }
+  })
   const [promptError, setPromptError] = useState<string | null>(null)
   const [shake, setShake] = useState(false)
   const [showConfirm, setShowConfirm] = useState(false)
@@ -62,6 +72,14 @@ export default function GenerateApp() {
 
   const { credits, setCredits } = useCredits()
   const creditBadgeRef = useRef<HTMLSpanElement>(null)
+
+  // Persist last result across browser refreshes
+  useEffect(() => {
+    try {
+      if (result) sessionStorage.setItem('cubicon_result', JSON.stringify(result))
+      else sessionStorage.removeItem('cubicon_result')
+    } catch { /* storage unavailable */ }
+  }, [result])
 
   const setField = useCallback(<K extends keyof FormState>(key: K, value: FormState[K]) => {
     setForm((prev) => ({ ...prev, [key]: value }))
@@ -159,10 +177,10 @@ export default function GenerateApp() {
           results.map(async (r) => {
             if (activeForm.background === 'transparent' && r.imageUrl) {
               const blob = await removeBackground(r.imageUrl, BG_REMOVAL_CONFIG)
-              // Convert immediately to base64 to avoid blob URL expiry
-              return blobUrlToBase64(URL.createObjectURL(blob))
+              const b64 = await blobUrlToBase64(URL.createObjectURL(blob))
+              return makeSquare(b64)
             }
-            return r.imageUrl ?? ''
+            return r.imageUrl ? makeSquare(r.imageUrl) : ''
           }),
         )
         setResult({ imageUrls })
@@ -189,10 +207,10 @@ export default function GenerateApp() {
         let finalImageUrl = r.imageUrl ?? ''
         if (activeForm.background === 'transparent' && r.imageUrl) {
           const blob = await removeBackground(r.imageUrl, BG_REMOVAL_CONFIG)
-          // Convert to base64 immediately — blob URL may be revoked before persistIcon uses it
           finalImageUrl = await blobUrlToBase64(URL.createObjectURL(blob))
-          r.imageUrl = finalImageUrl
         }
+        if (finalImageUrl) finalImageUrl = await makeSquare(finalImageUrl)
+        r.imageUrl = finalImageUrl
         setResult(r)
         // Persist icon to Supabase
         if (user?.id) {
