@@ -60,7 +60,7 @@ export default function Contact() {
       {/* Header */}
       <section className="py-12 md:py-16 border-b-2 border-[#0A1628] bg-white">
         <div className="max-w-7xl mx-auto px-4 md:px-8 lg:px-16">
-          <span className="inline-block bg-light-blue border-2 border-[#0A1628] px-3 py-1 font-body text-xs font-semibold uppercase tracking-wider mb-4">
+          <span className="inline-block bg-light-green border-2 border-[#0A1628] px-3 py-1 font-body text-xs font-semibold uppercase tracking-wider mb-4">
             Contact
           </span>
           <h1 className="font-display font-bold text-4xl md:text-5xl text-near-black">
@@ -176,7 +176,7 @@ export default function Contact() {
             {/* Contact info */}
             <div className="border-2 border-[#0A1628] rounded-md bg-white shadow-[4px_4px_0_#0A1628] p-6 flex flex-col gap-5">
               <div className="flex items-start gap-3">
-                <div className="w-10 h-10 bg-light-blue border-2 border-[#0A1628] rounded-md flex items-center justify-center shrink-0 shadow-[2px_2px_0_#0A1628]">
+                <div className="w-10 h-10 bg-light-green border-2 border-[#0A1628] rounded-md flex items-center justify-center shrink-0 shadow-[2px_2px_0_#0A1628]">
                   <Mail size={16} className="text-near-black" />
                 </div>
                 <div>
@@ -191,7 +191,7 @@ export default function Contact() {
               </div>
 
               <div className="flex items-start gap-3">
-                <div className="w-10 h-10 bg-light-blue border-2 border-[#0A1628] rounded-md flex items-center justify-center shrink-0 shadow-[2px_2px_0_#0A1628]">
+                <div className="w-10 h-10 bg-light-green border-2 border-[#0A1628] rounded-md flex items-center justify-center shrink-0 shadow-[2px_2px_0_#0A1628]">
                   <Clock size={16} className="text-near-black" />
                 </div>
                 <div>
@@ -211,7 +211,7 @@ export default function Contact() {
                     href={href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center justify-between border-2 border-[#0A1628] rounded-md px-3 py-2 bg-off-white hover:bg-light-blue transition-colors group"
+                    className="flex items-center justify-between border-2 border-[#0A1628] rounded-md px-3 py-2 bg-off-white hover:bg-light-green transition-colors group"
                   >
                     <span className="font-body text-sm font-medium text-near-black">{label}</span>
                     <ExternalLink size={13} className="text-near-black/40 group-hover:text-near-black transition-colors" />
@@ -221,7 +221,7 @@ export default function Contact() {
             </div>
 
             {/* Billing hint */}
-            <div className="border-2 border-[#0A1628] rounded-md bg-light-blue p-5">
+            <div className="border-2 border-[#0A1628] rounded-md bg-light-green p-5">
               <p className="font-display font-semibold text-sm text-near-black mb-1">
                 Looking for billing help?
               </p>

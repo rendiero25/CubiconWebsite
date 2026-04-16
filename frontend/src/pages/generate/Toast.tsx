@@ -19,7 +19,7 @@ export default function Toast({ message, type, onDismiss, action }: Props) {
     <div
       className={clsx(
         'fixed bottom-6 right-4 z-50 flex items-start gap-3 border-2 border-[#0A1628] rounded-md px-4 py-3 shadow-[4px_4px_0px_#0A1628] max-w-xs w-full',
-        type === 'error' ? 'bg-red-50' : 'bg-[#FFF5CC]',
+        type === 'error' ? 'bg-red-50' : 'bg-light-green',
       )}
     >
       {type === 'error' ? (

@@ -69,7 +69,7 @@ export default function HeroSection() {
     <section className="min-h-[90vh] flex flex-col lg:flex-row items-center gap-12 lg:gap-0 max-w-7xl mx-auto px-4 md:px-8 lg:px-16 py-16 md:py-24">
       {/* Left — Text + Prompt */}
       <div ref={headlineRef} className="flex-1 flex flex-col gap-6">
-        <div className="inline-flex items-center gap-2 bg-[#FFF5CC] border-2 border-[#0A1628] px-3 py-1.5 rounded-md w-fit shadow-[2px_2px_0px_#0A1628]">
+        <div className="inline-flex items-center gap-2 bg-light-green border-2 border-[#0A1628] px-3 py-1.5 rounded-md w-fit shadow-[2px_2px_0px_#0A1628]">
           <Sparkles size={14} className="text-[#FFC300]" />
           <span className="font-body text-xs font-medium text-[#FFC300]">AI-Powered Icon Generator</span>
         </div>

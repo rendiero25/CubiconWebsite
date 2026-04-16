@@ -44,7 +44,7 @@ export default function ConfirmModal({ form, credits, isAdmin, onCancel, onConfi
           <h2 className="font-display font-bold text-lg text-near-black">Ready to generate?</h2>
           <button
             onClick={onCancel}
-            className="p-1 hover:bg-light-blue rounded transition-colors"
+            className="p-1 hover:bg-light-green rounded transition-colors"
           >
             <X size={18} />
           </button>
@@ -110,7 +110,7 @@ export default function ConfirmModal({ form, credits, isAdmin, onCancel, onConfi
         <div className="px-5 pb-5 flex gap-3">
           <button
             onClick={onCancel}
-            className="cursor-pointer flex-1 font-body font-medium text-sm py-2.5 border-2 border-[#0A1628] rounded-md bg-white hover:bg-light-blue transition-colors"
+            className="cursor-pointer flex-1 font-body font-medium text-sm py-2.5 border-2 border-[#0A1628] rounded-md bg-white hover:bg-light-green transition-colors"
           >
             Cancel
           </button>

@@ -84,7 +84,7 @@ export default function Explore() {
       {/* Header */}
       <section className="py-12 md:py-16 border-b-2 border-[#0A1628] bg-white">
         <div className="max-w-7xl mx-auto px-4 md:px-8 lg:px-16">
-          <span className="inline-block bg-light-blue border-2 border-[#0A1628] px-3 py-1 font-body text-xs font-semibold uppercase tracking-wider mb-4">
+          <span className="inline-block bg-light-green border-2 border-[#0A1628] px-3 py-1 font-body text-xs font-semibold uppercase tracking-wider mb-4">
             Community
           </span>
           <h1 className="font-display font-bold text-4xl md:text-5xl text-near-black">
@@ -124,7 +124,7 @@ export default function Explore() {
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
               {Array.from({ length: PAGE_SIZE }).map((_, i) => (
                 <div key={i} className="border-2 border-[#0A1628] rounded-md bg-white shadow-[4px_4px_0_#0A1628] overflow-hidden animate-pulse">
-                  <div className="aspect-square bg-light-blue/50" />
+                  <div className="aspect-square bg-light-green/50" />
                   <div className="p-3 space-y-2">
                     <div className="h-3 bg-near-black/10 rounded w-3/4" />
                     <div className="h-3 bg-near-black/10 rounded w-1/2" />
@@ -135,7 +135,7 @@ export default function Explore() {
           ) : icons.length === 0 ? (
             /* Empty state */
             <div className="flex flex-col items-center justify-center py-24 gap-5">
-              <div className="w-20 h-20 bg-light-blue border-2 border-[#0A1628] rounded-xl flex items-center justify-center shadow-[4px_4px_0_#0A1628]">
+              <div className="w-20 h-20 bg-light-green border-2 border-[#0A1628] rounded-xl flex items-center justify-center shadow-[4px_4px_0_#0A1628]">
                 <Sparkles size={32} className="text-electric-yellow" />
               </div>
               <div className="text-center">

@@ -207,7 +207,7 @@ export default function Login() {
 
             {/* Forgot password inline */}
             {forgotOpen && (
-              <div className="border-2 border-[#0A1628] rounded-md p-4 bg-light-blue flex flex-col gap-3">
+              <div className="border-2 border-[#0A1628] rounded-md p-4 bg-light-green flex flex-col gap-3">
                 {resetSent ? (
                   <div className="flex items-center gap-2 text-near-black">
                     <CheckCircle size={16} className="text-green-500 shrink-0" />

@@ -68,7 +68,7 @@ export default function Pricing() {
       {/* Header */}
       <section className="py-12 md:py-20 border-b-2 border-[#0A1628] bg-white text-center">
         <div className="max-w-7xl mx-auto px-4 md:px-8 lg:px-16">
-          <span className="inline-block bg-light-blue border-2 border-[#0A1628] px-3 py-1 font-body text-xs font-semibold uppercase tracking-wider mb-4">
+          <span className="inline-block bg-light-green border-2 border-[#0A1628] px-3 py-1 font-body text-xs font-semibold uppercase tracking-wider mb-4">
             Pricing
           </span>
           <h1 className="font-display font-bold text-4xl md:text-5xl text-near-black">
@@ -175,7 +175,7 @@ export default function Pricing() {
                         'cursor-pointer flex-1 py-2.5 border-2 border-[#0A1628] rounded-md font-display font-bold text-sm transition-all',
                         resolution === r
                           ? 'bg-near-black text-white'
-                          : 'bg-white text-near-black hover:bg-light-blue'
+                          : 'bg-white text-near-black hover:bg-light-green'
                       )}
                     >
                       {r}

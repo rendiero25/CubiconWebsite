@@ -45,7 +45,7 @@ export default function FilterBar({ search, style, resolution, sort, onChange }:
           onChange={(e) => onChange('style', e.target.value)}
           className={clsx(
             'cursor-pointer border-2 border-[#0A1628] rounded-md px-3 py-1.5 font-body text-xs font-medium bg-white outline-none transition-colors',
-            style && 'bg-light-blue'
+            style && 'bg-light-green'
           )}
         >
           <option value="">All Styles</option>
@@ -59,7 +59,7 @@ export default function FilterBar({ search, style, resolution, sort, onChange }:
           onChange={(e) => onChange('resolution', e.target.value)}
           className={clsx(
             'cursor-pointer border-2 border-[#0A1628] rounded-md px-3 py-1.5 font-body text-xs font-medium bg-white outline-none transition-colors',
-            resolution && 'bg-light-blue'
+            resolution && 'bg-light-green'
           )}
         >
           <option value="">All Resolutions</option>
@@ -78,7 +78,7 @@ export default function FilterBar({ search, style, resolution, sort, onChange }:
                 'cursor-pointer border-2 border-[#0A1628] rounded-md px-3 py-1.5 font-body text-xs font-medium transition-all',
                 sort === s.value
                   ? 'bg-near-black text-white'
-                  : 'bg-white text-near-black hover:bg-light-blue'
+                  : 'bg-white text-near-black hover:bg-light-green'
               )}
             >
               {s.label}

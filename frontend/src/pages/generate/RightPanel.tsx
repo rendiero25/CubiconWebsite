@@ -21,7 +21,7 @@ export default function RightPanel({
   onShareToExplore,
 }: Props) {
   const cubeRef = useRef<HTMLDivElement>(null)
-  const previewBg = form.background === 'transparent' ? 'bg-white' : 'bg-[#FFF5CC]'
+  const previewBg = form.background === 'transparent' ? 'bg-white' : 'bg-light-green'
 
   useEffect(() => {
     if (generateState !== 'loading' || !cubeRef.current) return
@@ -64,7 +64,7 @@ export default function RightPanel({
   /* ── Loading state ── */
   if (generateState === 'loading') {
     return (
-      <div className="w-full h-full aspect-square border-2 border-[#0A1628] rounded-md bg-light-blue shadow-[4px_4px_0px_#0A1628] flex flex-col items-center justify-center gap-6">
+      <div className="w-full h-full aspect-square border-2 border-[#0A1628] rounded-md bg-light-green shadow-[4px_4px_0px_#0A1628] flex flex-col items-center justify-center gap-6">
         <div
           ref={cubeRef}
           className="w-20 h-20 bg-[#FFC300] border-2 border-[#0A1628] rounded-xl shadow-[4px_4px_0px_#0A1628]"

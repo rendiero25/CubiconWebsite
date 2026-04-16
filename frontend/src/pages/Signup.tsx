@@ -270,7 +270,7 @@ export default function Signup() {
             <h2 className="font-display font-bold text-2xl text-near-black">
               Welcome, {name.split(' ')[0]}!
             </h2>
-            <div className="flex items-center justify-center gap-2 mt-4 bg-light-blue border-2 border-[#0A1628] rounded-md px-4 py-3">
+            <div className="flex items-center justify-center gap-2 mt-4 bg-light-green border-2 border-[#0A1628] rounded-md px-4 py-3">
               <Sparkles size={16} className="text-electric-yellow" />
               <p className="font-body font-medium text-sm text-near-black">
                 You got <strong>2 free icons</strong> to start!

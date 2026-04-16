@@ -270,7 +270,7 @@ export default function Dashboard() {
           </div>
           <div className="flex items-center gap-3">
             {/* Credit badge */}
-            <div className="flex items-center gap-1.5 border-2 border-[#0A1628] rounded-md px-3 py-2 bg-light-blue shadow-[2px_2px_0_#0A1628]">
+            <div className="flex items-center gap-1.5 border-2 border-[#0A1628] rounded-md px-3 py-2 bg-light-green shadow-[2px_2px_0_#0A1628]">
               <Zap size={14} className="text-electric-yellow" />
               <span className="font-body font-semibold text-sm text-near-black">
                 {credits !== null ? `${credits} credits` : '—'}
@@ -349,14 +349,14 @@ export default function Dashboard() {
                         <button
                           onClick={() => setVisibility(selectedIds, true)}
                           disabled={updatingIds.size > 0}
-                          className="cursor-pointer flex items-center gap-1.5 border-2 border-[#0A1628] rounded-md px-3 py-1.5 font-body text-xs font-medium bg-white hover:bg-light-blue transition-colors shadow-[2px_2px_0_#0A1628] disabled:opacity-50 disabled:cursor-not-allowed"
+                          className="cursor-pointer flex items-center gap-1.5 border-2 border-[#0A1628] rounded-md px-3 py-1.5 font-body text-xs font-medium bg-white hover:bg-light-green transition-colors shadow-[2px_2px_0_#0A1628] disabled:opacity-50 disabled:cursor-not-allowed"
                         >
                           <Globe size={12} /> {updatingIds.size > 0 ? 'Processing...' : 'Make Public'}
                         </button>
                         <button
                           onClick={() => setVisibility(selectedIds, false)}
                           disabled={updatingIds.size > 0}
-                          className="cursor-pointer flex items-center gap-1.5 border-2 border-[#0A1628] rounded-md px-3 py-1.5 font-body text-xs font-medium bg-white hover:bg-light-blue transition-colors shadow-[2px_2px_0_#0A1628] disabled:opacity-50 disabled:cursor-not-allowed"
+                          className="cursor-pointer flex items-center gap-1.5 border-2 border-[#0A1628] rounded-md px-3 py-1.5 font-body text-xs font-medium bg-white hover:bg-light-green transition-colors shadow-[2px_2px_0_#0A1628] disabled:opacity-50 disabled:cursor-not-allowed"
                         >
                           <Lock size={12} /> {updatingIds.size > 0 ? 'Processing...' : 'Make Private'}
                         </button>
@@ -394,7 +394,7 @@ export default function Dashboard() {
                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
                   {Array.from({ length: 15 }).map((_, i) => (
                     <div key={i} className="border-2 border-[#0A1628] rounded-md bg-white shadow-[3px_3px_0_#0A1628] overflow-hidden animate-pulse">
-                      <div className="aspect-square bg-light-blue/40" />
+                      <div className="aspect-square bg-light-green/40" />
                       <div className="p-3 space-y-2">
                         <div className="h-3 bg-near-black/10 rounded w-3/4" />
                         <div className="h-3 bg-near-black/10 rounded w-1/2" />
@@ -404,7 +404,7 @@ export default function Dashboard() {
                 </div>
               ) : icons.length === 0 ? (
                 <div className="flex flex-col items-center py-24 gap-5">
-                  <div className="w-20 h-20 bg-light-blue border-2 border-[#0A1628] rounded-xl flex items-center justify-center shadow-[4px_4px_0_#0A1628]">
+                  <div className="w-20 h-20 bg-light-green border-2 border-[#0A1628] rounded-xl flex items-center justify-center shadow-[4px_4px_0_#0A1628]">
                     <Wand2 size={32} className="text-electric-yellow" />
                   </div>
                   <div className="text-center">
@@ -430,7 +430,7 @@ export default function Dashboard() {
                           : 'border-[#0A1628] shadow-[3px_3px_0_#0A1628]'
                       )}
                     >
-                      <div className="relative bg-light-blue aspect-square flex items-center justify-center border-b-2 border-[#0A1628]">
+                      <div className="relative bg-light-green aspect-square flex items-center justify-center border-b-2 border-[#0A1628]">
                         <img
                           src={icon.url}
                           alt={icon.prompt}
@@ -461,7 +461,7 @@ export default function Dashboard() {
                         <p className="font-body text-xs font-medium text-near-black truncate">{icon.prompt}</p>
                         <div className="flex gap-1">
                           <span className="font-body text-[10px] text-near-black/50 border border-[#0A1628]/15 rounded px-1 py-0.5">{icon.style}</span>
-                          <span className="font-body text-[10px] font-semibold text-electric-yellow border border-electric-yellow/30 rounded px-1 py-0.5 bg-light-blue">{icon.resolution}</span>
+                          <span className="font-body text-[10px] font-semibold text-electric-yellow border border-electric-yellow/30 rounded px-1 py-0.5 bg-light-green">{icon.resolution}</span>
                         </div>
                         <p className="font-body text-[10px] text-near-black/40">
                           {new Date(icon.created_at).toLocaleString()}
@@ -540,7 +540,7 @@ export default function Dashboard() {
                         </button>
                         <button
                           onClick={cancelEditName}
-                          className="cursor-pointer flex items-center gap-1 border-2 border-[#0A1628] rounded-md px-3 py-1 font-body text-xs bg-white hover:bg-light-blue transition-colors"
+                          className="cursor-pointer flex items-center gap-1 border-2 border-[#0A1628] rounded-md px-3 py-1 font-body text-xs bg-white hover:bg-light-green transition-colors"
                         >
                           <XIcon size={12} /> Batal
                         </button>
@@ -551,7 +551,7 @@ export default function Dashboard() {
                       <p className="font-display font-bold text-xl text-near-black">{displayName || '—'}</p>
                       <button
                         onClick={startEditName}
-                        className="cursor-pointer p-1 rounded hover:bg-light-blue transition-colors"
+                        className="cursor-pointer p-1 rounded hover:bg-light-green transition-colors"
                         title="Edit nama"
                       >
                         <Pencil size={14} className="text-near-black/40 hover:text-electric-yellow" />
@@ -589,7 +589,7 @@ export default function Dashboard() {
                     <span className="font-body text-sm text-near-black/60">Username</span>
                     <div className="flex items-center gap-2">
                       <span className="font-body text-sm font-medium text-near-black">{displayName || '—'}</span>
-                      <button onClick={startEditName} className="cursor-pointer p-0.5 rounded hover:bg-light-blue transition-colors">
+                      <button onClick={startEditName} className="cursor-pointer p-0.5 rounded hover:bg-light-green transition-colors">
                         <Pencil size={12} className="text-near-black/30 hover:text-electric-yellow" />
                       </button>
                     </div>
@@ -609,7 +609,7 @@ export default function Dashboard() {
                   <div className="flex items-center justify-between py-3">
                     <span className="font-body text-sm text-near-black/60">Saldo Credit</span>
                     <div className="flex items-center gap-2">
-                      <span className="flex items-center gap-1.5 border-2 border-[#0A1628] rounded-md px-2.5 py-1 bg-light-blue font-body font-semibold text-sm text-near-black">
+                      <span className="flex items-center gap-1.5 border-2 border-[#0A1628] rounded-md px-2.5 py-1 bg-light-green font-body font-semibold text-sm text-near-black">
                         <Zap size={12} className="text-electric-yellow" />
                         {credits !== null ? credits : '—'}
                       </span>
@@ -760,7 +760,7 @@ export default function Dashboard() {
                                 <td className="px-4 py-3 font-body text-xs text-near-black max-w-50 truncate">{icon.prompt}</td>
                                 <td className="px-4 py-3 font-body text-xs text-near-black/70">{icon.style}</td>
                                 <td className="px-4 py-3">
-                                  <span className="font-body text-[10px] font-semibold text-electric-yellow border border-electric-yellow/30 rounded px-1.5 py-0.5 bg-light-blue">{icon.resolution}</span>
+                                  <span className="font-body text-[10px] font-semibold text-electric-yellow border border-electric-yellow/30 rounded px-1.5 py-0.5 bg-light-green">{icon.resolution}</span>
                                 </td>
                                 <td className="px-4 py-3 text-right">
                                   <span className="font-body text-xs font-semibold text-yellow-600 bg-yellow-50 border border-yellow-300 rounded px-1.5 py-0.5">

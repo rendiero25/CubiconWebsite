@@ -38,7 +38,7 @@ export default function BeforeAfter() {
     <section ref={sectionRef} className="py-16 md:py-24 bg-off-white">
       <div className="max-w-7xl mx-auto px-4 md:px-8 lg:px-16">
         <div className="text-center mb-12">
-          <span className="inline-block bg-light-blue border-2 border-[#0A1628] px-3 py-1 font-body text-xs font-semibold uppercase tracking-wider mb-3">
+          <span className="inline-block bg-light-green border-2 border-[#0A1628] px-3 py-1 font-body text-xs font-semibold uppercase tracking-wider mb-3">
             Before vs After
           </span>
           <h2 className="font-display font-semibold text-2xl md:text-3xl text-near-black">
@@ -94,7 +94,7 @@ export default function BeforeAfter() {
 
           {/* After */}
           <div
-            className={`ba-col flex-1 bg-light-blue p-8 md:p-12 flex flex-col items-center justify-center gap-4 border-0 sm:border-l-2 border-[#0A1628] ${
+            className={`ba-col flex-1 bg-light-green p-8 md:p-12 flex flex-col items-center justify-center gap-4 border-0 sm:border-l-2 border-[#0A1628] ${
               active === 'before' ? 'hidden sm:flex' : 'flex'
             }`}
           >
@@ -103,7 +103,7 @@ export default function BeforeAfter() {
                 <span className="text-4xl select-none">📦</span>
               </div>
               <div className="absolute -top-2 -right-2 w-6 h-6 bg-electric-yellow border-2 border-[#0A1628] rounded-sm rotate-12" />
-              <div className="absolute -bottom-2 -left-2 w-4 h-4 bg-light-blue border-2 border-[#0A1628] rounded-sm -rotate-6" />
+              <div className="absolute -bottom-2 -left-2 w-4 h-4 bg-light-green border-2 border-[#0A1628] rounded-sm -rotate-6" />
             </div>
             <p className="font-body text-sm text-near-black font-medium text-center">
               3D isometric icon from Cubicon

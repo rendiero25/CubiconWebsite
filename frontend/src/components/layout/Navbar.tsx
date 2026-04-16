@@ -26,12 +26,12 @@ export default function Navbar({ creditBadgeRef, noBorder }: NavbarProps = {}) {
   const isLoggedIn = user !== null
 
   return (
-    <nav className={clsx('sticky top-0 z-50 bg-near-black', !noBorder && 'border-b-2 border-[#0A1628]')}>
-      <div className="max-w-7xl mx-auto px-4 md:px-8 lg:px-16 flex items-center justify-between h-16">
+    <nav className={clsx('sticky top-0 z-50 bg-near-black')}>
+      <div className="mx-auto px-4 flex items-center justify-between h-20">
         {/* Logo */}
         <Link
           to="/"
-          className="font-display font-extrabold text-2xl text-white tracking-tight"
+          className="font-display font-extrabold text-2xl text-electric-yellow tracking-tight hover:text-light-green transition-colors"
         >
           cubicon
         </Link>
@@ -45,8 +45,8 @@ export default function Navbar({ creditBadgeRef, noBorder }: NavbarProps = {}) {
               className={clsx(
                 'cursor-pointer font-body text-sm font-medium transition-colors',
                 location.pathname === link.href
-                  ? 'text-electric-yellow'
-                  : 'text-white hover:text-electric-yellow'
+                  ? 'text-electric-yellow border-electric-yellow'
+                  : 'text-off-white hover:text-electric-yellow'
               )}
             >
               {link.label}
@@ -60,14 +60,14 @@ export default function Navbar({ creditBadgeRef, noBorder }: NavbarProps = {}) {
             <>
               <span
                 ref={creditBadgeRef}
-                className="flex items-center gap-1.5 border-2 border-[#0A1628] rounded-md px-3 py-1.5 bg-light-blue font-body font-medium text-sm text-near-black"
+                className="flex items-center gap-1.5 border-2 border-[#0A1628] rounded-md px-3 py-1.5 bg-light-green font-body font-medium text-sm text-near-black"
               >
                 <Zap size={14} className="text-electric-yellow" />
                 {credits ?? '—'} credits
               </span>
               <Link
                 to="/dashboard"
-                className="flex items-center gap-2 font-body text-sm font-medium text-near-black border-2 border-[#0A1628] px-3 py-1.5 rounded-md bg-white hover:bg-light-blue transition-colors shadow-[2px_2px_0px_#0A1628] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none"
+                className="flex items-center gap-2 font-body text-sm font-medium text-near-black border-2 border-[#0A1628] px-3 py-1.5 rounded-md bg-electric-yellow  shadow-[3px_3px_0px_#FFF5CC] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none"
               >
                 <LayoutDashboard size={14} />
                 Dashboard
@@ -109,7 +109,12 @@ export default function Navbar({ creditBadgeRef, noBorder }: NavbarProps = {}) {
               <Link
                 key={link.href}
                 to={link.href}
-                className="font-body text-sm font-medium text-near-black"
+                className={clsx(
+                  'font-body text-sm font-medium border-b-2 pb-1 transition-colors',
+                  location.pathname === link.href
+                    ? 'text-electric-yellow border-electric-yellow'
+                    : 'text-near-black border-transparent hover:text-electric-yellow'
+                )}
                 onClick={() => setMobileOpen(false)}
               >
                 {link.label}
@@ -118,13 +123,13 @@ export default function Navbar({ creditBadgeRef, noBorder }: NavbarProps = {}) {
             <div className="flex items-center gap-3 pt-2 border-t border-[#0A1628]/20">
               {isLoggedIn ? (
                 <>
-                  <span className="flex items-center gap-1.5 border-2 border-[#0A1628] rounded-md px-3 py-1.5 bg-light-blue font-body font-medium text-sm">
+                  <span className="flex items-center gap-1.5 border-2 border-[#0A1628] rounded-md px-3 py-1.5 bg-light-green font-body font-medium text-sm">
                     <Zap size={14} className="text-electric-yellow" />
                     {credits ?? '—'} credits
                   </span>
                   <Link
                     to="/dashboard"
-                    className="cursor-pointer flex items-center gap-1.5 font-body text-sm font-medium text-near-black border-2 border-[#0A1628] px-3 py-1.5 rounded-md bg-white flex-1 justify-center"
+                    className="cursor-pointer flex items-center gap-1.5 font-body text-sm font-medium text-near-black border-2 border-[#0A1628] px-3 py-1.5 rounded-md bg-electric-yellow flex-1 justify-center"
                     onClick={() => setMobileOpen(false)}
                   >
                     <LayoutDashboard size={14} />

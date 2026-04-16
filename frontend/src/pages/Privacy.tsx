@@ -76,7 +76,7 @@ export default function Privacy() {
 
       <section className="py-12 md:py-16 border-b-2 border-[#0A1628] bg-white">
         <div className="max-w-7xl mx-auto px-4 md:px-8 lg:px-16">
-          <span className="inline-block bg-light-blue border-2 border-[#0A1628] px-3 py-1 font-body text-xs font-semibold uppercase tracking-wider mb-4">
+          <span className="inline-block bg-light-green border-2 border-[#0A1628] px-3 py-1 font-body text-xs font-semibold uppercase tracking-wider mb-4">
             Legal
           </span>
           <h1 className="font-display font-bold text-4xl md:text-5xl text-near-black">
@@ -90,7 +90,7 @@ export default function Privacy() {
 
       <section className="py-12 md:py-16">
         <div className="max-w-3xl mx-auto px-4 md:px-8 lg:px-16">
-          <div className="border-2 border-[#0A1628] rounded-md bg-light-blue p-5 mb-8 shadow-[3px_3px_0_#0A1628]">
+          <div className="border-2 border-[#0A1628] rounded-md bg-light-green p-5 mb-8 shadow-[3px_3px_0_#0A1628]">
             <p className="font-body text-sm text-near-black leading-relaxed">
               <strong className="font-semibold">TL;DR:</strong> Kami mengumpulkan data yang diperlukan untuk menjalankan layanan. Kami tidak menjual datamu. Kamu bisa menghapus akunmu kapanpun.
             </p>

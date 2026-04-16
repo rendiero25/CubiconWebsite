@@ -15,7 +15,7 @@ export default function FeaturesCTA() {
         <h2 className="font-display font-bold text-3xl md:text-4xl text-white leading-tight">
           Create your first 3D icon
           <br />
-          <span className="text-light-blue">completely free.</span>
+          <span className="text-light-green">completely free.</span>
         </h2>
 
         <p className="font-body text-base text-white/70 mt-4 max-w-md mx-auto">

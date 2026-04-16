@@ -47,7 +47,7 @@ export default function ExplorePreview() {
   }, [])
 
   return (
-    <section ref={sectionRef} id="explore" className="bg-[#FFF5CC] border-y-2 border-[#0A1628] py-16 md:py-24">
+    <section ref={sectionRef} id="explore" className="bg-light-green border-y-2 border-[#0A1628] py-16 md:py-24">
       <div className="max-w-7xl mx-auto px-4 md:px-8 lg:px-16">
         <div className="explore-heading flex flex-col md:flex-row items-start md:items-end justify-between gap-4 mb-10">
           <div>

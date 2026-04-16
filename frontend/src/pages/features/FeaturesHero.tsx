@@ -47,7 +47,7 @@ export default function FeaturesHero() {
       <div className="flex flex-col lg:flex-row items-center gap-12">
         {/* Left */}
         <div ref={headlineRef} className="flex-1 flex flex-col gap-6">
-          <span className="inline-flex items-center gap-2 border-2 border-[#0A1628] rounded-full px-4 py-1.5 bg-light-blue font-body text-sm font-medium w-fit shadow-[2px_2px_0px_#0A1628]">
+          <span className="inline-flex items-center gap-2 border-2 border-[#0A1628] rounded-full px-4 py-1.5 bg-light-green font-body text-sm font-medium w-fit shadow-[2px_2px_0px_#0A1628]">
             <Sparkles size={14} className="text-electric-yellow" />
             AI-Powered Icon Generation
           </span>

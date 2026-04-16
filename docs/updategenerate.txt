@@ -1,5 +1,1 @@
-1. Tambahkan feedback user di @file:HomeRight.tsx (1 review per pagination, indikator line bold)
-2. Section Features @file:HomeRight.tsx jadi 3 pagination, slide ke 4 button see all dan deskripsi singkat
-3. Container @file:HomeRight.tsx dibikin warna background beda-beda sesuai color palette.
-
 Tambahkan 2 mode generate di @frontend/src/pages/GenerateApp.tsx based updategenerate.md. Bagian fungsi prompt sesuaikan dengan kode yang ada (Untuk mencegah error).  

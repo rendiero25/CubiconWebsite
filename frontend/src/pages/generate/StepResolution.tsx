@@ -28,7 +28,7 @@ export default function StepResolution({ value, onChange, isFreeUser, onLocked }
                 value === r
                   ? 'bg-[#FFC300] text-[#0A1628] shadow-[3px_3px_0px_#0A1628]'
                   : locked
-                    ? 'bg-white text-[#0A1628]/40 cursor-pointer hover:bg-[#FFF5CC]/50'
+                    ? 'bg-white text-[#0A1628]/40 cursor-pointer hover:bg-light-green/50'
                     : 'bg-white text-[#0A1628] shadow-[2px_2px_0px_#0A1628] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none',
               )}
             >

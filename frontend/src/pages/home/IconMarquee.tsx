@@ -37,28 +37,28 @@ export default function IconMarquee() {
     }
   }, [icons])
 
-  if (!icons.length) {
-    return (
-      <div className="border-t-2 border-[#0A1628] py-4 overflow-hidden">
-        <div className="flex gap-3 px-6">
-          {Array.from({ length: 10 }).map((_, i) => (
-            <div key={i} className="w-10 h-10 shrink-0 rounded-full bg-[#0A1628]/20 animate-pulse" />
-          ))}
-        </div>
-      </div>
-    )
-  }
+  // if (!icons.length) {
+  //   return (
+  //     <div className="border-t-2 border-[#0A1628] py-4 overflow-hidden">
+  //       <div className="flex gap-3 px-6">
+  //         {Array.from({ length: 10 }).map((_, i) => (
+  //           <div key={i} className="w-10 h-10 shrink-0 rounded-full bg-[#0A1628]/20 animate-pulse" />
+  //         ))}
+  //       </div>
+  //     </div>
+  //   )
+  // }
 
   const doubled = [...icons, ...icons]
 
   return (
-    <div className="pt-3 pb-15 overflow-hidden shrink-0">
+    <div className="shrink-0">
       <div className="overflow-hidden">
         <div ref={trackRef} className="flex gap-2.5 px-6 w-max">
           {doubled.map((icon, i) => (
             <div
               key={`${icon.id}-${i}`}
-              className="w-50 shrink-0 overflow-hidden"
+              className="w-40 shrink-0 overflow-hidden"
               title={icon.prompt}
             >
               {icon.url ? (
@@ -69,7 +69,7 @@ export default function IconMarquee() {
                   loading="lazy"
                 />
               ) : (
-                <div className="w-full h-full bg-[#FFF5CC] flex items-center justify-center">
+                <div className="w-full h-full bg-light-green flex items-center justify-center">
                   <Sparkles size={14} className="text-[#FFC300]" />
                 </div>
               )}

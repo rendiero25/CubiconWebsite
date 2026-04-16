@@ -47,7 +47,7 @@ export default function IconCard({ icon, isOwner, onToggleVisibility }: IconCard
           <span className="font-body text-xs text-near-black/60 border border-[#0A1628]/20 rounded px-1.5 py-0.5 bg-off-white">
             {icon.style}
           </span>
-          <span className="font-body text-xs font-semibold text-electric-yellow border border-electric-yellow/30 rounded px-1.5 py-0.5 bg-light-blue">
+          <span className="font-body text-xs font-semibold text-electric-yellow border border-electric-yellow/30 rounded px-1.5 py-0.5 bg-light-green">
             {icon.resolution}
           </span>
         </div>

@@ -14,7 +14,7 @@ export function OutOfCreditsModal({ onClose }: OutOfCreditsProps) {
       <div className="bg-[#FFFCF2] border-2 border-[#0A1628] rounded-md shadow-[8px_8px_0px_#0A1628] w-full max-w-sm">
         <div className="flex items-center justify-between px-5 py-4 border-b-2 border-[#0A1628]">
           <h2 className="font-display font-bold text-lg text-[#0A1628]">Out of credits ⚡</h2>
-          <button onClick={onClose} className="cursor-pointer p-1 hover:bg-[#FFF5CC] rounded transition-colors">
+          <button onClick={onClose} className="cursor-pointer p-1 hover:bg-light-green rounded transition-colors">
             <X size={18} />
           </button>
         </div>
@@ -25,7 +25,7 @@ export function OutOfCreditsModal({ onClose }: OutOfCreditsProps) {
           <div className="flex gap-3">
             <button
               onClick={onClose}
-              className="cursor-pointer flex-1 font-body font-medium text-sm py-2.5 border-2 border-[#0A1628] rounded-md bg-white hover:bg-[#FFF5CC] transition-colors"
+              className="cursor-pointer flex-1 font-body font-medium text-sm py-2.5 border-2 border-[#0A1628] rounded-md bg-white hover:bg-light-green transition-colors"
             >
               Cancel
             </button>
@@ -58,7 +58,7 @@ export function FreeTierLockModal({ resolution, onClose }: FreeTierLockProps) {
           <h2 className="font-display font-bold text-lg text-[#0A1628]">
             🔒 {resolution} Locked
           </h2>
-          <button onClick={onClose} className="cursor-pointer p-1 hover:bg-[#FFF5CC] rounded transition-colors">
+          <button onClick={onClose} className="cursor-pointer p-1 hover:bg-light-green rounded transition-colors">
             <X size={18} />
           </button>
         </div>
@@ -70,7 +70,7 @@ export function FreeTierLockModal({ resolution, onClose }: FreeTierLockProps) {
           <div className="flex gap-3">
             <button
               onClick={onClose}
-              className="cursor-pointer flex-1 font-body font-medium text-sm py-2.5 border-2 border-[#0A1628] rounded-md bg-white hover:bg-[#FFF5CC] transition-colors"
+              className="cursor-pointer flex-1 font-body font-medium text-sm py-2.5 border-2 border-[#0A1628] rounded-md bg-white hover:bg-light-green transition-colors"
             >
               Stay on 1K
             </button>
