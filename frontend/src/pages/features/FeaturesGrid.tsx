@@ -10,7 +10,7 @@ const FEATURES = [
     icon: Wand2,
     title: 'AI Generation',
     description: 'Generate icons from text in seconds. Powered by Google Gemini.',
-    color: '#E8EDFF',
+    color: '#FFF5CC',
   },
   {
     icon: Box,
@@ -95,7 +95,7 @@ export default function FeaturesGrid() {
               className="feat-card border-2 border-white/20 rounded-md p-5 bg-white/5 hover:bg-white/10 transition-colors flex flex-col gap-3"
             >
               <div
-                className="w-10 h-10 rounded-md border-2 border-black flex items-center justify-center shrink-0"
+                className="w-10 h-10 rounded-md border-2 border-[#0A1628] flex items-center justify-center shrink-0"
                 style={{ backgroundColor: color }}
               >
                 <Icon size={18} className="text-near-black" />

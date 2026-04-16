@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react'
+﻿import { useState, useRef, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { Eye, EyeOff, Mail, CheckCircle, Loader2 } from 'lucide-react'
 import clsx from 'clsx'
@@ -113,7 +113,7 @@ export default function Login() {
 
         {success ? (
           <div className="flex flex-col items-center gap-4 py-10">
-            <div className="w-16 h-16 bg-green-50 border-2 border-black rounded-full flex items-center justify-center shadow-[3px_3px_0_#000]">
+            <div className="w-16 h-16 bg-green-50 border-2 border-[#0A1628] rounded-full flex items-center justify-center shadow-[3px_3px_0_#0A1628]">
               <CheckCircle size={28} className="text-green-500" />
             </div>
             <p className="font-display font-semibold text-lg text-near-black">Signed in!</p>
@@ -129,7 +129,7 @@ export default function Login() {
               type="button"
               onClick={handleGoogle}
               disabled={isLoading}
-              className="cursor-pointer flex items-center justify-center gap-3 w-full border-2 border-black rounded-md py-3 bg-white font-body font-medium text-sm text-near-black shadow-[3px_3px_0_#000] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-all disabled:opacity-50"
+              className="cursor-pointer flex items-center justify-center gap-3 w-full border-2 border-[#0A1628] rounded-md py-3 bg-white font-body font-medium text-sm text-near-black shadow-[3px_3px_0_#0A1628] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-all disabled:opacity-50"
             >
               <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M17.64 9.205c0-.639-.057-1.252-.164-1.841H9v3.481h4.844a4.14 4.14 0 0 1-1.796 2.716v2.259h2.908c1.702-1.567 2.684-3.875 2.684-6.615Z" fill="#4285F4"/>
@@ -156,7 +156,7 @@ export default function Login() {
                 placeholder="email@kamu.com"
                 className={clsx(
                   'border-2 rounded-md px-4 py-3 font-body text-sm outline-none transition-colors',
-                  error ? 'border-red-400 focus:border-red-500' : 'border-black focus:border-electric-blue'
+                  error ? 'border-red-400 focus:border-red-500' : 'border-[#0A1628] focus:border-electric-yellow'
                 )}
               />
             </div>
@@ -172,7 +172,7 @@ export default function Login() {
                   placeholder="••••••••"
                   className={clsx(
                     'w-full border-2 rounded-md px-4 py-3 pr-10 font-body text-sm outline-none transition-colors',
-                    error ? 'border-red-400 focus:border-red-500' : 'border-black focus:border-electric-blue'
+                    error ? 'border-red-400 focus:border-red-500' : 'border-[#0A1628] focus:border-electric-yellow'
                   )}
                 />
                 <button
@@ -192,14 +192,14 @@ export default function Login() {
                   type="checkbox"
                   checked={rememberMe}
                   onChange={(e) => setRememberMe(e.target.checked)}
-                  className="w-4 h-4 border-2 border-black rounded accent-electric-blue"
+                  className="w-4 h-4 border-2 border-[#0A1628] rounded accent-electric-yellow"
                 />
                 Remember me
               </label>
               <button
                 type="button"
                 onClick={() => { setForgotOpen((v) => !v); setResetSent(false); setResetError(null) }}
-                className="font-body text-sm text-electric-blue hover:underline underline-offset-2"
+                className="font-body text-sm text-electric-yellow hover:underline underline-offset-2"
               >
                 Forgot password?
               </button>
@@ -207,7 +207,7 @@ export default function Login() {
 
             {/* Forgot password inline */}
             {forgotOpen && (
-              <div className="border-2 border-black rounded-md p-4 bg-light-blue flex flex-col gap-3">
+              <div className="border-2 border-[#0A1628] rounded-md p-4 bg-light-blue flex flex-col gap-3">
                 {resetSent ? (
                   <div className="flex items-center gap-2 text-near-black">
                     <CheckCircle size={16} className="text-green-500 shrink-0" />
@@ -222,12 +222,12 @@ export default function Login() {
                         value={resetEmail}
                         onChange={(e) => setResetEmail(e.target.value)}
                         placeholder="email@kamu.com"
-                        className="flex-1 border-2 border-black rounded-md px-3 py-2 font-body text-sm outline-none focus:border-electric-blue transition-colors bg-white"
+                        className="flex-1 border-2 border-[#0A1628] rounded-md px-3 py-2 font-body text-sm outline-none focus:border-electric-yellow transition-colors bg-white"
                       />
                       <button
                         type="submit"
                         disabled={resetLoading}
-                        className="border-2 border-black rounded-md px-3 py-2 bg-electric-blue text-white font-display font-bold text-xs shadow-[2px_2px_0_#000] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-all disabled:opacity-50 flex items-center gap-1"
+                        className="border-2 border-[#0A1628] rounded-md px-3 py-2 bg-electric-yellow text-[#0A1628] font-display font-bold text-xs shadow-[2px_2px_0_#0A1628] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-all disabled:opacity-50 flex items-center gap-1"
                       >
                         {resetLoading ? <Loader2 size={13} className="animate-spin" /> : <Mail size={13} />}
                         Send
@@ -247,10 +247,10 @@ export default function Login() {
               type="submit"
               disabled={isLoading}
               className={clsx(
-                'flex items-center justify-center gap-2 w-full border-2 border-black font-display font-bold py-3.5 rounded-md transition-all mt-1',
+                'flex items-center justify-center gap-2 w-full border-2 border-[#0A1628] font-display font-bold py-3.5 rounded-md transition-all mt-1',
                 isLoading
                   ? 'bg-near-black/40 text-white cursor-not-allowed'
-                  : 'bg-electric-blue text-white shadow-[4px_4px_0_#000] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none'
+                  : 'bg-electric-yellow text-[#0A1628] shadow-[4px_4px_0_#0A1628] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none'
               )}
             >
               {isLoading ? <Loader2 size={16} className="animate-spin" /> : null}
@@ -259,7 +259,7 @@ export default function Login() {
 
             <p className="font-body text-sm text-near-black/60 text-center">
               Don't have an account?{' '}
-              <Link to="/signup" className="text-electric-blue font-medium hover:underline underline-offset-2">
+              <Link to="/signup" className="text-electric-yellow font-medium hover:underline underline-offset-2">
                 Sign up free
               </Link>
             </p>
@@ -268,7 +268,7 @@ export default function Login() {
       </div>
 
       {/* Right — Animated showcase (hidden on mobile) */}
-      <div className="hidden lg:flex flex-1 bg-near-black border-l-2 border-black items-center justify-center relative overflow-hidden">
+      <div className="hidden lg:flex flex-1 bg-near-black border-l-2 border-[#0A1628] items-center justify-center relative overflow-hidden">
         {/* Grid pattern */}
         <div className="absolute inset-0 opacity-10"
           style={{ backgroundImage: 'linear-gradient(#fff 1px, transparent 1px), linear-gradient(90deg, #fff 1px, transparent 1px)', backgroundSize: '40px 40px' }} />

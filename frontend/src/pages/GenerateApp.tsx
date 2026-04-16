@@ -1,4 +1,4 @@
-import { useState, useCallback, useRef, useEffect } from 'react'
+﻿import { useState, useCallback, useRef, useEffect } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import gsap from 'gsap'
 import Navbar from '../components/layout/Navbar'
@@ -31,7 +31,7 @@ const DEFAULT_FORM: FormState = {
   resolution: '1K',
   background: 'transparent',
   bgColor: '#ffffff',
-  bgGradient: ['#3B5BDB', '#E8EDFF'],
+  bgGradient: ['#FFC300', '#FFF5CC'],
   referenceFile: null,
   variation: false,
 }
@@ -153,7 +153,7 @@ export default function GenerateApp() {
       gsap.fromTo(
         creditBadgeRef.current,
         { scale: 1.15, color: '#ef4444' },
-        { scale: 1, color: '#1A1A1A', duration: 0.5, ease: 'back.out(1.7)' },
+        { scale: 1, color: '#0A1628', duration: 0.5, ease: 'back.out(1.7)' },
       )
     }
 
@@ -269,7 +269,7 @@ export default function GenerateApp() {
 
         {/* Right Panel */}
         <section className="flex-1 min-w-0">
-          <div className="border-2 border-black rounded-md bg-white shadow-[4px_4px_0px_#000] p-5 lg:sticky lg:top-24 lg:h-[calc(100vh-7rem)] overflow-hidden">
+          <div className="border-2 border-[#0A1628] rounded-md bg-white shadow-[4px_4px_0px_#0A1628] p-5 lg:sticky lg:top-24 lg:h-[calc(100vh-7rem)] overflow-hidden">
             <RightPanel
               generateState={generateState}
               result={result}

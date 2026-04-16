@@ -3,7 +3,7 @@ import { ArrowRight, Sparkles } from 'lucide-react'
 
 export default function FeaturesCTA() {
   return (
-    <section className="py-16 md:py-24 bg-electric-blue">
+    <section className="py-16 md:py-24 bg-electric-yellow">
       <div className="max-w-7xl mx-auto px-4 md:px-8 lg:px-16 text-center">
         <div className="inline-flex items-center gap-2 bg-white/10 border-2 border-white/30 px-3 py-1 rounded-md mb-6">
           <Sparkles size={14} className="text-white" />
@@ -25,7 +25,7 @@ export default function FeaturesCTA() {
         <div className="flex flex-col sm:flex-row gap-3 justify-center mt-8">
           <Link
             to="/app"
-            className="cursor-pointer inline-flex items-center justify-center gap-2 bg-white text-electric-blue border-2 border-black font-display font-bold px-6 py-3 rounded-md shadow-[4px_4px_0px_#000] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-all"
+            className="cursor-pointer inline-flex items-center justify-center gap-2 bg-white text-electric-yellow border-2 border-[#0A1628] font-display font-bold px-6 py-3 rounded-md shadow-[4px_4px_0px_#0A1628] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-all"
           >
             Start Free <ArrowRight size={16} />
           </Link>

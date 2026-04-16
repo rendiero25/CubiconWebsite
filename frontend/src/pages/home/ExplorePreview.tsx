@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react'
+﻿import { useState, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { RefreshCw, ArrowRight } from 'lucide-react'
 import gsap from 'gsap'
@@ -10,14 +10,14 @@ gsap.registerPlugin(ScrollTrigger)
 const CATEGORIES = ['All', 'App', 'Finance', 'Nature', 'Tech', 'Social']
 
 const MOCK_ICONS = [
-  { emoji: '🛒', label: 'Shopping Cart', category: 'App', user: 'designr_io', color: '#E8EDFF' },
+  { emoji: '🛒', label: 'Shopping Cart', category: 'App', user: 'designr_io', color: '#FFF5CC' },
   { emoji: '💳', label: 'Credit Card', category: 'Finance', user: 'ui_labs', color: '#FFF3E0' },
   { emoji: '🌿', label: 'Leaf', category: 'Nature', user: 'ecodesign', color: '#E8F5E9' },
   { emoji: '⚙️', label: 'Settings', category: 'Tech', user: 'techcraft', color: '#F3E8FF' },
   { emoji: '📱', label: 'Mobile App', category: 'App', user: 'appstudio', color: '#FDE8E8' },
   { emoji: '📈', label: 'Analytics', category: 'Finance', user: 'dataviz', color: '#E8F0FF' },
   { emoji: '🔔', label: 'Notification', category: 'App', user: 'notifyco', color: '#FFF9E0' },
-  { emoji: '🌐', label: 'Global', category: 'Tech', user: 'webstudio', color: '#E8EDFF' },
+  { emoji: '🌐', label: 'Global', category: 'Tech', user: 'webstudio', color: '#FFF5CC' },
 ]
 
 export default function ExplorePreview() {
@@ -47,20 +47,20 @@ export default function ExplorePreview() {
   }, [])
 
   return (
-    <section ref={sectionRef} id="explore" className="bg-[#E8EDFF] border-y-2 border-black py-16 md:py-24">
+    <section ref={sectionRef} id="explore" className="bg-[#FFF5CC] border-y-2 border-[#0A1628] py-16 md:py-24">
       <div className="max-w-7xl mx-auto px-4 md:px-8 lg:px-16">
         <div className="explore-heading flex flex-col md:flex-row items-start md:items-end justify-between gap-4 mb-10">
           <div>
-            <h2 className="font-display font-semibold text-2xl md:text-3xl text-[#1A1A1A]">
+            <h2 className="font-display font-semibold text-2xl md:text-3xl text-[#0A1628]">
               Made by the community
             </h2>
-            <p className="font-body text-sm text-[#1A1A1A]/60 mt-1">
+            <p className="font-body text-sm text-[#0A1628]/60 mt-1">
               Icons generated and shared by Cubicon users.
             </p>
           </div>
           <button
             onClick={() => navigate('/explore')}
-            className="cursor-pointer font-display font-bold text-sm bg-white border-2 border-black px-4 py-2 rounded-md shadow-[4px_4px_0px_#000] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-all flex items-center gap-2 whitespace-nowrap"
+            className="cursor-pointer font-display font-bold text-sm bg-white border-2 border-[#0A1628] px-4 py-2 rounded-md shadow-[4px_4px_0px_#0A1628] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-all flex items-center gap-2 whitespace-nowrap"
           >
             View All
             <ArrowRight size={14} />
@@ -74,10 +74,10 @@ export default function ExplorePreview() {
               key={cat}
               onClick={() => setActiveCategory(cat)}
               className={clsx(
-                'font-body text-xs font-medium border-2 border-black px-3 py-1.5 rounded-md transition-all',
+                'font-body text-xs font-medium border-2 border-[#0A1628] px-3 py-1.5 rounded-md transition-all',
                 activeCategory === cat
-                  ? 'bg-[#3B5BDB] text-white shadow-[2px_2px_0px_#000]'
-                  : 'bg-white text-[#1A1A1A] hover:bg-[#3B5BDB] hover:text-white'
+                  ? 'bg-[#FFC300] text-[#0A1628] shadow-[2px_2px_0px_#0A1628]'
+                  : 'bg-white text-[#0A1628] hover:bg-[#FFC300] hover:text-[#0A1628]'
               )}
             >
               {cat}
@@ -90,7 +90,7 @@ export default function ExplorePreview() {
           {filtered.map(icon => (
             <div
               key={icon.label}
-              className="group relative border-2 border-black rounded-md bg-white shadow-[4px_4px_0px_#000] overflow-hidden cursor-pointer hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-all"
+              className="group relative border-2 border-[#0A1628] rounded-md bg-white shadow-[4px_4px_0px_#0A1628] overflow-hidden cursor-pointer hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-all"
             >
               <div
                 className="h-32 flex items-center justify-center text-5xl"
@@ -99,14 +99,14 @@ export default function ExplorePreview() {
                 {icon.emoji}
               </div>
               <div className="p-3">
-                <p className="font-display font-semibold text-sm text-[#1A1A1A]">{icon.label}</p>
-                <p className="font-body text-xs text-[#1A1A1A]/50 mt-0.5">@{icon.user}</p>
+                <p className="font-display font-semibold text-sm text-[#0A1628]">{icon.label}</p>
+                <p className="font-body text-xs text-[#0A1628]/50 mt-0.5">@{icon.user}</p>
               </div>
               {/* Hover overlay */}
-              <div className="absolute inset-0 bg-[#3B5BDB]/90 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+              <div className="absolute inset-0 bg-[#FFC300]/90 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
                 <button
                   onClick={() => navigate(`/app?prompt=${encodeURIComponent(icon.label)}`)}
-                  className="cursor-pointer font-display font-bold text-xs text-white border-2 border-white px-3 py-2 rounded-md flex items-center gap-1.5 hover:bg-white hover:text-[#3B5BDB] transition-colors"
+                  className="cursor-pointer font-display font-bold text-xs text-[#0A1628] border-2 border-[#0A1628] px-3 py-2 rounded-md flex items-center gap-1.5 hover:bg-[#0A1628] hover:text-[#FFC300] transition-colors"
                 >
                   <RefreshCw size={12} />
                   Generate Similar

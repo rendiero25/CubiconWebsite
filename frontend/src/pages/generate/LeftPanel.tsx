@@ -1,4 +1,4 @@
-import clsx from 'clsx'
+﻿import clsx from 'clsx'
 import StepMode from './StepMode'
 import StepPrompt from './StepPrompt'
 import StepStyle from './StepStyle'
@@ -58,14 +58,14 @@ export default function LeftPanel({
       <StepReference file={form.referenceFile} onChange={(v) => onChange('referenceFile', v)} />
 
       {/* Credit summary + CTA */}
-      <div className="border-t-2 border-black pt-4 mt-1">
+      <div className="border-t-2 border-[#0A1628] pt-4 mt-1">
         <p className="font-body text-sm text-near-black/70 mb-3">
           This will use{' '}
           <span className="font-bold text-near-black">
             {cost} credit{cost !== 1 ? 's' : ''}
           </span>{' '}
           · You have{' '}
-          <span className={clsx('font-bold', hasEnough ? 'text-electric-blue' : 'text-red-500')}>
+          <span className={clsx('font-bold', hasEnough ? 'text-electric-yellow' : 'text-red-500')}>
             {credits} remaining
           </span>
         </p>
@@ -73,10 +73,10 @@ export default function LeftPanel({
           onClick={onRequestGenerate}
           disabled={isLoading}
           className={clsx(
-            'cursor-pointer w-full font-display font-bold text-base py-3 border-2 border-black rounded-md transition-all',
+            'cursor-pointer w-full font-display font-bold text-base py-3 border-2 border-[#0A1628] rounded-md transition-all',
             isLoading
-              ? 'bg-electric-blue/60 text-white cursor-not-allowed'
-              : 'bg-electric-blue text-white shadow-[4px_4px_0px_#000] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none',
+              ? 'bg-electric-yellow/60 text-[#0A1628] cursor-not-allowed'
+              : 'bg-electric-yellow text-[#0A1628] shadow-[4px_4px_0px_#0A1628] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none',
           )}
         >
           {isLoading ? 'Generating…' : 'Generate Icon'}

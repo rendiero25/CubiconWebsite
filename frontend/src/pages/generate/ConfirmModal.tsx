@@ -1,4 +1,4 @@
-import { useState } from 'react'
+﻿import { useState } from 'react'
 import clsx from 'clsx'
 import { X } from 'lucide-react'
 import type { FormState } from './types'
@@ -38,9 +38,9 @@ export default function ConfirmModal({ form, credits, isAdmin, onCancel, onConfi
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-4"
       onClick={(e) => e.target === e.currentTarget && onCancel()}
     >
-      <div className="bg-off-white border-2 border-black rounded-md shadow-[8px_8px_0px_#000] w-full max-w-sm">
+      <div className="bg-off-white border-2 border-[#0A1628] rounded-md shadow-[8px_8px_0px_#0A1628] w-full max-w-sm">
         {/* Header */}
-        <div className="flex items-center justify-between px-5 py-4 border-b-2 border-black">
+        <div className="flex items-center justify-between px-5 py-4 border-b-2 border-[#0A1628]">
           <h2 className="font-display font-bold text-lg text-near-black">Ready to generate?</h2>
           <button
             onClick={onCancel}
@@ -53,7 +53,7 @@ export default function ConfirmModal({ form, credits, isAdmin, onCancel, onConfi
         {/* Body */}
         <div className="px-5 py-4 flex flex-col gap-4">
           {/* Summary */}
-          <div className="bg-white border-2 border-black rounded-md p-3 flex flex-col gap-1">
+          <div className="bg-white border-2 border-[#0A1628] rounded-md p-3 flex flex-col gap-1">
             <p className="font-body text-sm font-medium text-near-black">📦 {promptPreview}</p>
             <p className="font-body text-sm text-near-black/60">
               {STYLE_LABELS[form.style]} · {form.resolution} · {form.background}
@@ -61,7 +61,7 @@ export default function ConfirmModal({ form, credits, isAdmin, onCancel, onConfi
           </div>
 
           {/* Variation toggle */}
-          <div className="border-2 border-black rounded-md p-3 bg-white">
+          <div className="border-2 border-[#0A1628] rounded-md p-3 bg-white">
             <div className="flex items-center justify-between gap-3">
               <div>
                 <p className="font-body text-sm font-medium text-near-black">✨ Variations ×3</p>
@@ -72,13 +72,13 @@ export default function ConfirmModal({ form, credits, isAdmin, onCancel, onConfi
               <button
                 onClick={() => setVariation((p) => !p)}
                 className={clsx(
-                  'relative w-12 h-6 rounded-full border-2 border-black transition-colors shrink-0',
-                  variation ? 'bg-electric-blue' : 'bg-white',
+                  'relative w-12 h-6 rounded-full border-2 border-[#0A1628] transition-colors shrink-0',
+                  variation ? 'bg-electric-yellow' : 'bg-white',
                 )}
               >
                 <span
                   className={clsx(
-                    'absolute top-0.5 w-4 h-4 bg-white border-2 border-black rounded-full transition-all',
+                    'absolute top-0.5 w-4 h-4 bg-white border-2 border-[#0A1628] rounded-full transition-all',
                     variation ? 'left-6' : 'left-0.5',
                   )}
                 />
@@ -110,7 +110,7 @@ export default function ConfirmModal({ form, credits, isAdmin, onCancel, onConfi
         <div className="px-5 pb-5 flex gap-3">
           <button
             onClick={onCancel}
-            className="cursor-pointer flex-1 font-body font-medium text-sm py-2.5 border-2 border-black rounded-md bg-white hover:bg-light-blue transition-colors"
+            className="cursor-pointer flex-1 font-body font-medium text-sm py-2.5 border-2 border-[#0A1628] rounded-md bg-white hover:bg-light-blue transition-colors"
           >
             Cancel
           </button>
@@ -118,10 +118,10 @@ export default function ConfirmModal({ form, credits, isAdmin, onCancel, onConfi
             onClick={() => canAfford && onConfirm(variation)}
             disabled={!canAfford}
             className={clsx(
-              'cursor-pointer flex-1 font-display font-bold text-sm py-2.5 border-2 border-black rounded-md transition-all',
+              'cursor-pointer flex-1 font-display font-bold text-sm py-2.5 border-2 border-[#0A1628] rounded-md transition-all',
               canAfford
-                ? 'bg-electric-blue text-white shadow-[4px_4px_0px_#000] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none'
-                : 'bg-electric-blue/40 text-white cursor-not-allowed',
+                ? 'bg-electric-yellow text-[#0A1628] shadow-[4px_4px_0px_#0A1628] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none'
+                : 'bg-electric-yellow/40 text-[#0A1628] cursor-not-allowed',
             )}
           >
             Generate Now ✨

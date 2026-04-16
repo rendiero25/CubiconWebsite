@@ -38,7 +38,7 @@ export default function BeforeAfter() {
     <section ref={sectionRef} className="py-16 md:py-24 bg-off-white">
       <div className="max-w-7xl mx-auto px-4 md:px-8 lg:px-16">
         <div className="text-center mb-12">
-          <span className="inline-block bg-light-blue border-2 border-black px-3 py-1 font-body text-xs font-semibold uppercase tracking-wider mb-3">
+          <span className="inline-block bg-light-blue border-2 border-[#0A1628] px-3 py-1 font-body text-xs font-semibold uppercase tracking-wider mb-3">
             Before vs After
           </span>
           <h2 className="font-display font-semibold text-2xl md:text-3xl text-near-black">
@@ -55,9 +55,9 @@ export default function BeforeAfter() {
             <button
               key={tab}
               onClick={() => setActive(tab)}
-              className={`cursor-pointer font-display font-semibold text-sm px-4 py-2 border-2 border-black rounded-md transition-all ${
+              className={`cursor-pointer font-display font-semibold text-sm px-4 py-2 border-2 border-[#0A1628] rounded-md transition-all ${
                 active === tab
-                  ? 'bg-electric-blue text-white shadow-[2px_2px_0_#000]'
+                  ? 'bg-electric-yellow text-[#0A1628] shadow-[2px_2px_0_#0A1628]'
                   : 'bg-white text-near-black'
               }`}
             >
@@ -66,7 +66,7 @@ export default function BeforeAfter() {
           ))}
         </div>
 
-        <div className="flex flex-col sm:flex-row items-stretch gap-0 border-2 border-black rounded-md overflow-hidden shadow-[4px_4px_0px_#000]">
+        <div className="flex flex-col sm:flex-row items-stretch gap-0 border-2 border-[#0A1628] rounded-md overflow-hidden shadow-[4px_4px_0px_#0A1628]">
           {/* Before */}
           <div
             className={`ba-col flex-1 bg-neutral-100 p-8 md:p-12 flex flex-col items-center justify-center gap-4 ${
@@ -94,21 +94,21 @@ export default function BeforeAfter() {
 
           {/* After */}
           <div
-            className={`ba-col flex-1 bg-light-blue p-8 md:p-12 flex flex-col items-center justify-center gap-4 border-0 sm:border-l-2 border-black ${
+            className={`ba-col flex-1 bg-light-blue p-8 md:p-12 flex flex-col items-center justify-center gap-4 border-0 sm:border-l-2 border-[#0A1628] ${
               active === 'before' ? 'hidden sm:flex' : 'flex'
             }`}
           >
             <div className="relative">
-              <div className="w-24 h-24 bg-electric-blue border-2 border-black rounded-md shadow-[4px_4px_0px_#000] flex items-center justify-center">
+              <div className="w-24 h-24 bg-electric-yellow border-2 border-[#0A1628] rounded-md shadow-[4px_4px_0px_#0A1628] flex items-center justify-center">
                 <span className="text-4xl select-none">📦</span>
               </div>
-              <div className="absolute -top-2 -right-2 w-6 h-6 bg-electric-blue border-2 border-black rounded-sm rotate-12" />
-              <div className="absolute -bottom-2 -left-2 w-4 h-4 bg-light-blue border-2 border-black rounded-sm -rotate-6" />
+              <div className="absolute -top-2 -right-2 w-6 h-6 bg-electric-yellow border-2 border-[#0A1628] rounded-sm rotate-12" />
+              <div className="absolute -bottom-2 -left-2 w-4 h-4 bg-light-blue border-2 border-[#0A1628] rounded-sm -rotate-6" />
             </div>
             <p className="font-body text-sm text-near-black font-medium text-center">
               3D isometric icon from Cubicon
             </p>
-            <span className="font-display text-xs font-bold bg-electric-blue text-white border-2 border-black px-2 py-0.5 rounded shadow-[1px_1px_0_#000]">
+            <span className="font-display text-xs font-bold bg-electric-yellow text-[#0A1628] border-2 border-[#0A1628] px-2 py-0.5 rounded shadow-[1px_1px_0_#0A1628]">
               CUBICON
             </span>
           </div>

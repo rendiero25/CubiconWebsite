@@ -1,4 +1,4 @@
-import Navbar from '../components/layout/Navbar'
+﻿import Navbar from '../components/layout/Navbar'
 import Footer from '../components/layout/Footer'
 
 const SECTIONS = [
@@ -74,9 +74,9 @@ export default function Privacy() {
     <div className="min-h-screen bg-off-white">
       <Navbar />
 
-      <section className="py-12 md:py-16 border-b-2 border-black bg-white">
+      <section className="py-12 md:py-16 border-b-2 border-[#0A1628] bg-white">
         <div className="max-w-7xl mx-auto px-4 md:px-8 lg:px-16">
-          <span className="inline-block bg-light-blue border-2 border-black px-3 py-1 font-body text-xs font-semibold uppercase tracking-wider mb-4">
+          <span className="inline-block bg-light-blue border-2 border-[#0A1628] px-3 py-1 font-body text-xs font-semibold uppercase tracking-wider mb-4">
             Legal
           </span>
           <h1 className="font-display font-bold text-4xl md:text-5xl text-near-black">
@@ -90,7 +90,7 @@ export default function Privacy() {
 
       <section className="py-12 md:py-16">
         <div className="max-w-3xl mx-auto px-4 md:px-8 lg:px-16">
-          <div className="border-2 border-black rounded-md bg-light-blue p-5 mb-8 shadow-[3px_3px_0_#000]">
+          <div className="border-2 border-[#0A1628] rounded-md bg-light-blue p-5 mb-8 shadow-[3px_3px_0_#0A1628]">
             <p className="font-body text-sm text-near-black leading-relaxed">
               <strong className="font-semibold">TL;DR:</strong> Kami mengumpulkan data yang diperlukan untuk menjalankan layanan. Kami tidak menjual datamu. Kamu bisa menghapus akunmu kapanpun.
             </p>
@@ -99,13 +99,13 @@ export default function Privacy() {
           <div className="flex flex-col gap-8">
             {SECTIONS.map((section) => (
               <div key={section.title} className="flex flex-col gap-3">
-                <h2 className="font-display font-semibold text-lg text-near-black border-b-2 border-black pb-2">
+                <h2 className="font-display font-semibold text-lg text-near-black border-b-2 border-[#0A1628] pb-2">
                   {section.title}
                 </h2>
                 <ul className="flex flex-col gap-2.5 pl-1">
                   {section.body.map((line, i) => (
                     <li key={i} className="flex items-start gap-2.5">
-                      <span className="w-1.5 h-1.5 bg-electric-blue rounded-full mt-2 shrink-0" />
+                      <span className="w-1.5 h-1.5 bg-electric-yellow rounded-full mt-2 shrink-0" />
                       <p className="font-body text-sm text-near-black/80 leading-relaxed">{line}</p>
                     </li>
                   ))}

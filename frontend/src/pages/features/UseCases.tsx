@@ -12,7 +12,7 @@ const CASES = [
 //     tagline: 'Consistent icon sets, instantly',
 //     description:
 //       'Stop hunting for icon packs. Generate custom 3D isometric icons that match your design system — in seconds.',
-//     bg: '#E8EDFF',
+//     bg: '#FFF5CC',
 //   },
   {
     icon: Terminal,
@@ -64,7 +64,7 @@ export default function UseCases() {
     <section ref={sectionRef} className="py-16 md:py-24 bg-off-white">
       <div className="max-w-7xl mx-auto px-4 md:px-8 lg:px-16">
         <div className="text-center mb-12">
-          <span className="inline-block bg-light-blue border-2 border-black px-3 py-1 font-body text-xs font-semibold uppercase tracking-wider mb-3">
+          <span className="inline-block bg-light-blue border-2 border-[#0A1628] px-3 py-1 font-body text-xs font-semibold uppercase tracking-wider mb-3">
             Use Cases
           </span>
           <h2 className="font-display font-semibold text-2xl md:text-3xl text-near-black">
@@ -79,16 +79,16 @@ export default function UseCases() {
           {CASES.map(({ icon: Icon, role, tagline, description, bg }) => (
             <div
               key={role}
-              className="uc-card border-2 border-black rounded-md p-6 bg-white shadow-[4px_4px_0px_#000] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-all flex gap-4 items-start"
+              className="uc-card border-2 border-[#0A1628] rounded-md p-6 bg-white shadow-[4px_4px_0px_#0A1628] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-all flex gap-4 items-start"
             >
               <div
-                className="w-12 h-12 shrink-0 border-2 border-black rounded-md flex items-center justify-center shadow-[2px_2px_0_#000]"
+                className="w-12 h-12 shrink-0 border-2 border-[#0A1628] rounded-md flex items-center justify-center shadow-[2px_2px_0_#0A1628]"
                 style={{ backgroundColor: bg }}
               >
                 <Icon size={20} className="text-near-black" />
               </div>
               <div>
-                <p className="font-display font-bold text-sm text-electric-blue uppercase tracking-wide">
+                <p className="font-display font-bold text-sm text-electric-yellow uppercase tracking-wide">
                   {role}
                 </p>
                 <p className="font-display font-semibold text-base text-near-black mt-0.5">

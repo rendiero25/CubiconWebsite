@@ -1,4 +1,4 @@
-import { useState } from 'react'
+﻿import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Mail, Clock, Send, CheckCircle, ExternalLink } from 'lucide-react'
 import clsx from 'clsx'
@@ -58,9 +58,9 @@ export default function Contact() {
       <Navbar />
 
       {/* Header */}
-      <section className="py-12 md:py-16 border-b-2 border-black bg-white">
+      <section className="py-12 md:py-16 border-b-2 border-[#0A1628] bg-white">
         <div className="max-w-7xl mx-auto px-4 md:px-8 lg:px-16">
-          <span className="inline-block bg-light-blue border-2 border-black px-3 py-1 font-body text-xs font-semibold uppercase tracking-wider mb-4">
+          <span className="inline-block bg-light-blue border-2 border-[#0A1628] px-3 py-1 font-body text-xs font-semibold uppercase tracking-wider mb-4">
             Contact
           </span>
           <h1 className="font-display font-bold text-4xl md:text-5xl text-near-black">
@@ -79,8 +79,8 @@ export default function Contact() {
           {/* Form — 3 cols */}
           <div className="md:col-span-3">
             {sent ? (
-              <div className="border-2 border-black rounded-md bg-white shadow-[4px_4px_0_#000] p-10 flex flex-col items-center gap-4 text-center">
-                <div className="w-16 h-16 bg-green-50 border-2 border-black rounded-full flex items-center justify-center shadow-[2px_2px_0_#000]">
+              <div className="border-2 border-[#0A1628] rounded-md bg-white shadow-[4px_4px_0_#0A1628] p-10 flex flex-col items-center gap-4 text-center">
+                <div className="w-16 h-16 bg-green-50 border-2 border-[#0A1628] rounded-full flex items-center justify-center shadow-[2px_2px_0_#0A1628]">
                   <CheckCircle size={28} className="text-green-500" />
                 </div>
                 <h2 className="font-display font-bold text-xl text-near-black">Pesan terkirim!</h2>
@@ -90,7 +90,7 @@ export default function Contact() {
                 </p>
                 <button
                   onClick={() => { setSent(false); setForm(EMPTY_FORM) }}
-                  className="cursor-pointer font-body text-sm text-electric-blue hover:underline underline-offset-2"
+                  className="cursor-pointer font-body text-sm text-electric-yellow hover:underline underline-offset-2"
                 >
                   Kirim pesan lain
                 </button>
@@ -98,7 +98,7 @@ export default function Contact() {
             ) : (
               <form
                 onSubmit={handleSubmit}
-                className="border-2 border-black rounded-md bg-white shadow-[4px_4px_0_#000] p-6 md:p-8 flex flex-col gap-5"
+                className="border-2 border-[#0A1628] rounded-md bg-white shadow-[4px_4px_0_#0A1628] p-6 md:p-8 flex flex-col gap-5"
               >
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div className="flex flex-col gap-1.5">
@@ -108,7 +108,7 @@ export default function Contact() {
                     <input
                       {...field('name')}
                       placeholder="Nama lengkap"
-                      className="border-2 border-black rounded-md px-3 py-2.5 font-body text-sm outline-none focus:border-electric-blue transition-colors"
+                      className="border-2 border-[#0A1628] rounded-md px-3 py-2.5 font-body text-sm outline-none focus:border-electric-yellow transition-colors"
                     />
                   </div>
                   <div className="flex flex-col gap-1.5">
@@ -119,7 +119,7 @@ export default function Contact() {
                       type="email"
                       {...field('email')}
                       placeholder="email@kamu.com"
-                      className="border-2 border-black rounded-md px-3 py-2.5 font-body text-sm outline-none focus:border-electric-blue transition-colors"
+                      className="border-2 border-[#0A1628] rounded-md px-3 py-2.5 font-body text-sm outline-none focus:border-electric-yellow transition-colors"
                     />
                   </div>
                 </div>
@@ -128,7 +128,7 @@ export default function Contact() {
                   <label className="font-body text-xs font-medium text-near-black">Subjek</label>
                   <select
                     {...field('subject')}
-                    className="border-2 border-black rounded-md px-3 py-2.5 font-body text-sm outline-none focus:border-electric-blue transition-colors bg-white"
+                    className="border-2 border-[#0A1628] rounded-md px-3 py-2.5 font-body text-sm outline-none focus:border-electric-yellow transition-colors bg-white"
                   >
                     {SUBJECTS.map((s) => (
                       <option key={s} value={s}>{s}</option>
@@ -144,7 +144,7 @@ export default function Contact() {
                     {...field('message')}
                     placeholder="Tulis pesanmu di sini..."
                     rows={5}
-                    className="border-2 border-black rounded-md px-3 py-2.5 font-body text-sm outline-none focus:border-electric-blue transition-colors resize-none"
+                    className="border-2 border-[#0A1628] rounded-md px-3 py-2.5 font-body text-sm outline-none focus:border-electric-yellow transition-colors resize-none"
                   />
                 </div>
 
@@ -158,10 +158,10 @@ export default function Contact() {
                   type="submit"
                   disabled={isLoading}
                   className={clsx(
-                    'cursor-pointer flex items-center justify-center gap-2 border-2 border-black font-display font-bold px-6 py-3 rounded-md transition-all',
+                    'cursor-pointer flex items-center justify-center gap-2 border-2 border-[#0A1628] font-display font-bold px-6 py-3 rounded-md transition-all',
                     isLoading
                       ? 'bg-near-black/40 text-white cursor-not-allowed shadow-none'
-                      : 'bg-electric-blue text-white shadow-[4px_4px_0_#000] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none'
+                      : 'bg-electric-yellow text-[#0A1628] shadow-[4px_4px_0_#0A1628] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none'
                   )}
                 >
                   <Send size={15} />
@@ -174,16 +174,16 @@ export default function Contact() {
           {/* Sidebar — 2 cols */}
           <div className="md:col-span-2 flex flex-col gap-4">
             {/* Contact info */}
-            <div className="border-2 border-black rounded-md bg-white shadow-[4px_4px_0_#000] p-6 flex flex-col gap-5">
+            <div className="border-2 border-[#0A1628] rounded-md bg-white shadow-[4px_4px_0_#0A1628] p-6 flex flex-col gap-5">
               <div className="flex items-start gap-3">
-                <div className="w-10 h-10 bg-light-blue border-2 border-black rounded-md flex items-center justify-center shrink-0 shadow-[2px_2px_0_#000]">
+                <div className="w-10 h-10 bg-light-blue border-2 border-[#0A1628] rounded-md flex items-center justify-center shrink-0 shadow-[2px_2px_0_#0A1628]">
                   <Mail size={16} className="text-near-black" />
                 </div>
                 <div>
                   <p className="font-display font-semibold text-sm text-near-black">Email</p>
                   <a
                     href="mailto:hello@cubicon.id"
-                    className="font-body text-sm text-electric-blue hover:underline underline-offset-2"
+                    className="font-body text-sm text-electric-yellow hover:underline underline-offset-2"
                   >
                     hello@cubicon.id
                   </a>
@@ -191,7 +191,7 @@ export default function Contact() {
               </div>
 
               <div className="flex items-start gap-3">
-                <div className="w-10 h-10 bg-light-blue border-2 border-black rounded-md flex items-center justify-center shrink-0 shadow-[2px_2px_0_#000]">
+                <div className="w-10 h-10 bg-light-blue border-2 border-[#0A1628] rounded-md flex items-center justify-center shrink-0 shadow-[2px_2px_0_#0A1628]">
                   <Clock size={16} className="text-near-black" />
                 </div>
                 <div>
@@ -202,7 +202,7 @@ export default function Contact() {
             </div>
 
             {/* Social media */}
-            <div className="border-2 border-black rounded-md bg-white shadow-[4px_4px_0_#000] p-6">
+            <div className="border-2 border-[#0A1628] rounded-md bg-white shadow-[4px_4px_0_#0A1628] p-6">
               <p className="font-display font-semibold text-sm text-near-black mb-3">Follow us</p>
               <div className="flex flex-col gap-2">
                 {SOCIALS.map(({ label, href }) => (
@@ -211,7 +211,7 @@ export default function Contact() {
                     href={href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center justify-between border-2 border-black rounded-md px-3 py-2 bg-off-white hover:bg-light-blue transition-colors group"
+                    className="flex items-center justify-between border-2 border-[#0A1628] rounded-md px-3 py-2 bg-off-white hover:bg-light-blue transition-colors group"
                   >
                     <span className="font-body text-sm font-medium text-near-black">{label}</span>
                     <ExternalLink size={13} className="text-near-black/40 group-hover:text-near-black transition-colors" />
@@ -221,7 +221,7 @@ export default function Contact() {
             </div>
 
             {/* Billing hint */}
-            <div className="border-2 border-black rounded-md bg-light-blue p-5">
+            <div className="border-2 border-[#0A1628] rounded-md bg-light-blue p-5">
               <p className="font-display font-semibold text-sm text-near-black mb-1">
                 Looking for billing help?
               </p>
@@ -230,7 +230,7 @@ export default function Contact() {
               </p>
               <Link
                 to="/pricing"
-                className="font-body text-xs font-semibold text-electric-blue hover:underline underline-offset-2"
+                className="font-body text-xs font-semibold text-electric-yellow hover:underline underline-offset-2"
               >
                 View pricing →
               </Link>

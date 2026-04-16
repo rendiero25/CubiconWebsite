@@ -1,4 +1,4 @@
-import clsx from 'clsx'
+﻿import clsx from 'clsx'
 import type { GenerateMode } from './types'
 import { getBatchLines } from './types'
 
@@ -26,13 +26,13 @@ export default function StepPrompt({
   if (mode === 'single') {
     return (
       <div>
-        <p className="font-body text-sm font-medium text-[#1A1A1A] mb-2">Prompt</p>
+        <p className="font-body text-sm font-medium text-[#0A1628] mb-2">Prompt</p>
         <input
           value={prompt}
           onChange={(e) => onPromptChange(e.target.value)}
           placeholder='Describe your icon — e.g. "Shopping cart"'
           className={clsx(
-            'w-full border-2 border-black rounded-md px-3 py-2.5 font-body text-sm outline-none focus:border-[#3B5BDB] transition-colors bg-white',
+            'w-full border-2 border-[#0A1628] rounded-md px-3 py-2.5 font-body text-sm outline-none focus:border-[#FFC300] transition-colors bg-white',
             shake && 'animate-[shake_0.4s_ease]',
             error && 'border-red-500',
           )}
@@ -45,11 +45,11 @@ export default function StepPrompt({
   return (
     <div>
       <div className="flex items-center justify-between mb-2">
-        <p className="font-body text-sm font-medium text-[#1A1A1A]">Prompts</p>
+        <p className="font-body text-sm font-medium text-[#0A1628]">Prompts</p>
         <span
           className={clsx(
             'font-body text-xs font-medium',
-            lineCount > 0 && lineCount < 3 ? 'text-red-500' : 'text-[#3B5BDB]',
+            lineCount > 0 && lineCount < 3 ? 'text-red-500' : 'text-[#FFC300]',
           )}
         >
           {lineCount}/10 icons
@@ -61,7 +61,7 @@ export default function StepPrompt({
         placeholder={'Shopping cart\nCloud storage\nAnalytics dashboard'}
         rows={6}
         className={clsx(
-          'w-full border-2 border-black rounded-md px-3 py-2.5 font-body text-sm outline-none focus:border-[#3B5BDB] transition-colors resize-none bg-white',
+          'w-full border-2 border-[#0A1628] rounded-md px-3 py-2.5 font-body text-sm outline-none focus:border-[#FFC300] transition-colors resize-none bg-white',
           shake && 'animate-[shake_0.4s_ease]',
           error && 'border-red-500',
         )}

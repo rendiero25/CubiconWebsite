@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react'
+﻿import { useState, useRef, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { Eye, EyeOff, CheckCircle, Loader2, Sparkles, X } from 'lucide-react'
 import clsx from 'clsx'
@@ -119,7 +119,7 @@ export default function Signup() {
             type="button"
             onClick={handleGoogle}
             disabled={isLoading}
-            className="cursor-pointer flex items-center justify-center gap-3 w-full border-2 border-black rounded-md py-3 bg-white font-body font-medium text-sm text-near-black shadow-[3px_3px_0_#000] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-all disabled:opacity-50"
+            className="cursor-pointer flex items-center justify-center gap-3 w-full border-2 border-[#0A1628] rounded-md py-3 bg-white font-body font-medium text-sm text-near-black shadow-[3px_3px_0_#0A1628] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-all disabled:opacity-50"
           >
             <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M17.64 9.205c0-.639-.057-1.252-.164-1.841H9v3.481h4.844a4.14 4.14 0 0 1-1.796 2.716v2.259h2.908c1.702-1.567 2.684-3.875 2.684-6.615Z" fill="#4285F4"/>
@@ -145,7 +145,7 @@ export default function Signup() {
               placeholder="Nama lengkap"
               className={clsx(
                 'border-2 rounded-md px-4 py-3 font-body text-sm outline-none transition-colors',
-                error && !name ? 'border-red-400' : 'border-black focus:border-electric-blue'
+                error && !name ? 'border-red-400' : 'border-[#0A1628] focus:border-electric-yellow'
               )}
             />
           </div>
@@ -160,7 +160,7 @@ export default function Signup() {
               placeholder="email@kamu.com"
               className={clsx(
                 'border-2 rounded-md px-4 py-3 font-body text-sm outline-none transition-colors',
-                error && !email ? 'border-red-400' : 'border-black focus:border-electric-blue'
+                error && !email ? 'border-red-400' : 'border-[#0A1628] focus:border-electric-yellow'
               )}
             />
           </div>
@@ -176,7 +176,7 @@ export default function Signup() {
                 placeholder="Min. 6 characters"
                 className={clsx(
                   'w-full border-2 rounded-md px-4 py-3 pr-10 font-body text-sm outline-none transition-colors',
-                  error && password.length < 6 ? 'border-red-400' : 'border-black focus:border-electric-blue'
+                  error && password.length < 6 ? 'border-red-400' : 'border-[#0A1628] focus:border-electric-yellow'
                 )}
               />
               <button type="button" onClick={() => setShowPw((v) => !v)} className="absolute right-3 top-1/2 -translate-y-1/2 text-near-black/40 hover:text-near-black">
@@ -196,7 +196,7 @@ export default function Signup() {
                 placeholder="Ulangi password"
                 className={clsx(
                   'w-full border-2 rounded-md px-4 py-3 pr-10 font-body text-sm outline-none transition-colors',
-                  error && password !== confirmPw ? 'border-red-400' : 'border-black focus:border-electric-blue'
+                  error && password !== confirmPw ? 'border-red-400' : 'border-[#0A1628] focus:border-electric-yellow'
                 )}
               />
               <button type="button" onClick={() => setShowConfirmPw((v) => !v)} className="absolute right-3 top-1/2 -translate-y-1/2 text-near-black/40 hover:text-near-black">
@@ -213,10 +213,10 @@ export default function Signup() {
             type="submit"
             disabled={isLoading}
             className={clsx(
-              'flex items-center justify-center gap-2 w-full border-2 border-black font-display font-bold py-3.5 rounded-md transition-all mt-1',
+              'flex items-center justify-center gap-2 w-full border-2 border-[#0A1628] font-display font-bold py-3.5 rounded-md transition-all mt-1',
               isLoading
                 ? 'bg-near-black/40 text-white cursor-not-allowed'
-                : 'bg-electric-blue text-white shadow-[4px_4px_0_#000] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none'
+                : 'bg-electric-yellow text-[#0A1628] shadow-[4px_4px_0_#0A1628] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none'
             )}
           >
             {isLoading ? <Loader2 size={16} className="animate-spin" /> : null}
@@ -225,7 +225,7 @@ export default function Signup() {
 
           <p className="font-body text-sm text-near-black/60 text-center">
             Already have an account?{' '}
-            <Link to="/login" className="text-electric-blue font-medium hover:underline underline-offset-2">
+            <Link to="/login" className="text-electric-yellow font-medium hover:underline underline-offset-2">
               Log in
             </Link>
           </p>
@@ -233,7 +233,7 @@ export default function Signup() {
       </div>
 
       {/* Right — Animated showcase */}
-      <div className="hidden lg:flex flex-1 bg-near-black border-l-2 border-black items-center justify-center relative overflow-hidden">
+      <div className="hidden lg:flex flex-1 bg-near-black border-l-2 border-[#0A1628] items-center justify-center relative overflow-hidden">
         <div className="absolute inset-0 opacity-10"
           style={{ backgroundImage: 'linear-gradient(#fff 1px, transparent 1px), linear-gradient(90deg, #fff 1px, transparent 1px)', backgroundSize: '40px 40px' }} />
         <div ref={iconsRef} className="relative z-10 grid grid-cols-3 gap-4 p-8">
@@ -256,12 +256,12 @@ export default function Signup() {
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm px-4">
           <div
             ref={welcomeRef}
-            className="bg-white border-2 border-black rounded-md shadow-[8px_8px_0_#000] p-8 max-w-sm w-full text-center relative"
+            className="bg-white border-2 border-[#0A1628] rounded-md shadow-[8px_8px_0_#0A1628] p-8 max-w-sm w-full text-center relative"
             style={{ transform: 'rotate(-1.5deg)' }}
           >
             <button
               onClick={() => navigate('/app')}
-              className="absolute top-3 right-3 w-7 h-7 flex items-center justify-center border-2 border-black rounded-md text-near-black/50 hover:text-near-black"
+              className="absolute top-3 right-3 w-7 h-7 flex items-center justify-center border-2 border-[#0A1628] rounded-md text-near-black/50 hover:text-near-black"
             >
               <X size={14} />
             </button>
@@ -270,8 +270,8 @@ export default function Signup() {
             <h2 className="font-display font-bold text-2xl text-near-black">
               Welcome, {name.split(' ')[0]}!
             </h2>
-            <div className="flex items-center justify-center gap-2 mt-4 bg-light-blue border-2 border-black rounded-md px-4 py-3">
-              <Sparkles size={16} className="text-electric-blue" />
+            <div className="flex items-center justify-center gap-2 mt-4 bg-light-blue border-2 border-[#0A1628] rounded-md px-4 py-3">
+              <Sparkles size={16} className="text-electric-yellow" />
               <p className="font-body font-medium text-sm text-near-black">
                 You got <strong>2 free icons</strong> to start!
               </p>
@@ -281,7 +281,7 @@ export default function Signup() {
             </p>
             <button
               onClick={() => navigate('/app')}
-              className="mt-5 w-full bg-electric-blue text-white font-display font-bold border-2 border-black rounded-md py-3 shadow-[3px_3px_0_#000] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-all flex items-center justify-center gap-2"
+              className="mt-5 w-full bg-electric-yellow text-[#0A1628] font-display font-bold border-2 border-[#0A1628] rounded-md py-3 shadow-[3px_3px_0_#0A1628] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-all flex items-center justify-center gap-2"
             >
               <CheckCircle size={16} /> Start Generating
             </button>

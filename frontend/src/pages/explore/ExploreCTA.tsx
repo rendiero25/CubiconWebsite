@@ -1,9 +1,9 @@
-import { Link } from 'react-router-dom'
+﻿import { Link } from 'react-router-dom'
 import { Sparkles } from 'lucide-react'
 
 export default function ExploreCTA() {
   return (
-    <section className="py-16 bg-near-black border-t-2 border-black">
+    <section className="py-16 bg-near-black border-t-2 border-[#0A1628]">
       <div className="max-w-7xl mx-auto px-4 md:px-8 lg:px-16 flex flex-col md:flex-row items-center justify-between gap-6">
         <div>
           <p className="font-body text-xs font-semibold text-white/40 uppercase tracking-wider mb-2">

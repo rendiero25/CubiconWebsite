@@ -1,4 +1,4 @@
-import { Search, X } from 'lucide-react'
+﻿import { Search, X } from 'lucide-react'
 import clsx from 'clsx'
 
 const STYLES = ['Clay Pastel', 'Realistic Dark', 'Neon Flat', 'Matte Minimal', 'Glass Morphism']
@@ -26,7 +26,7 @@ export default function FilterBar({ search, style, resolution, sort, onChange }:
           value={search}
           onChange={(e) => onChange('search', e.target.value)}
           placeholder="Search icons by description..."
-          className="w-full pl-9 pr-9 py-2.5 border-2 border-black rounded-md font-body text-sm bg-white outline-none focus:border-electric-blue transition-colors"
+          className="w-full pl-9 pr-9 py-2.5 border-2 border-[#0A1628] rounded-md font-body text-sm bg-white outline-none focus:border-electric-yellow transition-colors"
         />
         {search && (
           <button
@@ -44,7 +44,7 @@ export default function FilterBar({ search, style, resolution, sort, onChange }:
           value={style}
           onChange={(e) => onChange('style', e.target.value)}
           className={clsx(
-            'cursor-pointer border-2 border-black rounded-md px-3 py-1.5 font-body text-xs font-medium bg-white outline-none transition-colors',
+            'cursor-pointer border-2 border-[#0A1628] rounded-md px-3 py-1.5 font-body text-xs font-medium bg-white outline-none transition-colors',
             style && 'bg-light-blue'
           )}
         >
@@ -58,7 +58,7 @@ export default function FilterBar({ search, style, resolution, sort, onChange }:
           value={resolution}
           onChange={(e) => onChange('resolution', e.target.value)}
           className={clsx(
-            'cursor-pointer border-2 border-black rounded-md px-3 py-1.5 font-body text-xs font-medium bg-white outline-none transition-colors',
+            'cursor-pointer border-2 border-[#0A1628] rounded-md px-3 py-1.5 font-body text-xs font-medium bg-white outline-none transition-colors',
             resolution && 'bg-light-blue'
           )}
         >
@@ -75,7 +75,7 @@ export default function FilterBar({ search, style, resolution, sort, onChange }:
               key={s.value}
               onClick={() => onChange('sort', s.value)}
               className={clsx(
-                'cursor-pointer border-2 border-black rounded-md px-3 py-1.5 font-body text-xs font-medium transition-all',
+                'cursor-pointer border-2 border-[#0A1628] rounded-md px-3 py-1.5 font-body text-xs font-medium transition-all',
                 sort === s.value
                   ? 'bg-near-black text-white'
                   : 'bg-white text-near-black hover:bg-light-blue'

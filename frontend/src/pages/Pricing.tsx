@@ -1,4 +1,4 @@
-import { useState } from 'react'
+﻿import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Check, Zap, ChevronDown, ChevronUp } from 'lucide-react'
 import clsx from 'clsx'
@@ -66,9 +66,9 @@ export default function Pricing() {
       <Navbar />
 
       {/* Header */}
-      <section className="py-12 md:py-20 border-b-2 border-black bg-white text-center">
+      <section className="py-12 md:py-20 border-b-2 border-[#0A1628] bg-white text-center">
         <div className="max-w-7xl mx-auto px-4 md:px-8 lg:px-16">
-          <span className="inline-block bg-light-blue border-2 border-black px-3 py-1 font-body text-xs font-semibold uppercase tracking-wider mb-4">
+          <span className="inline-block bg-light-blue border-2 border-[#0A1628] px-3 py-1 font-body text-xs font-semibold uppercase tracking-wider mb-4">
             Pricing
           </span>
           <h1 className="font-display font-bold text-4xl md:text-5xl text-near-black">
@@ -88,19 +88,19 @@ export default function Pricing() {
               <div
                 key={tier.name}
                 className={clsx(
-                  'relative border-2 border-black rounded-md flex flex-col',
+                  'relative border-2 border-[#0A1628] rounded-md flex flex-col',
                   tier.highlight
-                    ? 'bg-electric-blue text-white shadow-[6px_6px_0_#000]'
-                    : 'bg-white text-near-black shadow-[4px_4px_0_#000]'
+                    ? 'bg-electric-yellow text-[#0A1628] shadow-[6px_6px_0_#0A1628]'
+                    : 'bg-white text-near-black shadow-[4px_4px_0_#0A1628]'
                 )}
               >
                 {tier.badge && (
-                  <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 whitespace-nowrap bg-near-black text-white font-display font-bold text-xs px-3 py-1 rounded-full border-2 border-black">
+                  <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 whitespace-nowrap bg-near-black text-white font-display font-bold text-xs px-3 py-1 rounded-full border-2 border-[#0A1628]">
                     {tier.badge}
                   </div>
                 )}
 
-                <div className={clsx('p-6 border-b-2', tier.highlight ? 'border-white/30' : 'border-black')}>
+                <div className={clsx('p-6 border-b-2', tier.highlight ? 'border-white/30' : 'border-[#0A1628]')}>
                   <p className="font-display font-bold text-lg">{tier.name}</p>
                   <p className={clsx('font-display font-extrabold text-3xl mt-1', tier.highlight ? 'text-white' : 'text-near-black')}>
                     {tier.price}
@@ -114,7 +114,7 @@ export default function Pricing() {
                 <div className="p-6 flex flex-col gap-3 flex-1">
                   {tier.features.map((f) => (
                     <div key={f} className="flex items-start gap-2.5">
-                      <Check size={14} className={clsx('mt-0.5 shrink-0', tier.highlight ? 'text-white' : 'text-electric-blue')} />
+                      <Check size={14} className={clsx('mt-0.5 shrink-0', tier.highlight ? 'text-[#0A1628]' : 'text-electric-yellow')} />
                       <span className={clsx('font-body text-sm', tier.highlight ? 'text-white/90' : 'text-near-black/80')}>{f}</span>
                     </div>
                   ))}
@@ -124,10 +124,10 @@ export default function Pricing() {
                   <Link
                     to="/app"
                     className={clsx(
-                      'block text-center font-display font-bold px-4 py-3 border-2 border-black rounded-md transition-all hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none',
+                      'block text-center font-display font-bold px-4 py-3 border-2 border-[#0A1628] rounded-md transition-all hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none',
                       tier.highlight
-                        ? 'bg-white text-electric-blue shadow-[3px_3px_0_#000]'
-                        : 'bg-electric-blue text-white shadow-[3px_3px_0_#000]'
+                        ? 'bg-white text-electric-yellow shadow-[3px_3px_0_#0A1628]'
+                        : 'bg-electric-yellow text-[#0A1628] shadow-[3px_3px_0_#0A1628]'
                     )}
                   >
                     {tier.cta}
@@ -140,7 +140,7 @@ export default function Pricing() {
       </section>
 
       {/* Credit Calculator */}
-      <section className="py-14 bg-white border-t-2 border-b-2 border-black">
+      <section className="py-14 bg-white border-t-2 border-b-2 border-[#0A1628]">
         <div className="max-w-3xl mx-auto px-4 md:px-8 lg:px-16">
           <div className="text-center mb-8">
             <h2 className="font-display font-semibold text-2xl md:text-3xl text-near-black">
@@ -151,7 +151,7 @@ export default function Pricing() {
             </p>
           </div>
 
-          <div className="border-2 border-black rounded-md bg-off-white p-6 shadow-[4px_4px_0_#000] flex flex-col gap-5">
+          <div className="border-2 border-[#0A1628] rounded-md bg-off-white p-6 shadow-[4px_4px_0_#0A1628] flex flex-col gap-5">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="flex flex-col gap-2">
                 <label className="font-body text-xs font-medium text-near-black">Jumlah icon</label>
@@ -161,7 +161,7 @@ export default function Pricing() {
                   max={9999}
                   value={iconCount}
                   onChange={(e) => setIconCount(Math.max(1, parseInt(e.target.value) || 1))}
-                  className="border-2 border-black rounded-md px-3 py-2.5 font-body text-sm bg-white outline-none focus:border-electric-blue transition-colors"
+                  className="border-2 border-[#0A1628] rounded-md px-3 py-2.5 font-body text-sm bg-white outline-none focus:border-electric-yellow transition-colors"
                 />
               </div>
               <div className="flex flex-col gap-2">
@@ -172,7 +172,7 @@ export default function Pricing() {
                       key={r}
                       onClick={() => setResolution(r)}
                       className={clsx(
-                        'cursor-pointer flex-1 py-2.5 border-2 border-black rounded-md font-display font-bold text-sm transition-all',
+                        'cursor-pointer flex-1 py-2.5 border-2 border-[#0A1628] rounded-md font-display font-bold text-sm transition-all',
                         resolution === r
                           ? 'bg-near-black text-white'
                           : 'bg-white text-near-black hover:bg-light-blue'
@@ -185,7 +185,7 @@ export default function Pricing() {
               </div>
             </div>
 
-            <div className="border-2 border-black rounded-md bg-white p-4 flex items-center justify-between gap-4 flex-wrap">
+            <div className="border-2 border-[#0A1628] rounded-md bg-white p-4 flex items-center justify-between gap-4 flex-wrap">
               <div>
                 <p className="font-body text-xs text-near-black/60">Estimasi credit dibutuhkan</p>
                 <p className="font-display font-extrabold text-2xl text-near-black mt-0.5">
@@ -194,7 +194,7 @@ export default function Pricing() {
               </div>
               <div className="text-right">
                 <p className="font-body text-xs text-near-black/60">Rekomendasi paket</p>
-                <p className={clsx('font-display font-bold text-lg', recommended.highlight ? 'text-electric-blue' : 'text-near-black')}>
+                <p className={clsx('font-display font-bold text-lg', recommended.highlight ? 'text-electric-yellow' : 'text-near-black')}>
                   {recommended.name}
                   <span className="font-body font-normal text-sm text-near-black/60 ml-1.5">{recommended.price}</span>
                 </p>
@@ -203,7 +203,7 @@ export default function Pricing() {
 
             <Link
               to="/app"
-              className="text-center cursor-pointer bg-electric-blue text-white font-display font-bold px-6 py-3 border-2 border-black rounded-md shadow-[4px_4px_0_#000] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-all"
+              className="text-center cursor-pointer bg-electric-yellow text-[#0A1628] font-display font-bold px-6 py-3 border-2 border-[#0A1628] rounded-md shadow-[4px_4px_0_#0A1628] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-all"
             >
               Mulai dengan {recommended.name}
             </Link>
@@ -219,7 +219,7 @@ export default function Pricing() {
           </h2>
           <div className="flex flex-col gap-3">
             {FAQ.map((item, i) => (
-              <div key={i} className="border-2 border-black rounded-md bg-white shadow-[3px_3px_0_#000] overflow-hidden">
+              <div key={i} className="border-2 border-[#0A1628] rounded-md bg-white shadow-[3px_3px_0_#0A1628] overflow-hidden">
                 <button
                   onClick={() => setOpenFaq(openFaq === i ? null : i)}
                   className="cursor-pointer w-full flex items-center justify-between px-5 py-4 text-left"
@@ -228,7 +228,7 @@ export default function Pricing() {
                   {openFaq === i ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
                 </button>
                 {openFaq === i && (
-                  <div className="px-5 pb-4 border-t-2 border-black pt-3">
+                  <div className="px-5 pb-4 border-t-2 border-[#0A1628] pt-3">
                     <p className="font-body text-sm text-near-black/70 leading-relaxed">{item.a}</p>
                   </div>
                 )}
@@ -239,7 +239,7 @@ export default function Pricing() {
       </section>
 
       {/* CTA Banner */}
-      <section className="py-14 bg-near-black border-t-2 border-black">
+      <section className="py-14 bg-near-black border-t-2 border-[#0A1628]">
         <div className="max-w-7xl mx-auto px-4 md:px-8 lg:px-16 flex flex-col md:flex-row items-center justify-between gap-6">
           <div>
             <h2 className="font-display font-bold text-2xl md:text-3xl text-white">

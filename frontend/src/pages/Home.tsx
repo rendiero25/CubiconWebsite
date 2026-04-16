@@ -1,23 +1,23 @@
 import Navbar from '../components/layout/Navbar'
 import Footer from '../components/layout/Footer'
-import HeroSection from './home/HeroSection'
-import HowItWorks from './home/HowItWorks'
-import ExplorePreview from './home/ExplorePreview'
-import PricingSection from './home/PricingSection'
-import FaqSection from './home/FaqSection'
+import HomeLeft from './home/HomeLeft'
+import HomeRight from './home/HomeRight'
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-off-white">
-      <Navbar />
-      <main>
-        <HeroSection />
-        <HowItWorks />
-        <ExplorePreview />
-        <PricingSection />
-        <FaqSection />
-      </main>
-      <Footer />
+    <div className="flex flex-col bg-near-black min-h-screen lg:h-screen lg:overflow-hidden">
+      {/* Navbar blends into left-column cream background */}
+      <Navbar noBorder />
+
+      {/* Two-column split */}
+      <div className="p-5 gap-5 flex-1 flex flex-col lg:flex-row lg:min-h-0 lg:overflow-hidden">
+        <HomeLeft />
+        <HomeRight />
+      </div>
+
+      {/* Full footer in right-column dark style */}
+      <Footer noBorder />
     </div>
   )
 }
+

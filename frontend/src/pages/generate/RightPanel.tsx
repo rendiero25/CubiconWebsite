@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+﻿import { useEffect, useRef } from 'react'
 import clsx from 'clsx'
 import gsap from 'gsap'
 import { Download, RefreshCw, Share2 } from 'lucide-react'
@@ -21,7 +21,7 @@ export default function RightPanel({
   onShareToExplore,
 }: Props) {
   const cubeRef = useRef<HTMLDivElement>(null)
-  const previewBg = form.background === 'transparent' ? 'bg-white' : 'bg-[#E8EDFF]'
+  const previewBg = form.background === 'transparent' ? 'bg-white' : 'bg-[#FFF5CC]'
 
   useEffect(() => {
     if (generateState !== 'loading' || !cubeRef.current) return
@@ -50,11 +50,11 @@ export default function RightPanel({
   /* ── Empty state ── */
   if (generateState === 'idle' && !result) {
     return (
-      <div className="w-full h-full aspect-square border-2 border-dashed border-black/20 rounded-md flex flex-col items-center justify-center gap-4">
-        <div className="w-28 h-28 border-2 border-dashed border-black/20 rounded-2xl flex items-center justify-center">
+      <div className="w-full h-full aspect-square border-2 border-dashed border-[#0A1628]/20 rounded-md flex flex-col items-center justify-center gap-4">
+        <div className="w-28 h-28 border-2 border-dashed border-[#0A1628]/20 rounded-2xl flex items-center justify-center">
           <span className="text-5xl opacity-20">🎲</span>
         </div>
-        <p className="font-body text-[#1A1A1A]/40 text-sm text-center max-w-[180px]">
+        <p className="font-body text-[#0A1628]/40 text-sm text-center max-w-[180px]">
           Your icon will appear here
         </p>
       </div>
@@ -64,13 +64,13 @@ export default function RightPanel({
   /* ── Loading state ── */
   if (generateState === 'loading') {
     return (
-      <div className="w-full h-full aspect-square border-2 border-black rounded-md bg-light-blue shadow-[4px_4px_0px_#000] flex flex-col items-center justify-center gap-6">
+      <div className="w-full h-full aspect-square border-2 border-[#0A1628] rounded-md bg-light-blue shadow-[4px_4px_0px_#0A1628] flex flex-col items-center justify-center gap-6">
         <div
           ref={cubeRef}
-          className="w-20 h-20 bg-[#3B5BDB] border-2 border-black rounded-xl shadow-[4px_4px_0px_#000]"
+          className="w-20 h-20 bg-[#FFC300] border-2 border-[#0A1628] rounded-xl shadow-[4px_4px_0px_#0A1628]"
           style={{ transformStyle: 'preserve-3d' }}
         />
-        <p className="font-body text-[#1A1A1A]/50 text-sm">Crafting your icon…</p>
+        <p className="font-body text-[#0A1628]/50 text-sm">Crafting your icon…</p>
       </div>
     )
   }
@@ -100,14 +100,14 @@ export default function RightPanel({
         <div className="flex gap-3 flex-wrap">
           <button
             onClick={handleDownloadAll}
-            className="cursor-pointer flex-1 flex items-center justify-center gap-2 font-display font-bold text-sm py-2.5 bg-[#3B5BDB] text-white border-2 border-black rounded-md shadow-[4px_4px_0px_#000] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-all"
+            className="cursor-pointer flex-1 flex items-center justify-center gap-2 font-display font-bold text-sm py-2.5 bg-[#FFC300] text-[#0A1628] border-2 border-[#0A1628] rounded-md shadow-[4px_4px_0px_#0A1628] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-all"
           >
             <Download size={16} />
             Download All (.zip)
           </button>
           <button
             onClick={onRegenerate}
-            className="cursor-pointer p-2.5 border-2 border-black rounded-md bg-white shadow-[2px_2px_0px_#000] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-all"
+            className="cursor-pointer p-2.5 border-2 border-[#0A1628] rounded-md bg-white shadow-[2px_2px_0px_#0A1628] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-all"
             title="Regenerate"
           >
             <RefreshCw size={18} />
@@ -149,10 +149,10 @@ export default function RightPanel({
             />
           ) : (
             <div className="flex flex-col items-center gap-3 p-10">
-              <div className="w-24 h-24 bg-[#3B5BDB]/10 border-2 border-[#3B5BDB]/20 rounded-2xl flex items-center justify-center">
+              <div className="w-24 h-24 bg-[#FFC300]/10 border-2 border-[#FFC300]/20 rounded-2xl flex items-center justify-center">
                 <span className="text-4xl">✅</span>
               </div>
-              <p className="font-body text-sm text-[#1A1A1A]/50">
+              <p className="font-body text-sm text-[#0A1628]/50">
                 Icon generated (backend placeholder)
               </p>
             </div>
@@ -165,21 +165,21 @@ export default function RightPanel({
         <div className="flex-none flex gap-3 flex-wrap">
           <button
             onClick={handleDownloadIcon}
-            className="cursor-pointer flex-1 flex items-center justify-center gap-2 font-display font-bold text-sm py-2.5 bg-[#3B5BDB] text-white border-2 border-black rounded-md shadow-[4px_4px_0px_#000] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-all"
+            className="cursor-pointer flex-1 flex items-center justify-center gap-2 font-display font-bold text-sm py-2.5 bg-[#FFC300] text-[#0A1628] border-2 border-[#0A1628] rounded-md shadow-[4px_4px_0px_#0A1628] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-all"
           >
             <Download size={16} />
             Download
           </button>
           <button
             onClick={handleShareIcon}
-            className="cursor-pointer flex-1 flex items-center justify-center gap-2 font-display font-bold text-sm py-2.5 bg-white border-2 border-black rounded-md shadow-[4px_4px_0px_#000] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-all"
+            className="cursor-pointer flex-1 flex items-center justify-center gap-2 font-display font-bold text-sm py-2.5 bg-white border-2 border-[#0A1628] rounded-md shadow-[4px_4px_0px_#0A1628] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-all"
           >
             <Share2 size={16} />
             Share
           </button>
           <button
             onClick={onRegenerate}
-            className="cursor-pointer p-2.5 border-2 border-black rounded-md bg-white shadow-[2px_2px_0px_#000] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-all"
+            className="cursor-pointer p-2.5 border-2 border-[#0A1628] rounded-md bg-white shadow-[2px_2px_0px_#0A1628] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-all"
             title="Regenerate"
           >
             <RefreshCw size={18} />

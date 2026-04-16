@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react'
+﻿import { useState, useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import { Zap, Download, Globe, Lock, Trash2, Settings, Wand2, LayoutGrid, ImageOff, User, Shield, BarChart2, RefreshCw, ChevronLeft, ChevronRight, PlusCircle, Pencil, Check, X as XIcon } from 'lucide-react'
 import clsx from 'clsx'
@@ -262,7 +262,7 @@ export default function Dashboard() {
       <Navbar />
 
       {/* Header */}
-      <section className="py-8 md:py-12 border-b-2 border-black bg-white">
+      <section className="py-8 md:py-12 border-b-2 border-[#0A1628] bg-white">
         <div className="max-w-7xl mx-auto px-4 md:px-8 lg:px-16 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
             <h1 className="font-display font-bold text-3xl md:text-4xl text-near-black">Dashboard</h1>
@@ -270,21 +270,21 @@ export default function Dashboard() {
           </div>
           <div className="flex items-center gap-3">
             {/* Credit badge */}
-            <div className="flex items-center gap-1.5 border-2 border-black rounded-md px-3 py-2 bg-light-blue shadow-[2px_2px_0_#000]">
-              <Zap size={14} className="text-electric-blue" />
+            <div className="flex items-center gap-1.5 border-2 border-[#0A1628] rounded-md px-3 py-2 bg-light-blue shadow-[2px_2px_0_#0A1628]">
+              <Zap size={14} className="text-electric-yellow" />
               <span className="font-body font-semibold text-sm text-near-black">
                 {credits !== null ? `${credits} credits` : '—'}
               </span>
             </div>
             <Link
               to="/pricing"
-              className="border-2 border-black font-display font-bold text-sm px-4 py-2 rounded-md bg-electric-blue text-white shadow-[2px_2px_0_#000] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-all"
+              className="border-2 border-[#0A1628] font-display font-bold text-sm px-4 py-2 rounded-md bg-electric-yellow text-[#0A1628] shadow-[2px_2px_0_#0A1628] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-all"
             >
               Buy Credits
             </Link>
             <Link
               to="/app"
-              className="border-2 border-black font-display font-bold text-sm px-4 py-2 rounded-md bg-white text-near-black shadow-[2px_2px_0_#000] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-all flex items-center gap-1.5"
+              className="border-2 border-[#0A1628] font-display font-bold text-sm px-4 py-2 rounded-md bg-white text-near-black shadow-[2px_2px_0_#0A1628] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-all flex items-center gap-1.5"
             >
               <Wand2 size={14} /> Generate
             </Link>
@@ -293,7 +293,7 @@ export default function Dashboard() {
       </section>
 
       {/* Tabs */}
-      <div className="border-b-2 border-black bg-white sticky top-16 z-40">
+      <div className="border-b-2 border-[#0A1628] bg-white sticky top-16 z-40">
         <div className="max-w-7xl mx-auto px-4 md:px-8 lg:px-16 flex gap-0">
           {([['history', 'History', LayoutGrid], ['settings', 'Settings', Settings], ['profile', 'Profile', User]] as const).map(([key, label, Icon]) => (
             <button
@@ -302,7 +302,7 @@ export default function Dashboard() {
               className={clsx(
                 'cursor-pointer flex items-center gap-2 px-5 py-4 font-display font-semibold text-sm border-b-2 transition-colors',
                 tab === key
-                  ? 'border-electric-blue text-electric-blue'
+                  ? 'border-electric-yellow text-electric-yellow'
                   : 'border-transparent text-near-black/50 hover:text-near-black'
               )}
             >
@@ -340,7 +340,7 @@ export default function Dashboard() {
                         type="checkbox"
                         checked={allSelected}
                         onChange={toggleSelectAll}
-                        className="w-4 h-4 border-2 border-black rounded accent-electric-blue cursor-pointer"
+                        className="w-4 h-4 border-2 border-[#0A1628] rounded accent-electric-yellow cursor-pointer"
                       />
                       Select All
                     </label>
@@ -349,14 +349,14 @@ export default function Dashboard() {
                         <button
                           onClick={() => setVisibility(selectedIds, true)}
                           disabled={updatingIds.size > 0}
-                          className="cursor-pointer flex items-center gap-1.5 border-2 border-black rounded-md px-3 py-1.5 font-body text-xs font-medium bg-white hover:bg-light-blue transition-colors shadow-[2px_2px_0_#000] disabled:opacity-50 disabled:cursor-not-allowed"
+                          className="cursor-pointer flex items-center gap-1.5 border-2 border-[#0A1628] rounded-md px-3 py-1.5 font-body text-xs font-medium bg-white hover:bg-light-blue transition-colors shadow-[2px_2px_0_#0A1628] disabled:opacity-50 disabled:cursor-not-allowed"
                         >
                           <Globe size={12} /> {updatingIds.size > 0 ? 'Processing...' : 'Make Public'}
                         </button>
                         <button
                           onClick={() => setVisibility(selectedIds, false)}
                           disabled={updatingIds.size > 0}
-                          className="cursor-pointer flex items-center gap-1.5 border-2 border-black rounded-md px-3 py-1.5 font-body text-xs font-medium bg-white hover:bg-light-blue transition-colors shadow-[2px_2px_0_#000] disabled:opacity-50 disabled:cursor-not-allowed"
+                          className="cursor-pointer flex items-center gap-1.5 border-2 border-[#0A1628] rounded-md px-3 py-1.5 font-body text-xs font-medium bg-white hover:bg-light-blue transition-colors shadow-[2px_2px_0_#0A1628] disabled:opacity-50 disabled:cursor-not-allowed"
                         >
                           <Lock size={12} /> {updatingIds.size > 0 ? 'Processing...' : 'Make Private'}
                         </button>
@@ -393,7 +393,7 @@ export default function Dashboard() {
               ) : isLoading ? (
                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
                   {Array.from({ length: 15 }).map((_, i) => (
-                    <div key={i} className="border-2 border-black rounded-md bg-white shadow-[3px_3px_0_#000] overflow-hidden animate-pulse">
+                    <div key={i} className="border-2 border-[#0A1628] rounded-md bg-white shadow-[3px_3px_0_#0A1628] overflow-hidden animate-pulse">
                       <div className="aspect-square bg-light-blue/40" />
                       <div className="p-3 space-y-2">
                         <div className="h-3 bg-near-black/10 rounded w-3/4" />
@@ -404,8 +404,8 @@ export default function Dashboard() {
                 </div>
               ) : icons.length === 0 ? (
                 <div className="flex flex-col items-center py-24 gap-5">
-                  <div className="w-20 h-20 bg-light-blue border-2 border-black rounded-xl flex items-center justify-center shadow-[4px_4px_0_#000]">
-                    <Wand2 size={32} className="text-electric-blue" />
+                  <div className="w-20 h-20 bg-light-blue border-2 border-[#0A1628] rounded-xl flex items-center justify-center shadow-[4px_4px_0_#0A1628]">
+                    <Wand2 size={32} className="text-electric-yellow" />
                   </div>
                   <div className="text-center">
                     <p className="font-display font-semibold text-lg text-near-black">No icons yet</p>
@@ -413,7 +413,7 @@ export default function Dashboard() {
                   </div>
                   <Link
                     to="/app"
-                    className="flex items-center gap-2 bg-electric-blue text-white border-2 border-black font-display font-bold px-5 py-2.5 rounded-md shadow-[4px_4px_0_#000] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-all"
+                    className="flex items-center gap-2 bg-electric-yellow text-[#0A1628] border-2 border-[#0A1628] font-display font-bold px-5 py-2.5 rounded-md shadow-[4px_4px_0_#0A1628] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-all"
                   >
                     <Wand2 size={14} /> Start Generating
                   </Link>
@@ -426,11 +426,11 @@ export default function Dashboard() {
                       className={clsx(
                         'border-2 rounded-md bg-white overflow-hidden group',
                         icon.selected
-                          ? 'border-electric-blue shadow-[3px_3px_0_#3B5BDB]'
-                          : 'border-black shadow-[3px_3px_0_#000]'
+                          ? 'border-electric-yellow shadow-[3px_3px_0_#FFC300]'
+                          : 'border-[#0A1628] shadow-[3px_3px_0_#0A1628]'
                       )}
                     >
-                      <div className="relative bg-light-blue aspect-square flex items-center justify-center border-b-2 border-black">
+                      <div className="relative bg-light-blue aspect-square flex items-center justify-center border-b-2 border-[#0A1628]">
                         <img
                           src={icon.url}
                           alt={icon.prompt}
@@ -440,8 +440,8 @@ export default function Dashboard() {
                         {/* Selection indicator */}
                         <div
                           className={clsx(
-                            'absolute top-2 right-2 w-5 h-5 border-2 border-black rounded flex items-center justify-center transition-all cursor-pointer',
-                            icon.selected ? 'bg-electric-blue' : 'bg-white/80'
+                            'absolute top-2 right-2 w-5 h-5 border-2 border-[#0A1628] rounded flex items-center justify-center transition-all cursor-pointer',
+                            icon.selected ? 'bg-electric-yellow' : 'bg-white/80'
                           )}
                           onClick={() => toggleSelect(icon.id)}
                         >
@@ -450,8 +450,8 @@ export default function Dashboard() {
                         {/* Visibility badge */}
                         <div className="absolute bottom-2 left-2">
                           {icon.is_public
-                            ? <span className="flex items-center gap-1 bg-white border-2 border-black rounded px-1.5 py-0.5 font-body text-[10px] font-semibold"><Globe size={10} /> Public</span>
-                            : <span className="flex items-center gap-1 bg-white border-2 border-black rounded px-1.5 py-0.5 font-body text-[10px] font-semibold"><Lock size={10} /> Private</span>
+                            ? <span className="flex items-center gap-1 bg-white border-2 border-[#0A1628] rounded px-1.5 py-0.5 font-body text-[10px] font-semibold"><Globe size={10} /> Public</span>
+                            : <span className="flex items-center gap-1 bg-white border-2 border-[#0A1628] rounded px-1.5 py-0.5 font-body text-[10px] font-semibold"><Lock size={10} /> Private</span>
                           }
                         </div>
                       </div>
@@ -460,8 +460,8 @@ export default function Dashboard() {
                       <div className="p-3 flex flex-col gap-2">
                         <p className="font-body text-xs font-medium text-near-black truncate">{icon.prompt}</p>
                         <div className="flex gap-1">
-                          <span className="font-body text-[10px] text-near-black/50 border border-black/15 rounded px-1 py-0.5">{icon.style}</span>
-                          <span className="font-body text-[10px] font-semibold text-electric-blue border border-electric-blue/30 rounded px-1 py-0.5 bg-light-blue">{icon.resolution}</span>
+                          <span className="font-body text-[10px] text-near-black/50 border border-[#0A1628]/15 rounded px-1 py-0.5">{icon.style}</span>
+                          <span className="font-body text-[10px] font-semibold text-electric-yellow border border-electric-yellow/30 rounded px-1 py-0.5 bg-light-blue">{icon.resolution}</span>
                         </div>
                         <p className="font-body text-[10px] text-near-black/40">
                           {new Date(icon.created_at).toLocaleString()}
@@ -469,13 +469,13 @@ export default function Dashboard() {
                         <a
                           href={icon.url}
                           download
-                          className="flex items-center justify-center gap-1.5 border-2 border-black rounded-md py-1.5 font-display font-bold text-[10px] bg-electric-blue text-white shadow-[2px_2px_0_#000] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-all"
+                          className="flex items-center justify-center gap-1.5 border-2 border-[#0A1628] rounded-md py-1.5 font-display font-bold text-[10px] bg-electric-yellow text-[#0A1628] shadow-[2px_2px_0_#0A1628] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-all"
                         >
                           <Download size={11} /> Download
                         </a>
                         <Link
                           to={`/app?prompt=${encodeURIComponent(icon.prompt)}`}
-                          className="flex items-center justify-center gap-1.5 border-2 border-black rounded-md py-1.5 font-display font-bold text-[10px] bg-white shadow-[2px_2px_0_#000] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-all"
+                          className="flex items-center justify-center gap-1.5 border-2 border-[#0A1628] rounded-md py-1.5 font-display font-bold text-[10px] bg-white shadow-[2px_2px_0_#0A1628] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-all"
                         >
                           <Wand2 size={11} /> Regenerate
                         </Link>
@@ -483,7 +483,7 @@ export default function Dashboard() {
                           <button
                             onClick={() => setVisibility([icon.id], !icon.is_public)}
                             disabled={updatingIds.has(icon.id)}
-                            className="cursor-pointer flex-1 flex items-center justify-center gap-1 border-2 border-black rounded-md py-1.5 font-body text-[10px] font-medium bg-white shadow-[2px_2px_0_#000] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                            className="cursor-pointer flex-1 flex items-center justify-center gap-1 border-2 border-[#0A1628] rounded-md py-1.5 font-body text-[10px] font-medium bg-white shadow-[2px_2px_0_#0A1628] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                           >
                             {updatingIds.has(icon.id) ? '...' : icon.is_public ? <><Lock size={9} /> Private</> : <><Globe size={9} /> Public</>}
                           </button>
@@ -510,8 +510,8 @@ export default function Dashboard() {
           {tab === 'profile' && (
             <div className="max-w-lg flex flex-col gap-5">
               {/* Avatar + name card */}
-              <div className="border-2 border-black rounded-md bg-white shadow-[4px_4px_0_#000] p-6 flex flex-col items-center gap-4">
-                <div className="w-20 h-20 bg-electric-blue border-2 border-black rounded-full flex items-center justify-center shadow-[3px_3px_0_#000]">
+              <div className="border-2 border-[#0A1628] rounded-md bg-white shadow-[4px_4px_0_#0A1628] p-6 flex flex-col items-center gap-4">
+                <div className="w-20 h-20 bg-electric-yellow border-2 border-[#0A1628] rounded-full flex items-center justify-center shadow-[3px_3px_0_#0A1628]">
                   <span className="font-display font-bold text-2xl text-white">
                     {(displayName || user?.email || '?')
                       .split(' ').slice(0, 2).map((w: string) => w[0]?.toUpperCase() ?? '').join('')}
@@ -527,20 +527,20 @@ export default function Dashboard() {
                         onKeyDown={(e) => { if (e.key === 'Enter') saveDisplayName(); if (e.key === 'Escape') cancelEditName() }}
                         maxLength={50}
                         autoFocus
-                        className="border-2 border-black rounded-md px-3 py-1.5 font-display font-bold text-lg text-near-black text-center w-full focus:outline-none focus:border-electric-blue"
+                        className="border-2 border-[#0A1628] rounded-md px-3 py-1.5 font-display font-bold text-lg text-near-black text-center w-full focus:outline-none focus:border-electric-yellow"
                       />
                       {nameError && <p className="font-body text-xs text-red-600">{nameError}</p>}
                       <div className="flex gap-2">
                         <button
                           onClick={saveDisplayName}
                           disabled={savingName}
-                          className="cursor-pointer flex items-center gap-1 border-2 border-black rounded-md px-3 py-1 font-display font-bold text-xs bg-electric-blue text-white shadow-[2px_2px_0_#000] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-all disabled:opacity-50"
+                          className="cursor-pointer flex items-center gap-1 border-2 border-[#0A1628] rounded-md px-3 py-1 font-display font-bold text-xs bg-electric-yellow text-[#0A1628] shadow-[2px_2px_0_#0A1628] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-all disabled:opacity-50"
                         >
                           <Check size={12} /> {savingName ? 'Menyimpan...' : 'Simpan'}
                         </button>
                         <button
                           onClick={cancelEditName}
-                          className="cursor-pointer flex items-center gap-1 border-2 border-black rounded-md px-3 py-1 font-body text-xs bg-white hover:bg-light-blue transition-colors"
+                          className="cursor-pointer flex items-center gap-1 border-2 border-[#0A1628] rounded-md px-3 py-1 font-body text-xs bg-white hover:bg-light-blue transition-colors"
                         >
                           <XIcon size={12} /> Batal
                         </button>
@@ -554,7 +554,7 @@ export default function Dashboard() {
                         className="cursor-pointer p-1 rounded hover:bg-light-blue transition-colors"
                         title="Edit nama"
                       >
-                        <Pencil size={14} className="text-near-black/40 hover:text-electric-blue" />
+                        <Pencil size={14} className="text-near-black/40 hover:text-electric-yellow" />
                       </button>
                     </div>
                   )}
@@ -574,7 +574,7 @@ export default function Dashboard() {
                   { label: 'Dipublikasi', value: icons.filter(i => i.is_public).length },
                   { label: 'Saldo Credit', value: credits ?? '—' },
                 ].map(({ label, value }) => (
-                  <div key={label} className="border-2 border-black rounded-md bg-white shadow-[3px_3px_0_#000] p-4 text-center">
+                  <div key={label} className="border-2 border-[#0A1628] rounded-md bg-white shadow-[3px_3px_0_#0A1628] p-4 text-center">
                     <p className="font-display font-bold text-2xl text-near-black">{value}</p>
                     <p className="font-body text-[11px] text-near-black/50 mt-0.5">{label}</p>
                   </div>
@@ -582,23 +582,23 @@ export default function Dashboard() {
               </div>
 
               {/* Account details */}
-              <div className="border-2 border-black rounded-md bg-white shadow-[4px_4px_0_#000] p-6 flex flex-col gap-3">
+              <div className="border-2 border-[#0A1628] rounded-md bg-white shadow-[4px_4px_0_#0A1628] p-6 flex flex-col gap-3">
                 <h2 className="font-display font-semibold text-lg text-near-black">Detail Akun</h2>
                 <div className="flex flex-col">
-                  <div className="flex items-center justify-between py-3 border-b border-black/10">
+                  <div className="flex items-center justify-between py-3 border-b border-[#0A1628]/10">
                     <span className="font-body text-sm text-near-black/60">Username</span>
                     <div className="flex items-center gap-2">
                       <span className="font-body text-sm font-medium text-near-black">{displayName || '—'}</span>
                       <button onClick={startEditName} className="cursor-pointer p-0.5 rounded hover:bg-light-blue transition-colors">
-                        <Pencil size={12} className="text-near-black/30 hover:text-electric-blue" />
+                        <Pencil size={12} className="text-near-black/30 hover:text-electric-yellow" />
                       </button>
                     </div>
                   </div>
-                  <div className="flex items-center justify-between py-3 border-b border-black/10">
+                  <div className="flex items-center justify-between py-3 border-b border-[#0A1628]/10">
                     <span className="font-body text-sm text-near-black/60">Email</span>
                     <span className="font-body text-sm font-medium text-near-black">{user?.email}</span>
                   </div>
-                  <div className="flex items-center justify-between py-3 border-b border-black/10">
+                  <div className="flex items-center justify-between py-3 border-b border-[#0A1628]/10">
                     <span className="font-body text-sm text-near-black/60">Bergabung sejak</span>
                     <span className="font-body text-sm font-medium text-near-black">
                       {user?.created_at
@@ -609,11 +609,11 @@ export default function Dashboard() {
                   <div className="flex items-center justify-between py-3">
                     <span className="font-body text-sm text-near-black/60">Saldo Credit</span>
                     <div className="flex items-center gap-2">
-                      <span className="flex items-center gap-1.5 border-2 border-black rounded-md px-2.5 py-1 bg-light-blue font-body font-semibold text-sm text-near-black">
-                        <Zap size={12} className="text-electric-blue" />
+                      <span className="flex items-center gap-1.5 border-2 border-[#0A1628] rounded-md px-2.5 py-1 bg-light-blue font-body font-semibold text-sm text-near-black">
+                        <Zap size={12} className="text-electric-yellow" />
                         {credits !== null ? credits : '—'}
                       </span>
-                      <Link to="/pricing" className="font-body text-xs font-medium text-electric-blue underline underline-offset-2">
+                      <Link to="/pricing" className="font-body text-xs font-medium text-electric-yellow underline underline-offset-2">
                         Beli lagi
                       </Link>
                     </div>
@@ -622,7 +622,7 @@ export default function Dashboard() {
               </div>
 
               {/* Sign out */}
-              <div className="border-2 border-black rounded-md bg-white shadow-[4px_4px_0_#000] p-6 flex flex-col gap-3">
+              <div className="border-2 border-[#0A1628] rounded-md bg-white shadow-[4px_4px_0_#0A1628] p-6 flex flex-col gap-3">
                 <h2 className="font-display font-semibold text-lg text-near-black">Keluar</h2>
                 <p className="font-body text-sm text-near-black/60">Kamu akan diarahkan ke halaman login setelah keluar.</p>
                 <button
@@ -649,7 +649,7 @@ export default function Dashboard() {
                 {/* Stat cards */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                   {/* Saldo — from Supabase */}
-                  <div className="border-2 border-yellow-400 rounded-md bg-yellow-50 shadow-[4px_4px_0_#000] p-5">
+                  <div className="border-2 border-yellow-400 rounded-md bg-yellow-50 shadow-[4px_4px_0_#0A1628] p-5">
                     <div className="flex items-center justify-between mb-1.5">
                       <p className="font-body text-xs font-medium text-yellow-700">Saldo Credit</p>
                       <button
@@ -667,7 +667,7 @@ export default function Dashboard() {
 
                   {/* Capacity cards */}
                   {([['1K', CREDIT_COST['1K']], ['2K', CREDIT_COST['2K']], ['4K', CREDIT_COST['4K']]] as const).map(([res, cost]) => (
-                    <div key={res} className="border-2 border-black rounded-md bg-white shadow-[4px_4px_0_#000] p-5">
+                    <div key={res} className="border-2 border-[#0A1628] rounded-md bg-white shadow-[4px_4px_0_#0A1628] p-5">
                       <p className="font-body text-xs font-medium text-near-black/50 mb-1.5">Kapasitas {res}</p>
                       <p className="font-display font-bold text-3xl text-near-black">{Math.floor(creditBalance / cost)}</p>
                       <p className="font-body text-[10px] text-near-black/40 mt-1">{cost} credit/ikon</p>
@@ -676,9 +676,9 @@ export default function Dashboard() {
                 </div>
 
                 {/* Top-up credit card */}
-                <div className="border-2 border-black rounded-md bg-white shadow-[4px_4px_0_#000] p-5">
+                <div className="border-2 border-[#0A1628] rounded-md bg-white shadow-[4px_4px_0_#0A1628] p-5">
                   <div className="flex items-center gap-2 mb-4">
-                    <PlusCircle size={16} className="text-electric-blue" />
+                    <PlusCircle size={16} className="text-electric-yellow" />
                     <h2 className="font-display font-semibold text-base text-near-black">Isi Credit (Dev)</h2>
                   </div>
                   <div className="flex flex-col sm:flex-row gap-3">
@@ -689,12 +689,12 @@ export default function Dashboard() {
                       value={topUpAmount}
                       onChange={(e) => { setTopUpAmount(e.target.value); setTopUpError(null); setTopUpSuccess(null) }}
                       placeholder="Jumlah credit (maks. 10.000)"
-                      className="border-2 border-black rounded-md px-3 py-2 font-body text-sm text-near-black bg-white focus:outline-none focus:border-electric-blue w-full sm:max-w-xs"
+                      className="border-2 border-[#0A1628] rounded-md px-3 py-2 font-body text-sm text-near-black bg-white focus:outline-none focus:border-electric-yellow w-full sm:max-w-xs"
                     />
                     <button
                       onClick={handleTopUp}
                       disabled={isTopping || !topUpAmount}
-                      className="cursor-pointer flex items-center gap-2 border-2 border-black font-display font-bold text-sm px-5 py-2 rounded-md bg-electric-blue text-white shadow-[3px_3px_0_#000] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-all disabled:opacity-50 disabled:cursor-not-allowed shrink-0"
+                      className="cursor-pointer flex items-center gap-2 border-2 border-[#0A1628] font-display font-bold text-sm px-5 py-2 rounded-md bg-electric-yellow text-[#0A1628] shadow-[3px_3px_0_#0A1628] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-all disabled:opacity-50 disabled:cursor-not-allowed shrink-0"
                     >
                       <PlusCircle size={14} />
                       {isTopping ? 'Menyimpan...' : 'Isi Credit'}
@@ -709,14 +709,14 @@ export default function Dashboard() {
                 </div>
 
                 {/* Usage history — real data from Supabase icons */}
-                <div className="border-2 border-black rounded-md bg-white shadow-[4px_4px_0_#000] overflow-hidden">
-                  <div className="flex flex-wrap items-center gap-3 px-5 py-4 border-b-2 border-black bg-yellow-50">
+                <div className="border-2 border-[#0A1628] rounded-md bg-white shadow-[4px_4px_0_#0A1628] overflow-hidden">
+                  <div className="flex flex-wrap items-center gap-3 px-5 py-4 border-b-2 border-[#0A1628] bg-yellow-50">
                     <div className="flex items-center gap-2">
                       <BarChart2 size={16} className="text-yellow-600" />
                       <h2 className="font-display font-semibold text-base text-near-black">Riwayat Generasi</h2>
                     </div>
                     <div className="flex gap-2 ml-auto items-center">
-                      <span className="font-body text-xs font-medium border-2 border-black rounded-md px-2.5 py-1 bg-white">
+                      <span className="font-body text-xs font-medium border-2 border-[#0A1628] rounded-md px-2.5 py-1 bg-white">
                         Total: <span className="font-bold">{icons.length}</span>
                       </span>
                       <span className="font-body text-xs font-medium border-2 border-yellow-400 rounded-md px-2.5 py-1 bg-yellow-50 text-yellow-700">
@@ -743,7 +743,7 @@ export default function Dashboard() {
                       <div className="overflow-x-auto">
                         <table className="w-full">
                           <thead>
-                            <tr className="border-b-2 border-black bg-near-black/5">
+                            <tr className="border-b-2 border-[#0A1628] bg-near-black/5">
                               <th className="px-4 py-3 text-left font-display font-semibold text-xs text-near-black/60">Waktu</th>
                               <th className="px-4 py-3 text-left font-display font-semibold text-xs text-near-black/60">Prompt</th>
                               <th className="px-4 py-3 text-left font-display font-semibold text-xs text-near-black/60">Style</th>
@@ -753,14 +753,14 @@ export default function Dashboard() {
                           </thead>
                           <tbody>
                             {pagedIcons.map((icon) => (
-                              <tr key={icon.id} className="border-b border-black/10 hover:bg-yellow-50/40 transition-colors">
+                              <tr key={icon.id} className="border-b border-[#0A1628]/10 hover:bg-yellow-50/40 transition-colors">
                                 <td className="px-4 py-3 font-body text-xs text-near-black/50 whitespace-nowrap">
                                   {new Date(icon.created_at).toLocaleString('id-ID', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}
                                 </td>
                                 <td className="px-4 py-3 font-body text-xs text-near-black max-w-50 truncate">{icon.prompt}</td>
                                 <td className="px-4 py-3 font-body text-xs text-near-black/70">{icon.style}</td>
                                 <td className="px-4 py-3">
-                                  <span className="font-body text-[10px] font-semibold text-electric-blue border border-electric-blue/30 rounded px-1.5 py-0.5 bg-light-blue">{icon.resolution}</span>
+                                  <span className="font-body text-[10px] font-semibold text-electric-yellow border border-electric-yellow/30 rounded px-1.5 py-0.5 bg-light-blue">{icon.resolution}</span>
                                 </td>
                                 <td className="px-4 py-3 text-right">
                                   <span className="font-body text-xs font-semibold text-yellow-600 bg-yellow-50 border border-yellow-300 rounded px-1.5 py-0.5">
@@ -775,11 +775,11 @@ export default function Dashboard() {
 
                       {/* Pagination */}
                       {totalPages > 1 && (
-                        <div className="flex items-center justify-between px-5 py-3 border-t-2 border-black bg-near-black/5">
+                        <div className="flex items-center justify-between px-5 py-3 border-t-2 border-[#0A1628] bg-near-black/5">
                           <button
                             onClick={() => setMonitoringPage((p) => Math.max(1, p - 1))}
                             disabled={monitoringPage === 1}
-                            className="cursor-pointer flex items-center gap-1 border-2 border-black rounded-md px-3 py-1.5 font-body text-xs font-medium bg-white shadow-[2px_2px_0_#000] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-all disabled:opacity-40 disabled:cursor-not-allowed disabled:translate-x-0 disabled:translate-y-0 disabled:shadow-[2px_2px_0_#000]"
+                            className="cursor-pointer flex items-center gap-1 border-2 border-[#0A1628] rounded-md px-3 py-1.5 font-body text-xs font-medium bg-white shadow-[2px_2px_0_#0A1628] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-all disabled:opacity-40 disabled:cursor-not-allowed disabled:translate-x-0 disabled:translate-y-0 disabled:shadow-[2px_2px_0_#0A1628]"
                           >
                             <ChevronLeft size={12} /> Prev
                           </button>
@@ -789,7 +789,7 @@ export default function Dashboard() {
                           <button
                             onClick={() => setMonitoringPage((p) => Math.min(totalPages, p + 1))}
                             disabled={monitoringPage === totalPages}
-                            className="cursor-pointer flex items-center gap-1 border-2 border-black rounded-md px-3 py-1.5 font-body text-xs font-medium bg-white shadow-[2px_2px_0_#000] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-all disabled:opacity-40 disabled:cursor-not-allowed disabled:translate-x-0 disabled:translate-y-0 disabled:shadow-[2px_2px_0_#000]"
+                            className="cursor-pointer flex items-center gap-1 border-2 border-[#0A1628] rounded-md px-3 py-1.5 font-body text-xs font-medium bg-white shadow-[2px_2px_0_#0A1628] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-all disabled:opacity-40 disabled:cursor-not-allowed disabled:translate-x-0 disabled:translate-y-0 disabled:shadow-[2px_2px_0_#0A1628]"
                           >
                             Next <ChevronRight size={12} />
                           </button>
@@ -805,7 +805,7 @@ export default function Dashboard() {
           {/* Settings Tab */}
           {tab === 'settings' && (
             <div className="max-w-lg flex flex-col gap-5">
-              <div className="border-2 border-black rounded-md bg-white shadow-[4px_4px_0_#000] p-6 flex flex-col gap-3">
+              <div className="border-2 border-[#0A1628] rounded-md bg-white shadow-[4px_4px_0_#0A1628] p-6 flex flex-col gap-3">
                 <h2 className="font-display font-semibold text-lg text-near-black">Account</h2>
                 <button
                   onClick={() => supabase.auth.signOut()}

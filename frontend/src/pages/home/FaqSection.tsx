@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react'
+﻿import { useState, useEffect, useRef } from 'react'
 import { Plus, Minus } from 'lucide-react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
@@ -54,15 +54,15 @@ export default function FaqSection() {
   const toggle = (i: number) => setOpenIndex(prev => (prev === i ? null : i))
 
   return (
-    <section ref={sectionRef} className="bg-[#F5F7FF] py-16 md:py-24 border-t-2 border-black">
+    <section ref={sectionRef} className="bg-[#FFFCF2] py-16 md:py-24 border-t-2 border-[#0A1628]">
       <div className="max-w-3xl mx-auto px-4 md:px-8 lg:px-16">
         <div className="text-center mb-12">
-          <h2 className="font-display font-semibold text-2xl md:text-3xl text-[#1A1A1A]">
+          <h2 className="font-display font-semibold text-2xl md:text-3xl text-[#0A1628]">
             Frequently asked
           </h2>
-          <p className="font-body text-sm text-[#1A1A1A]/60 mt-2">
+          <p className="font-body text-sm text-[#0A1628]/60 mt-2">
             Masih ada pertanyaan?{' '}
-            <a href="/contact" className="text-[#3B5BDB] underline underline-offset-4">
+            <a href="/contact" className="text-[#FFC300] underline underline-offset-4">
               Hubungi kami
             </a>
           </p>
@@ -72,25 +72,25 @@ export default function FaqSection() {
           {FAQ_ITEMS.map((item, i) => (
             <div
               key={i}
-              className="faq-item border-2 border-black rounded-md bg-white shadow-[4px_4px_0px_#000] overflow-hidden"
+              className="faq-item border-2 border-[#0A1628] rounded-md bg-white shadow-[4px_4px_0px_#0A1628] overflow-hidden"
             >
               <button
               className="cursor-pointer w-full flex items-center justify-between gap-4 px-5 py-4 text-left"
               >
-                <span className="font-display font-semibold text-sm md:text-base text-[#1A1A1A]">
+                <span className="font-display font-semibold text-sm md:text-base text-[#0A1628]">
                   {item.question}
                 </span>
                 <span className={clsx(
-                  'shrink-0 w-7 h-7 flex items-center justify-center border-2 border-black rounded-md transition-colors',
-                  openIndex === i ? 'bg-[#3B5BDB] text-white' : 'bg-white text-[#1A1A1A]'
+                  'shrink-0 w-7 h-7 flex items-center justify-center border-2 border-[#0A1628] rounded-md transition-colors',
+                  openIndex === i ? 'bg-[#FFC300] text-[#0A1628]' : 'bg-white text-[#0A1628]'
                 )}>
                   {openIndex === i ? <Minus size={14} /> : <Plus size={14} />}
                 </span>
               </button>
 
               {openIndex === i && (
-                <div className="px-5 pb-5 border-t-2 border-black/10">
-                  <p className="font-body text-sm text-[#1A1A1A]/70 leading-relaxed pt-4">
+                <div className="px-5 pb-5 border-t-2 border-[#0A1628]/10">
+                  <p className="font-body text-sm text-[#0A1628]/70 leading-relaxed pt-4">
                     {item.answer}
                   </p>
                 </div>
