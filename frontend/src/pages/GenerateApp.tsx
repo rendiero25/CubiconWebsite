@@ -153,7 +153,7 @@ export default function GenerateApp() {
       gsap.fromTo(
         creditBadgeRef.current,
         { scale: 1.15, color: '#ef4444' },
-        { scale: 1, color: '#0A1628', duration: 0.5, ease: 'back.out(1.7)' },
+        { scale: 1, color: 'near-black', duration: 0.5, ease: 'back.out(1.7)' },
       )
     }
 
@@ -269,7 +269,7 @@ export default function GenerateApp() {
 
         {/* Right Panel */}
         <section className="flex-1 min-w-0">
-          <div className="border-2 border-[#0A1628] rounded-md bg-white shadow-[4px_4px_0px_#0A1628] p-5 lg:sticky lg:top-24 lg:h-[calc(100vh-7rem)] overflow-hidden">
+          <div className="border-2 border-near-black rounded-md bg-white shadow-[4px_4px_0px_near-black] p-5 lg:sticky lg:top-24 lg:h-[calc(100vh-7rem)] overflow-hidden">
             <RightPanel
               generateState={generateState}
               result={result}

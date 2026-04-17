@@ -47,20 +47,20 @@ export default function ExplorePreview() {
   }, [])
 
   return (
-    <section ref={sectionRef} id="explore" className="bg-light-green border-y-2 border-[#0A1628] py-16 md:py-24">
+    <section ref={sectionRef} id="explore" className="bg-light-green border-y-2 border-near-black py-16 md:py-24">
       <div className="max-w-7xl mx-auto px-4 md:px-8 lg:px-16">
         <div className="explore-heading flex flex-col md:flex-row items-start md:items-end justify-between gap-4 mb-10">
           <div>
-            <h2 className="font-display font-semibold text-2xl md:text-3xl text-[#0A1628]">
+            <h2 className="font-display font-semibold text-2xl md:text-3xl text-near-black">
               Made by the community
             </h2>
-            <p className="font-body text-sm text-[#0A1628]/60 mt-1">
+            <p className="font-body text-sm text-near-black/60 mt-1">
               Icons generated and shared by Cubicon users.
             </p>
           </div>
           <button
             onClick={() => navigate('/explore')}
-            className="cursor-pointer font-display font-bold text-sm bg-white border-2 border-[#0A1628] px-4 py-2 rounded-md shadow-[4px_4px_0px_#0A1628] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-all flex items-center gap-2 whitespace-nowrap"
+            className="cursor-pointer font-display font-bold text-sm bg-white border-2 border-near-black px-4 py-2 rounded-md shadow-[4px_4px_0px_near-black] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-all flex items-center gap-2 whitespace-nowrap"
           >
             View All
             <ArrowRight size={14} />
@@ -74,10 +74,10 @@ export default function ExplorePreview() {
               key={cat}
               onClick={() => setActiveCategory(cat)}
               className={clsx(
-                'font-body text-xs font-medium border-2 border-[#0A1628] px-3 py-1.5 rounded-md transition-all',
+                'font-body text-xs font-medium border-2 border-near-black px-3 py-1.5 rounded-md transition-all',
                 activeCategory === cat
-                  ? 'bg-[#FFC300] text-[#0A1628] shadow-[2px_2px_0px_#0A1628]'
-                  : 'bg-white text-[#0A1628] hover:bg-[#FFC300] hover:text-[#0A1628]'
+                  ? 'bg-electric-yellow text-near-black shadow-[2px_2px_0px_near-black]'
+                  : 'bg-white text-near-black hover:bg-electric-yellow hover:text-near-black'
               )}
             >
               {cat}
@@ -90,7 +90,7 @@ export default function ExplorePreview() {
           {filtered.map(icon => (
             <div
               key={icon.label}
-              className="group relative border-2 border-[#0A1628] rounded-md bg-white shadow-[4px_4px_0px_#0A1628] overflow-hidden cursor-pointer hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-all"
+              className="group relative border-2 border-near-black rounded-md bg-white shadow-[4px_4px_0px_near-black] overflow-hidden cursor-pointer hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-all"
             >
               <div
                 className="h-32 flex items-center justify-center text-5xl"
@@ -99,14 +99,14 @@ export default function ExplorePreview() {
                 {icon.emoji}
               </div>
               <div className="p-3">
-                <p className="font-display font-semibold text-sm text-[#0A1628]">{icon.label}</p>
-                <p className="font-body text-xs text-[#0A1628]/50 mt-0.5">@{icon.user}</p>
+                <p className="font-display font-semibold text-sm text-near-black">{icon.label}</p>
+                <p className="font-body text-xs text-near-black/50 mt-0.5">@{icon.user}</p>
               </div>
               {/* Hover overlay */}
-              <div className="absolute inset-0 bg-[#FFC300]/90 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+              <div className="absolute inset-0 bg-electric-yellow flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
                 <button
                   onClick={() => navigate(`/app?prompt=${encodeURIComponent(icon.label)}`)}
-                  className="cursor-pointer font-display font-bold text-xs text-[#0A1628] border-2 border-[#0A1628] px-3 py-2 rounded-md flex items-center gap-1.5 hover:bg-[#0A1628] hover:text-[#FFC300] transition-colors"
+                  className="cursor-pointer font-display font-bold text-xs text-near-black border-2 border-near-black px-3 py-2 rounded-md flex items-center gap-1.5 hover:bg-near-black hover:text-electric-yellow transition-colors"
                 >
                   <RefreshCw size={12} />
                   Generate Similar

@@ -10,7 +10,7 @@ export default function Home() {
       <Navbar noBorder />
 
       {/* Two-column split */}
-      <div className="px-3 flex-1 flex flex-col lg:flex-row lg:min-h-0 lg:overflow-hidden">
+      <div className="px-3  4xl:mx-auto flex-1 flex flex-col lg:flex-row lg:min-h-0 lg:overflow-hidden">
         <HomeLeft />
         <HomeRight />
       </div>

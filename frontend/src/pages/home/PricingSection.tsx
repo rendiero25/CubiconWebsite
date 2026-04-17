@@ -71,10 +71,10 @@ export default function PricingSection() {
   return (
     <section ref={sectionRef} className="max-w-7xl mx-auto px-4 md:px-8 lg:px-16 py-16 md:py-24">
       <div className="text-center mb-12">
-        <h2 className="font-display font-semibold text-2xl md:text-3xl text-[#0A1628]">
+        <h2 className="font-display font-semibold text-2xl md:text-3xl text-near-black">
           Simple, credit-based pricing
         </h2>
-        <p className="font-body text-base text-[#0A1628]/60 mt-2">
+        <p className="font-body text-base text-near-black/60 mt-2">
           Buy once, use anytime. No subscriptions, no expiry traps.
         </p>
       </div>
@@ -84,18 +84,18 @@ export default function PricingSection() {
           <div
             key={plan.name}
             className={clsx(
-              'pricing-card relative border-2 border-[#0A1628] rounded-md flex flex-col gap-5 p-6 transition-all hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none',
+              'pricing-card relative border-2 border-near-black rounded-md flex flex-col gap-5 p-6 transition-all hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none',
               plan.highlight
-                ? 'bg-[#FFC300] text-[#0A1628] shadow-[6px_6px_0px_#0A1628]'
-                : 'bg-white text-[#0A1628] shadow-[4px_4px_0px_#0A1628]'
+                ? 'bg-electric-yellow text-near-black shadow-[6px_6px_0px_near-black]'
+                : 'bg-white text-near-black shadow-[4px_4px_0px_near-black]'
             )}
           >
             {plan.badge && (
               <div className="absolute -top-3.5 left-1/2 -translate-x-1/2">
                 <span
                   className={clsx(
-                    'font-body text-xs font-medium border-2 border-[#0A1628] px-3 py-1 rounded-full whitespace-nowrap',
-                    plan.highlight ? 'bg-white text-[#FFC300]' : 'bg-[#FFC300] text-[#0A1628]'
+                    'font-body text-xs font-medium border-2 border-near-black px-3 py-1 rounded-full whitespace-nowrap',
+                    plan.highlight ? 'bg-white text-electric-yellow' : 'bg-electric-yellow text-near-black'
                   )}
                 >
                   {plan.badge}
@@ -104,17 +104,17 @@ export default function PricingSection() {
             )}
 
             <div>
-              <h3 className={clsx('font-display font-semibold text-lg', plan.highlight ? 'text-[#0A1628]' : 'text-[#0A1628]')}>
+              <h3 className={clsx('font-display font-semibold text-lg', plan.highlight ? 'text-near-black' : 'text-near-black')}>
                 {plan.name}
               </h3>
               <div className="flex items-baseline gap-1 mt-1">
-                <span className={clsx('font-display font-extrabold text-2xl', plan.highlight ? 'text-[#0A1628]' : 'text-[#0A1628]')}>
+                <span className={clsx('font-display font-extrabold text-2xl', plan.highlight ? 'text-near-black' : 'text-near-black')}>
                   {plan.price}
                 </span>
               </div>
               <div className="flex items-center gap-1 mt-1">
-                <Zap size={12} className={plan.highlight ? 'text-[#0A1628]/70' : 'text-[#FFC300]'} />
-                <span className={clsx('font-body text-xs', plan.highlight ? 'text-[#0A1628]/70' : 'text-[#0A1628]/60')}>
+                <Zap size={12} className={plan.highlight ? 'text-near-black/70' : 'text-electric-yellow'} />
+                <span className={clsx('font-body text-xs', plan.highlight ? 'text-near-black/70' : 'text-near-black/60')}>
                   {plan.credits} credits
                 </span>
               </div>
@@ -123,8 +123,8 @@ export default function PricingSection() {
             <ul className="flex flex-col gap-2 flex-1">
               {plan.features.map(feature => (
                 <li key={feature} className="flex items-start gap-2">
-                  <Check size={14} className={clsx('mt-0.5 shrink-0', plan.highlight ? 'text-[#0A1628]' : 'text-[#FFC300]')} />
-                  <span className={clsx('font-body text-xs', plan.highlight ? 'text-[#0A1628]/80' : 'text-[#0A1628]/70')}>
+                  <Check size={14} className={clsx('mt-0.5 shrink-0', plan.highlight ? 'text-near-black' : 'text-electric-yellow')} />
+                  <span className={clsx('font-body text-xs', plan.highlight ? 'text-near-black/80' : 'text-near-black/70')}>
                     {feature}
                   </span>
                 </li>
@@ -134,10 +134,10 @@ export default function PricingSection() {
             <button
               onClick={() => navigate('/signup')}
               className={clsx(
-                'cursor-pointer font-display font-bold text-sm border-2 border-[#0A1628] px-4 py-2.5 rounded-md transition-all hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none',
+                'cursor-pointer font-display font-bold text-sm border-2 border-near-black px-4 py-2.5 rounded-md transition-all hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none',
                 plan.highlight
-                  ? 'bg-white text-[#FFC300] shadow-[3px_3px_0px_#0A1628]'
-                  : 'bg-[#FFC300] text-[#0A1628] shadow-[3px_3px_0px_#0A1628]'
+                  ? 'bg-white text-electric-yellow shadow-[3px_3px_0px_near-black]'
+                  : 'bg-electric-yellow text-near-black shadow-[3px_3px_0px_near-black]'
               )}
             >
               {plan.cta}
@@ -146,7 +146,7 @@ export default function PricingSection() {
         ))}
       </div>
 
-      <p className="font-body text-xs text-center text-[#0A1628]/40 mt-6">
+      <p className="font-body text-xs text-center text-near-black/40 mt-6">
         Credits never expire · Secure payment via Mayar.id · IDR pricing
       </p>
     </section>

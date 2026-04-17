@@ -36,7 +36,7 @@ export default function BeforeAfter() {
 
   return (
     <section ref={sectionRef} className="py-16 md:py-24 bg-off-white">
-      <div className="max-w-7xl mx-auto px-4 md:px-8 lg:px-16">
+      <div className="max-w-7xl mx-auto px-4 md:px-8 lg:px-16 ">
         <div className="text-center mb-12">
           <span className="inline-block bg-light-green border-2 border-[#0A1628] px-3 py-1 font-body text-xs font-semibold uppercase tracking-wider mb-3">
             Before vs After

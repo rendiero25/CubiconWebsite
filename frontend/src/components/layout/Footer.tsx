@@ -10,7 +10,7 @@ const COMPANY_LINKS = [
 export default function Footer({ noBorder }: { noBorder?: boolean; compact?: boolean } = {}) {
   return (
     <footer className={clsx('bg-near-black text-white shrink-0', !noBorder && 'border-t border-white/10')}>
-      <div className="flex flex-col sm:flex-row items-center justify-between gap-2 px-6 py-3">
+      <div className="mx-auto flex flex-col sm:flex-row items-center justify-between gap-2 px-6 py-3">
         <div className="flex items-center gap-4 flex-wrap justify-center">
           {COMPANY_LINKS.map(link => (
             <Link key={link.href} to={link.href}

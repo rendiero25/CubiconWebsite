@@ -33,6 +33,9 @@ body {
   --animate-shake: shake 0.4s ease;
 }
 
+@custom-variant 3xl (@media (width >= 1920px));
+@custom-variant 4xl (@media (width >= 2560px));
+
 @keyframes shake {
   0%, 100% { transform: translateX(0); }
   20%, 60% { transform: translateX(-6px); }

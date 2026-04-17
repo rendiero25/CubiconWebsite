@@ -58,7 +58,7 @@ export default function LeftPanel({
       <StepReference file={form.referenceFile} onChange={(v) => onChange('referenceFile', v)} />
 
       {/* Credit summary + CTA */}
-      <div className="border-t-2 border-[#0A1628] pt-4 mt-1">
+      <div className="border-t-2 border-near-black pt-4 mt-1">
         <p className="font-body text-sm text-near-black/70 mb-3">
           This will use{' '}
           <span className="font-bold text-near-black">
@@ -73,10 +73,10 @@ export default function LeftPanel({
           onClick={onRequestGenerate}
           disabled={isLoading}
           className={clsx(
-            'cursor-pointer w-full font-display font-bold text-base py-3 border-2 border-[#0A1628] rounded-md transition-all',
+            'cursor-pointer w-full font-display font-bold text-base py-3 border-2 border-near-black rounded-md transition-all',
             isLoading
-              ? 'bg-electric-yellow/60 text-[#0A1628] cursor-not-allowed'
-              : 'bg-electric-yellow text-[#0A1628] shadow-[4px_4px_0px_#0A1628] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none',
+              ? 'bg-electric-yellow/60 text-near-black cursor-not-allowed'
+              : 'bg-electric-yellow text-near-black shadow-[4px_4px_0px_near-black] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none',
           )}
         >
           {isLoading ? 'Generating…' : 'Generate Icon'}

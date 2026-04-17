@@ -60,14 +60,14 @@ export default function Navbar({ creditBadgeRef, noBorder }: NavbarProps = {}) {
             <>
               <span
                 ref={creditBadgeRef}
-                className="flex items-center gap-1.5 border-2 border-[#0A1628] rounded-md px-3 py-1.5 bg-light-green font-body font-medium text-sm text-near-black"
+                className="flex items-center gap-1.5 border-2 border-near-black rounded-md px-3 py-1.5 bg-light-green font-body font-medium text-sm text-near-black"
               >
                 <Zap size={14} className="text-electric-yellow" />
                 {credits ?? '—'} credits
               </span>
               <Link
                 to="/dashboard"
-                className="flex items-center gap-2 font-body text-sm font-medium text-near-black border-2 border-[#0A1628] px-3 py-1.5 rounded-md bg-electric-yellow  shadow-[3px_3px_0px_#FFF5CC] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none"
+                className="flex items-center gap-2 font-body text-sm font-medium text-near-black border-2 border-near-black px-3 py-1.5 rounded-md bg-electric-yellow  shadow-[3px_3px_0px_#FFF5CC] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none"
               >
                 <LayoutDashboard size={14} />
                 Dashboard
@@ -83,7 +83,7 @@ export default function Navbar({ creditBadgeRef, noBorder }: NavbarProps = {}) {
               </Link>
               <Link
                 to="/signup"
-                className="font-display font-bold text-sm bg-electric-yellow text-[#0A1628] border-2 border-[#0A1628] px-4 py-2 rounded-md shadow-[4px_4px_0px_#0A1628] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-all"
+                className="font-display font-bold text-sm bg-electric-yellow text-near-black border-2 border-near-black px-4 py-2 rounded-md shadow-[4px_4px_0px_near-black] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-all"
               >
                 Start Free
               </Link>
@@ -93,7 +93,7 @@ export default function Navbar({ creditBadgeRef, noBorder }: NavbarProps = {}) {
 
         {/* Mobile Toggle */}
         <button
-          className="cursor-pointer md:hidden p-2 border-2 border-[#0A1628] rounded-md"
+          className="cursor-pointer md:hidden p-2 border-2 border-near-black rounded-md"
           onClick={() => setMobileOpen(prev => !prev)}
           aria-label="Toggle menu"
         >
@@ -103,7 +103,7 @@ export default function Navbar({ creditBadgeRef, noBorder }: NavbarProps = {}) {
 
       {/* Mobile Menu */}
       {mobileOpen && (
-        <div className="md:hidden border-t-2 border-[#0A1628] bg-off-white">
+        <div className="md:hidden border-t-2 border-near-black bg-off-white">
           <div className="px-4 py-4 flex flex-col gap-4">
             {NAV_LINKS.map(link => (
               <Link
@@ -120,16 +120,16 @@ export default function Navbar({ creditBadgeRef, noBorder }: NavbarProps = {}) {
                 {link.label}
               </Link>
             ))}
-            <div className="flex items-center gap-3 pt-2 border-t border-[#0A1628]/20">
+            <div className="flex items-center gap-3 pt-2 border-t border-near-black/20">
               {isLoggedIn ? (
                 <>
-                  <span className="flex items-center gap-1.5 border-2 border-[#0A1628] rounded-md px-3 py-1.5 bg-light-green font-body font-medium text-sm">
+                  <span className="flex items-center gap-1.5 border-2 border-near-black rounded-md px-3 py-1.5 bg-light-green font-body font-medium text-sm">
                     <Zap size={14} className="text-electric-yellow" />
                     {credits ?? '—'} credits
                   </span>
                   <Link
                     to="/dashboard"
-                    className="cursor-pointer flex items-center gap-1.5 font-body text-sm font-medium text-near-black border-2 border-[#0A1628] px-3 py-1.5 rounded-md bg-electric-yellow flex-1 justify-center"
+                    className="cursor-pointer flex items-center gap-1.5 font-body text-sm font-medium text-near-black border-2 border-near-black px-3 py-1.5 rounded-md bg-electric-yellow flex-1 justify-center"
                     onClick={() => setMobileOpen(false)}
                   >
                     <LayoutDashboard size={14} />
@@ -147,7 +147,7 @@ export default function Navbar({ creditBadgeRef, noBorder }: NavbarProps = {}) {
                   </Link>
                   <Link
                     to="/signup"
-                    className="cursor-pointer font-display font-bold text-sm bg-electric-yellow text-[#0A1628] border-2 border-[#0A1628] px-4 py-2 rounded-md shadow-[4px_4px_0px_#0A1628] text-center flex-1"
+                    className="cursor-pointer font-display font-bold text-sm bg-electric-yellow text-near-black border-2 border-near-black px-4 py-2 rounded-md shadow-[4px_4px_0px_near-black] text-center flex-1"
                     onClick={() => setMobileOpen(false)}
                   >
                     Start Free
