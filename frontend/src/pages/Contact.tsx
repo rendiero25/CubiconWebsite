@@ -58,7 +58,7 @@ export default function Contact() {
       <Navbar />
 
       {/* Header */}
-      <section className="py-12 md:py-16 border-b-2 border-[#0A1628] bg-white">
+      <section className="py-12 md:py-16 border-b-2 border-[#0A1628] bg-off-white">
         <div className="max-w-7xl mx-auto px-4 md:px-8 lg:px-16">
           <span className="inline-block bg-light-green border-2 border-[#0A1628] px-3 py-1 font-body text-xs font-semibold uppercase tracking-wider mb-4">
             Contact
@@ -79,7 +79,7 @@ export default function Contact() {
           {/* Form — 3 cols */}
           <div className="md:col-span-3">
             {sent ? (
-              <div className="border-2 border-[#0A1628] rounded-md bg-white shadow-[4px_4px_0_#0A1628] p-10 flex flex-col items-center gap-4 text-center">
+              <div className="border-2 border-[#0A1628] rounded-md bg-off-white shadow-[4px_4px_0_#0A1628] p-10 flex flex-col items-center gap-4 text-center">
                 <div className="w-16 h-16 bg-green-50 border-2 border-[#0A1628] rounded-full flex items-center justify-center shadow-[2px_2px_0_#0A1628]">
                   <CheckCircle size={28} className="text-green-500" />
                 </div>
@@ -98,7 +98,7 @@ export default function Contact() {
             ) : (
               <form
                 onSubmit={handleSubmit}
-                className="border-2 border-[#0A1628] rounded-md bg-white shadow-[4px_4px_0_#0A1628] p-6 md:p-8 flex flex-col gap-5"
+                className="border-2 border-[#0A1628] rounded-md bg-off-white shadow-[4px_4px_0_#0A1628] p-6 md:p-8 flex flex-col gap-5"
               >
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div className="flex flex-col gap-1.5">
@@ -128,7 +128,7 @@ export default function Contact() {
                   <label className="font-body text-xs font-medium text-near-black">Subjek</label>
                   <select
                     {...field('subject')}
-                    className="border-2 border-[#0A1628] rounded-md px-3 py-2.5 font-body text-sm outline-none focus:border-electric-yellow transition-colors bg-white"
+                    className="border-2 border-[#0A1628] rounded-md px-3 py-2.5 font-body text-sm outline-none focus:border-electric-yellow transition-colors bg-off-white"
                   >
                     {SUBJECTS.map((s) => (
                       <option key={s} value={s}>{s}</option>
@@ -160,7 +160,7 @@ export default function Contact() {
                   className={clsx(
                     'cursor-pointer flex items-center justify-center gap-2 border-2 border-[#0A1628] font-display font-bold px-6 py-3 rounded-md transition-all',
                     isLoading
-                      ? 'bg-near-black/40 text-white cursor-not-allowed shadow-none'
+                      ? 'bg-near-black/40 text-off-white cursor-not-allowed shadow-none'
                       : 'bg-electric-yellow text-[#0A1628] shadow-[4px_4px_0_#0A1628] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none'
                   )}
                 >
@@ -174,7 +174,7 @@ export default function Contact() {
           {/* Sidebar — 2 cols */}
           <div className="md:col-span-2 flex flex-col gap-4">
             {/* Contact info */}
-            <div className="border-2 border-[#0A1628] rounded-md bg-white shadow-[4px_4px_0_#0A1628] p-6 flex flex-col gap-5">
+            <div className="border-2 border-[#0A1628] rounded-md bg-off-white shadow-[4px_4px_0_#0A1628] p-6 flex flex-col gap-5">
               <div className="flex items-start gap-3">
                 <div className="w-10 h-10 bg-light-green border-2 border-[#0A1628] rounded-md flex items-center justify-center shrink-0 shadow-[2px_2px_0_#0A1628]">
                   <Mail size={16} className="text-near-black" />
@@ -202,7 +202,7 @@ export default function Contact() {
             </div>
 
             {/* Social media */}
-            <div className="border-2 border-[#0A1628] rounded-md bg-white shadow-[4px_4px_0_#0A1628] p-6">
+            <div className="border-2 border-[#0A1628] rounded-md bg-off-white shadow-[4px_4px_0_#0A1628] p-6">
               <p className="font-display font-semibold text-sm text-near-black mb-3">Follow us</p>
               <div className="flex flex-col gap-2">
                 {SOCIALS.map(({ label, href }) => (

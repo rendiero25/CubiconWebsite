@@ -87,7 +87,7 @@ export default function PricingSection() {
               'pricing-card relative border-2 border-near-black rounded-md flex flex-col gap-5 p-6 transition-all hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none',
               plan.highlight
                 ? 'bg-electric-yellow text-near-black shadow-[6px_6px_0px_near-black]'
-                : 'bg-white text-near-black shadow-[4px_4px_0px_near-black]'
+                : 'bg-off-white text-near-black shadow-[4px_4px_0px_near-black]'
             )}
           >
             {plan.badge && (
@@ -95,7 +95,7 @@ export default function PricingSection() {
                 <span
                   className={clsx(
                     'font-body text-xs font-medium border-2 border-near-black px-3 py-1 rounded-full whitespace-nowrap',
-                    plan.highlight ? 'bg-white text-electric-yellow' : 'bg-electric-yellow text-near-black'
+                    plan.highlight ? 'bg-off-white text-electric-yellow' : 'bg-electric-yellow text-near-black'
                   )}
                 >
                   {plan.badge}
@@ -136,7 +136,7 @@ export default function PricingSection() {
               className={clsx(
                 'cursor-pointer font-display font-bold text-sm border-2 border-near-black px-4 py-2.5 rounded-md transition-all hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none',
                 plan.highlight
-                  ? 'bg-white text-electric-yellow shadow-[3px_3px_0px_near-black]'
+                  ? 'bg-off-white text-electric-yellow shadow-[3px_3px_0px_near-black]'
                   : 'bg-electric-yellow text-near-black shadow-[3px_3px_0px_near-black]'
               )}
             >

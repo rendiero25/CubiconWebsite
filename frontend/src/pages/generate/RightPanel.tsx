@@ -21,7 +21,7 @@ export default function RightPanel({
   onShareToExplore,
 }: Props) {
   const cubeRef = useRef<HTMLDivElement>(null)
-  const previewBg = form.background === 'transparent' ? 'bg-white' : 'bg-light-green'
+  const previewBg = form.background === 'transparent' ? 'bg-off-white' : 'bg-light-green'
 
   useEffect(() => {
     if (generateState !== 'loading' || !cubeRef.current) return
@@ -107,7 +107,7 @@ export default function RightPanel({
           </button>
           <button
             onClick={onRegenerate}
-            className="cursor-pointer p-2.5 border-2 border-[#0A1628] rounded-md bg-white shadow-[2px_2px_0px_#0A1628] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-all"
+            className="cursor-pointer p-2.5 border-2 border-[#0A1628] rounded-md bg-off-white shadow-[2px_2px_0px_#0A1628] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-all"
             title="Regenerate"
           >
             <RefreshCw size={18} />
@@ -172,14 +172,14 @@ export default function RightPanel({
           </button>
           <button
             onClick={handleShareIcon}
-            className="cursor-pointer flex-1 flex items-center justify-center gap-2 font-display font-bold text-sm py-2.5 bg-white border-2 border-[#0A1628] rounded-md shadow-[4px_4px_0px_#0A1628] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-all"
+            className="cursor-pointer flex-1 flex items-center justify-center gap-2 font-display font-bold text-sm py-2.5 bg-off-white border-2 border-[#0A1628] rounded-md shadow-[4px_4px_0px_#0A1628] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-all"
           >
             <Share2 size={16} />
             Share
           </button>
           <button
             onClick={onRegenerate}
-            className="cursor-pointer p-2.5 border-2 border-[#0A1628] rounded-md bg-white shadow-[2px_2px_0px_#0A1628] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-all"
+            className="cursor-pointer p-2.5 border-2 border-[#0A1628] rounded-md bg-off-white shadow-[2px_2px_0px_#0A1628] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-all"
             title="Regenerate"
           >
             <RefreshCw size={18} />

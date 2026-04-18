@@ -60,7 +60,7 @@ export default function ExplorePreview() {
           </div>
           <button
             onClick={() => navigate('/explore')}
-            className="cursor-pointer font-display font-bold text-sm bg-white border-2 border-near-black px-4 py-2 rounded-md shadow-[4px_4px_0px_near-black] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-all flex items-center gap-2 whitespace-nowrap"
+            className="cursor-pointer font-display font-bold text-sm bg-off-white border-2 border-near-black px-4 py-2 rounded-md shadow-[4px_4px_0px_near-black] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-all flex items-center gap-2 whitespace-nowrap"
           >
             View All
             <ArrowRight size={14} />
@@ -77,7 +77,7 @@ export default function ExplorePreview() {
                 'font-body text-xs font-medium border-2 border-near-black px-3 py-1.5 rounded-md transition-all',
                 activeCategory === cat
                   ? 'bg-electric-yellow text-near-black shadow-[2px_2px_0px_near-black]'
-                  : 'bg-white text-near-black hover:bg-electric-yellow hover:text-near-black'
+                  : 'bg-off-white text-near-black hover:bg-electric-yellow hover:text-near-black'
               )}
             >
               {cat}
@@ -90,7 +90,7 @@ export default function ExplorePreview() {
           {filtered.map(icon => (
             <div
               key={icon.label}
-              className="group relative border-2 border-near-black rounded-md bg-white shadow-[4px_4px_0px_near-black] overflow-hidden cursor-pointer hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-all"
+              className="group relative border-2 border-near-black rounded-md bg-off-white shadow-[4px_4px_0px_near-black] overflow-hidden cursor-pointer hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-all"
             >
               <div
                 className="h-32 flex items-center justify-center text-5xl"

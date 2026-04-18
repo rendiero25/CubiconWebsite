@@ -96,7 +96,7 @@ export default function HeroSection() {
             onChange={e => setPrompt(e.target.value)}
             onKeyDown={handleKeyDown}
             placeholder="Shopping cart, cloud storage, analytics..."
-            className="flex-1 font-body text-sm border-2 border-[#0A1628] rounded-md px-4 py-3 bg-white focus:outline-none focus:border-[#FFC300] shadow-[4px_4px_0px_#0A1628] placeholder:text-[#0A1628]/40 transition-shadow"
+            className="flex-1 font-body text-sm border-2 border-[#0A1628] rounded-md px-4 py-3 bg-off-white focus:outline-none focus:border-[#FFC300] shadow-[4px_4px_0px_#0A1628] placeholder:text-[#0A1628]/40 transition-shadow"
           />
           <button
             onClick={handleGenerate}

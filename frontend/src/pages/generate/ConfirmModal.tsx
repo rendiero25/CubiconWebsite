@@ -53,7 +53,7 @@ export default function ConfirmModal({ form, credits, isAdmin, onCancel, onConfi
         {/* Body */}
         <div className="px-5 py-4 flex flex-col gap-4">
           {/* Summary */}
-          <div className="bg-white border-2 border-near-black rounded-md p-3 flex flex-col gap-1">
+          <div className="bg-off-white border-2 border-near-black rounded-md p-3 flex flex-col gap-1">
             <p className="font-body text-sm font-medium text-near-black">📦 {promptPreview}</p>
             <p className="font-body text-sm text-near-black/60">
               {STYLE_LABELS[form.style]} · {form.resolution} · {form.background}
@@ -61,7 +61,7 @@ export default function ConfirmModal({ form, credits, isAdmin, onCancel, onConfi
           </div>
 
           {/* Variation toggle */}
-          <div className="border-2 border-near-black rounded-md p-3 bg-white">
+          <div className="border-2 border-near-black rounded-md p-3 bg-off-white">
             <div className="flex items-center justify-between gap-3">
               <div>
                 <p className="font-body text-sm font-medium text-near-black">✨ Variations ×3</p>
@@ -73,12 +73,12 @@ export default function ConfirmModal({ form, credits, isAdmin, onCancel, onConfi
                 onClick={() => setVariation((p) => !p)}
                 className={clsx(
                   'relative w-12 h-6 rounded-full border-2 border-near-black transition-colors shrink-0',
-                  variation ? 'bg-electric-yellow' : 'bg-white',
+                  variation ? 'bg-electric-yellow' : 'bg-off-white',
                 )}
               >
                 <span
                   className={clsx(
-                    'absolute top-0.5 w-4 h-4 bg-white border-2 border-near-black rounded-full transition-all',
+                    'absolute top-0.5 w-4 h-4 bg-off-white border-2 border-near-black rounded-full transition-all',
                     variation ? 'left-6' : 'left-0.5',
                   )}
                 />
@@ -110,7 +110,7 @@ export default function ConfirmModal({ form, credits, isAdmin, onCancel, onConfi
         <div className="px-5 pb-5 flex gap-3">
           <button
             onClick={onCancel}
-            className="cursor-pointer flex-1 font-body font-medium text-sm py-2.5 border-2 border-near-black rounded-md bg-white hover:bg-light-green transition-colors"
+            className="cursor-pointer flex-1 font-body font-medium text-sm py-2.5 border-2 border-near-black rounded-md bg-off-white hover:bg-light-green transition-colors"
           >
             Cancel
           </button>

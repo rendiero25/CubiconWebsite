@@ -58,7 +58,7 @@ export default function BeforeAfter() {
               className={`cursor-pointer font-display font-semibold text-sm px-4 py-2 border-2 border-[#0A1628] rounded-md transition-all ${
                 active === tab
                   ? 'bg-electric-yellow text-[#0A1628] shadow-[2px_2px_0_#0A1628]'
-                  : 'bg-white text-near-black'
+                  : 'bg-off-white text-near-black'
               }`}
             >
               {tab === 'before' ? 'Before' : 'After'}
@@ -85,11 +85,11 @@ export default function BeforeAfter() {
           {/* Divider + Arrow */}
           <div className="hidden sm:flex flex-col items-center justify-center bg-near-black w-14 shrink-0">
             <div ref={arrowRef}>
-              <ArrowRight size={22} className="text-white" />
+              <ArrowRight size={22} className="text-off-white" />
             </div>
           </div>
           <div className="sm:hidden flex items-center justify-center bg-near-black h-10">
-            <ArrowRight size={18} className="text-white rotate-90" />
+            <ArrowRight size={18} className="text-off-white rotate-90" />
           </div>
 
           {/* After */}

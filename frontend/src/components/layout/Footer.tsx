@@ -9,17 +9,17 @@ const COMPANY_LINKS = [
 
 export default function Footer({ noBorder }: { noBorder?: boolean; compact?: boolean } = {}) {
   return (
-    <footer className={clsx('bg-near-black text-white shrink-0', !noBorder && 'border-t border-white/10')}>
+    <footer className={clsx('bg-near-black text-off-white shrink-0', !noBorder && '')}>
       <div className="mx-auto flex flex-col sm:flex-row items-center justify-between gap-2 px-6 py-3">
         <div className="flex items-center gap-4 flex-wrap justify-center">
           {COMPANY_LINKS.map(link => (
             <Link key={link.href} to={link.href}
-              className="font-body text-xs text-white/70 hover:text-white transition-colors">
+              className="font-body text-xs text-off-white/70 hover:text-off-white transition-colors">
               {link.label}
             </Link>
           ))}
         </div>
-        <p className="font-body text-xs text-white/70">
+        <p className="font-body text-xs text-off-white/70">
           © {new Date().getFullYear()} Cubicon. All rights reserved. Powered by <a href="https://rendiero.site" target="_blank" rel="noopener noreferrer" className="text-off-white hover:text-electric-yellow">rendiero.</a>
         </p>
       </div>

@@ -66,7 +66,7 @@ export default function Pricing() {
       <Navbar />
 
       {/* Header */}
-      <section className="py-12 md:py-20 border-b-2 border-near-black bg-white text-center">
+      <section className="py-12 md:py-20 border-b-2 border-near-black bg-off-white text-center">
         <div className="max-w-7xl mx-auto px-4 md:px-8 lg:px-16 ">
           <span className="inline-block bg-light-green border-2 border-near-black px-3 py-1 font-body text-xs font-semibold uppercase tracking-wider mb-4">
             Pricing
@@ -91,21 +91,21 @@ export default function Pricing() {
                   'relative border-2 border-near-black rounded-md flex flex-col',
                   tier.highlight
                     ? 'bg-electric-yellow text-near-black shadow-[6px_6px_0_near-black]'
-                    : 'bg-white text-near-black shadow-[4px_4px_0_near-black]'
+                    : 'bg-off-white text-near-black shadow-[4px_4px_0_near-black]'
                 )}
               >
                 {tier.badge && (
-                  <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 whitespace-nowrap bg-near-black text-white font-display font-bold text-xs px-3 py-1 rounded-full border-2 border-near-black">
+                  <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 whitespace-nowrap bg-near-black text-off-white font-display font-bold text-xs px-3 py-1 rounded-full border-2 border-near-black">
                     {tier.badge}
                   </div>
                 )}
 
                 <div className={clsx('p-6 border-b-2', tier.highlight ? 'border-white/30' : 'border-near-black')}>
                   <p className="font-display font-bold text-lg">{tier.name}</p>
-                  <p className={clsx('font-display font-extrabold text-3xl mt-1', tier.highlight ? 'text-white' : 'text-near-black')}>
+                  <p className={clsx('font-display font-extrabold text-3xl mt-1', tier.highlight ? 'text-off-white' : 'text-near-black')}>
                     {tier.price}
                   </p>
-                  <div className={clsx('flex items-center gap-1.5 mt-2', tier.highlight ? 'text-white/80' : 'text-near-black/60')}>
+                  <div className={clsx('flex items-center gap-1.5 mt-2', tier.highlight ? 'text-off-white/80' : 'text-near-black/60')}>
                     <Zap size={13} />
                     <span className="font-body text-sm">{tier.credits} credits</span>
                   </div>
@@ -115,7 +115,7 @@ export default function Pricing() {
                   {tier.features.map((f) => (
                     <div key={f} className="flex items-start gap-2.5">
                       <Check size={14} className={clsx('mt-0.5 shrink-0', tier.highlight ? 'text-near-black' : 'text-electric-yellow')} />
-                      <span className={clsx('font-body text-sm', tier.highlight ? 'text-white/90' : 'text-near-black/80')}>{f}</span>
+                      <span className={clsx('font-body text-sm', tier.highlight ? 'text-off-white/90' : 'text-near-black/80')}>{f}</span>
                     </div>
                   ))}
                 </div>
@@ -126,7 +126,7 @@ export default function Pricing() {
                     className={clsx(
                       'block text-center font-display font-bold px-4 py-3 border-2 border-near-black rounded-md transition-all hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none',
                       tier.highlight
-                        ? 'bg-white text-electric-yellow shadow-[3px_3px_0_near-black]'
+                        ? 'bg-off-white text-electric-yellow shadow-[3px_3px_0_near-black]'
                         : 'bg-electric-yellow text-near-black shadow-[3px_3px_0_near-black]'
                     )}
                   >
@@ -140,7 +140,7 @@ export default function Pricing() {
       </section>
 
       {/* Credit Calculator */}
-      <section className="py-14 bg-white border-t-2 border-b-2 border-near-black">
+      <section className="py-14 bg-off-white border-t-2 border-b-2 border-near-black">
         <div className="max-w-3xl mx-auto px-4 md:px-8 lg:px-16">
           <div className="text-center mb-8">
             <h2 className="font-display font-semibold text-2xl md:text-3xl text-near-black">
@@ -161,7 +161,7 @@ export default function Pricing() {
                   max={9999}
                   value={iconCount}
                   onChange={(e) => setIconCount(Math.max(1, parseInt(e.target.value) || 1))}
-                  className="border-2 border-near-black rounded-md px-3 py-2.5 font-body text-sm bg-white outline-none focus:border-electric-yellow transition-colors"
+                  className="border-2 border-near-black rounded-md px-3 py-2.5 font-body text-sm bg-off-white outline-none focus:border-electric-yellow transition-colors"
                 />
               </div>
               <div className="flex flex-col gap-2">
@@ -174,8 +174,8 @@ export default function Pricing() {
                       className={clsx(
                         'cursor-pointer flex-1 py-2.5 border-2 border-near-black rounded-md font-display font-bold text-sm transition-all',
                         resolution === r
-                          ? 'bg-near-black text-white'
-                          : 'bg-white text-near-black hover:bg-light-green'
+                          ? 'bg-near-black text-off-white'
+                          : 'bg-off-white text-near-black hover:bg-light-green'
                       )}
                     >
                       {r}
@@ -185,7 +185,7 @@ export default function Pricing() {
               </div>
             </div>
 
-            <div className="border-2 border-near-black rounded-md bg-white p-4 flex items-center justify-between gap-4 flex-wrap">
+            <div className="border-2 border-near-black rounded-md bg-off-white p-4 flex items-center justify-between gap-4 flex-wrap">
               <div>
                 <p className="font-body text-xs text-near-black/60">Estimasi credit dibutuhkan</p>
                 <p className="font-display font-extrabold text-2xl text-near-black mt-0.5">
@@ -219,7 +219,7 @@ export default function Pricing() {
           </h2>
           <div className="flex flex-col gap-3">
             {FAQ.map((item, i) => (
-              <div key={i} className="border-2 border-near-black rounded-md bg-white shadow-[3px_3px_0_near-black] overflow-hidden">
+              <div key={i} className="border-2 border-near-black rounded-md bg-off-white shadow-[3px_3px_0_near-black] overflow-hidden">
                 <button
                   onClick={() => setOpenFaq(openFaq === i ? null : i)}
                   className="cursor-pointer w-full flex items-center justify-between px-5 py-4 text-left"
@@ -242,16 +242,16 @@ export default function Pricing() {
       <section className="py-14 bg-near-black border-t-2 border-near-black">
         <div className="max-w-7xl mx-auto px-4 md:px-8 lg:px-16  flex flex-col md:flex-row items-center justify-between gap-6">
           <div>
-            <h2 className="font-display font-bold text-2xl md:text-3xl text-white">
+            <h2 className="font-display font-bold text-2xl md:text-3xl text-off-white">
               Mulai gratis, upgrade kapanpun.
             </h2>
-            <p className="font-body text-sm text-white/60 mt-1">
+            <p className="font-body text-sm text-off-white/60 mt-1">
               2 icon gratis untuk semua user baru. Tidak perlu kartu kredit.
             </p>
           </div>
           <Link
             to="/signup"
-            className="shrink-0 cursor-pointer bg-white text-near-black font-display font-bold px-6 py-3 border-2 border-white rounded-md shadow-[4px_4px_0_rgba(255,255,255,0.2)] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-all"
+            className="shrink-0 cursor-pointer bg-off-white text-near-black font-display font-bold px-6 py-3 border-2 border-white rounded-md shadow-[4px_4px_0_rgba(255,255,255,0.2)] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-all"
           >
             Daftar Gratis →
           </Link>

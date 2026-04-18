@@ -93,7 +93,7 @@ export default function Terms() {
     <div className="min-h-screen bg-off-white">
       <Navbar />
 
-      <section className="py-12 md:py-16 border-b-2 border-[#0A1628] bg-white">
+      <section className="py-12 md:py-16 border-b-2 border-[#0A1628] bg-off-white">
         <div className="max-w-7xl mx-auto px-4 md:px-8 lg:px-16">
           <span className="inline-block bg-light-green border-2 border-[#0A1628] px-3 py-1 font-body text-xs font-semibold uppercase tracking-wider mb-4">
             Legal

@@ -27,7 +27,7 @@ export default function StepStyle({ value, onChange }: Props) {
               'cursor-pointer flex flex-col items-center gap-1 border-2 border-near-black rounded-md px-3 py-2 font-body text-xs font-medium transition-all',
               value === s.value
                 ? 'bg-electric-yellow text-near-black shadow-[3px_3px_0px_near-black]'
-                : 'bg-white text-near-black shadow-[2px_2px_0px_near-black] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none',
+                : 'bg-off-white text-near-black shadow-[2px_2px_0px_near-black] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none',
             )}
           >
             <span className="text-lg">{s.icon}</span>

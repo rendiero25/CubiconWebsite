@@ -23,7 +23,7 @@ const PLANS = [
 ]
 
 const ALL_FEATURES = [
-  { Icon: PenLine,    title: 'AI Generation',    desc: 'Generate from text in seconds via Gemini.' },
+  { Icon: PenLine,    title: 'AI Generation',    desc: 'Generate from text in seconds.' },
   { Icon: Box,        title: '3D Isometric',     desc: 'Consistent clean look, every single time.' },
   { Icon: ImageDown,  title: 'Multi Resolution', desc: '1K, 2K, or 4K — perfect for any screen.' },
   { Icon: Eraser,     title: 'Remove BG',        desc: 'Auto-transparent PNG, no extra tools.' },
@@ -85,7 +85,7 @@ function PaginationDots({ total, idx, setIdx, isDark = false, isDarkDots = false
             'rounded-full transition-all cursor-pointer',
             i === idx
               ? clsx('flex-3 h-1.25', isDarkDots ? 'bg-near-black' : 'bg-electric-yellow')
-              : clsx('flex-1 h-0.75', isDarkDots ? 'bg-near-black/30' : isDark ? 'bg-white/20' : 'bg-near-black/15'),
+              : clsx('flex-1 h-0.75', isDarkDots ? 'bg-near-black/30' : isDark ? 'bg-off-white/20' : 'bg-near-black/15'),
           )} />
       ))}
     </div>
@@ -101,7 +101,7 @@ function NavArrows({ idx, total, setIdx, isDark = false, nextRef }: {
       <button onClick={() => setIdx(Math.max(0, idx - 1))} disabled={idx === 0}
         className={clsx(
           'cursor-pointer w-6 h-6 flex items-center justify-center rounded disabled:opacity-25 hover:bg-electric-yellow transition-colors border',
-          isDark ? 'border-white/20 text-white/60' : 'border-near-black/20',
+          isDark ? 'border-white/20 text-off-white/60' : 'border-near-black/20',
         )}>
         <ChevronLeft size={11} />
       </button>
@@ -111,7 +111,7 @@ function NavArrows({ idx, total, setIdx, isDark = false, nextRef }: {
         onClick={() => setIdx(Math.min(total - 1, idx + 1))} disabled={idx === total - 1}
         className={clsx(
           'cursor-pointer w-6 h-6 flex items-center justify-center rounded disabled:opacity-25 hover:bg-electric-yellow transition-colors border',
-          isDark ? 'border-white/20 text-white/60' : 'border-near-black/20',
+          isDark ? 'border-white/20 text-off-white/60' : 'border-near-black/20',
         )}>
         <ChevronRight size={11} />
       </button>
@@ -148,16 +148,16 @@ export default function HomeRight() {
   // Auto-play all carousels
   useEffect(() => {
     const intervals = [
-      setInterval(() => setStepIdx(prev => (prev + 1) % STEPS.length), 6000),
-      setInterval(() => setPlanIdx(prev => (prev + 1) % PLANS.length), 7500),
-      setInterval(() => setFeatIdx(prev => (prev + 1) % FEATURE_TOTAL), 6700),
-      setInterval(() => setReviewIdx(prev => (prev + 1) % REVIEWS.length), 8000),
+      setInterval(() => setStepIdx(prev => (prev + 1) % STEPS.length), 8000),
+      setInterval(() => setPlanIdx(prev => (prev + 1) % PLANS.length), 9500),
+      setInterval(() => setFeatIdx(prev => (prev + 1) % FEATURE_TOTAL), 8700),
+      setInterval(() => setReviewIdx(prev => (prev + 1) % REVIEWS.length), 10000),
       setInterval(() => {
         setUcIdx(prev => (prev + 1) % USE_CASES.length)
         if (ucNextRef.current) {
           gsap.to(ucNextRef.current, { scale: 1.15, duration: 0.2, yoyo: true, repeat: 1, ease: 'power2.inOut' })
         }
-      }, 7000),
+      }, 8000),
     ]
     return () => intervals.forEach(clearInterval)
   }, [])
@@ -167,7 +167,7 @@ export default function HomeRight() {
       <div ref={gridRef} className="grid grid-cols-1 lg:grid-cols-2 gap-2 2xl:gap-3 lg:h-full lg:grid-rows-3 2xl:grid-rows-4">
 
         {/* ── HOW IT WORKS ── */}
-        <div className="bg-white border-2 border-near-black rounded-md p-3 sm:p-4 flex flex-col gap-2 shadow-[3px_3px_0px_var(--color-electric-yellow)] overflow-hidden">
+        <div className="bg-off-white border-2 border-near-black rounded-md p-3 sm:p-4 flex flex-col gap-2 shadow-[3px_3px_0px_var(--color-electric-yellow)] overflow-hidden">
           <div className="flex items-center justify-between shrink-0">
             <span className="font-body text-[10px] font-bold text-near-black uppercase">How It Works</span>
             <NavArrows idx={stepIdx} total={STEPS.length} setIdx={setStepIdx} />
@@ -273,7 +273,7 @@ export default function HomeRight() {
               </p>
               
               <Link to={USE_CASES[ucIdx].to}
-                className="inline-flex items-center gap-1.5 mt-2 mr-1 bg-near-black text-white border-2 border-near-black font-display font-bold text-xs px-3 py-1.5 rounded-md shadow-[2px_2px_0px_var(--color-light-green)] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-all whitespace-nowrap">
+                className="inline-flex items-center gap-1.5 mt-2 mr-1 bg-near-black text-off-white border-2 border-near-black font-display font-bold text-xs px-3 py-1.5 rounded-md shadow-[2px_2px_0px_var(--color-light-green)] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-all whitespace-nowrap">
                 {USE_CASES[ucIdx].cta} <ArrowRight size={10} />
               </Link>
             </div>
@@ -293,11 +293,11 @@ export default function HomeRight() {
           <div className="flex-1 min-h-22.5 lg:min-h-0 overflow-hidden">
             {isSeeAll ? (
               <div className="flex flex-col items-center justify-center h-full gap-3 text-center">
-                <p className="font-body text-xs 2xl:text-xl 4xl:text-3xl text-white leading-relaxed">
+                <p className="font-body text-xs 2xl:text-xl 4xl:text-3xl text-off-white leading-relaxed">
                   8 powerful features to supercharge your icon workflow.
                 </p>
                 <Link to="/features"
-                  className="flex items-center gap-1.5 bg-electric-yellow text-near-black border-2 border-electric-yellow font-display font-bold text-xs px-4 py-2 rounded-md hover:bg-white transition-colors">
+                  className="flex items-center gap-1.5 bg-electric-yellow text-near-black border-2 border-electric-yellow font-display font-bold text-xs px-4 py-2 rounded-md hover:bg-off-white transition-colors">
                   See All <ArrowRight size={10} />
                 </Link>
               </div>
@@ -306,11 +306,11 @@ export default function HomeRight() {
                 {(() => { const { Icon: FIcon, title, desc } = FEATURE_PAGES[featIdx]; return (
                   <>
                     <div className='flex flex-row items-center justify-start gap-4'>
-                      <div className="w-10 h-10 shrink-0 border border-electric-yellow/30 rounded-md flex items-center justify-center bg-white/5">
+                      <div className="w-10 h-10 shrink-0 border border-electric-yellow/30 rounded-md flex items-center justify-center bg-off-white/5">
                         <FIcon size={18} className="text-electric-yellow" />
                       </div>
 
-                      <p className="font-display font-bold text-base text-white">{title}</p>
+                      <p className="font-display font-bold text-base text-off-white">{title}</p>
                     </div>
                       
                     <div>
@@ -377,13 +377,13 @@ export default function HomeRight() {
             </a>
           </div>
           <Link to="/contact"
-            className="cursor-pointer w-full text-center font-display font-bold text-xs bg-near-black text-white border-2 border-near-black py-1.5 2xl:py-3 rounded-md shadow-[2px_2px_0px_var(--color-light-green)]  transition-colors flex items-center justify-center gap-1 hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none shrink-0">
+            className="cursor-pointer w-full text-center font-display font-bold text-xs bg-near-black text-off-white border-2 border-near-black py-1.5 2xl:py-3 rounded-md shadow-[2px_2px_0px_var(--color-light-green)]  transition-colors flex items-center justify-center gap-1 hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none shrink-0">
             Contact Us <ArrowRight size={10} />
           </Link>
         </div>
 
         {/* ── FAQ (2xl+) ── */}
-        {/* <div className="hidden 2xl:flex col-span-2 bg-white border-2 border-near-black rounded-md p-3 sm:p-4 flex-col gap-2 shadow-[3px_3px_0px_var(--color-electric-yellow)] overflow-hidden">
+        {/* <div className="hidden 2xl:flex col-span-2 bg-off-white border-2 border-near-black rounded-md p-3 sm:p-4 flex-col gap-2 shadow-[3px_3px_0px_var(--color-electric-yellow)] overflow-hidden">
           <div className="flex items-center justify-between shrink-0">
             <span className="font-body text-[10px] font-bold text-near-black uppercase">FAQ</span>
             <NavArrows idx={faqIdx} total={FAQ_HOME.length} setIdx={setFaqIdx} />

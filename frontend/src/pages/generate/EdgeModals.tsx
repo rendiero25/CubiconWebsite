@@ -25,7 +25,7 @@ export function OutOfCreditsModal({ onClose }: OutOfCreditsProps) {
           <div className="flex gap-3">
             <button
               onClick={onClose}
-              className="cursor-pointer flex-1 font-body font-medium text-sm py-2.5 border-2 border-[#0A1628] rounded-md bg-white hover:bg-light-green transition-colors"
+              className="cursor-pointer flex-1 font-body font-medium text-sm py-2.5 border-2 border-[#0A1628] rounded-md bg-off-white hover:bg-light-green transition-colors"
             >
               Cancel
             </button>
@@ -70,7 +70,7 @@ export function FreeTierLockModal({ resolution, onClose }: FreeTierLockProps) {
           <div className="flex gap-3">
             <button
               onClick={onClose}
-              className="cursor-pointer flex-1 font-body font-medium text-sm py-2.5 border-2 border-[#0A1628] rounded-md bg-white hover:bg-light-green transition-colors"
+              className="cursor-pointer flex-1 font-body font-medium text-sm py-2.5 border-2 border-[#0A1628] rounded-md bg-off-white hover:bg-light-green transition-colors"
             >
               Stay on 1K
             </button>

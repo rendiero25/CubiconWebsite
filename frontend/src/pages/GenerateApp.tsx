@@ -269,7 +269,7 @@ export default function GenerateApp() {
 
         {/* Right Panel */}
         <section className="flex-1 min-w-0">
-          <div className="border-2 border-near-black rounded-md bg-white shadow-[4px_4px_0px_near-black] p-5 lg:sticky lg:top-24 lg:h-[calc(100vh-7rem)] overflow-hidden">
+          <div className="border-2 border-near-black rounded-md bg-off-white shadow-[4px_4px_0px_near-black] p-5 lg:sticky lg:top-24 lg:h-[calc(100vh-7rem)] overflow-hidden">
             <RightPanel
               generateState={generateState}
               result={result}

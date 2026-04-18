@@ -111,7 +111,7 @@ import clsx from 'clsx'
 <button className={clsx(
   'px-6 py-3 border-2 border-black font-display',
   isLoading && 'opacity-50 cursor-not-allowed',
-  isPrimary ? 'bg-[#3B5BDB] text-white' : 'bg-white text-black'
+  isPrimary ? 'bg-[#3B5BDB] text-off-white' : 'bg-off-white text-black'
 )}>
 
 // ❌ Wrong

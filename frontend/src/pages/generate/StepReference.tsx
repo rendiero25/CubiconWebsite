@@ -23,7 +23,7 @@ export default function StepReference({ file, onChange }: Props) {
     <div className="border-2 border-[#0A1628] rounded-md overflow-hidden">
       <button
         onClick={() => setOpen((p) => !p)}
-        className="cursor-pointer w-full flex items-center justify-between px-4 py-3 bg-white hover:bg-light-green transition-colors"
+        className="cursor-pointer w-full flex items-center justify-between px-4 py-3 bg-off-white hover:bg-light-green transition-colors"
       >
         <span className="font-body text-sm font-medium text-[#0A1628]">
           Upload style reference{' '}
@@ -33,7 +33,7 @@ export default function StepReference({ file, onChange }: Props) {
       </button>
 
       {open && (
-        <div className="border-t-2 border-[#0A1628] p-3 bg-white">
+        <div className="border-t-2 border-[#0A1628] p-3 bg-off-white">
           {file ? (
             <div className="flex items-center justify-between border-2 border-[#0A1628] rounded-md px-3 py-2">
               <span className="font-body text-sm truncate">{file.name}</span>
@@ -55,7 +55,7 @@ export default function StepReference({ file, onChange }: Props) {
               onDragLeave={() => setDragging(false)}
               className={clsx(
                 'cursor-pointer border-2 border-dashed border-[#0A1628] rounded-md p-6 flex flex-col items-center gap-2 transition-colors',
-                dragging ? 'bg-light-green' : 'bg-white hover:bg-[#FFFCF2]',
+                dragging ? 'bg-light-green' : 'bg-off-white hover:bg-[#FFFCF2]',
               )}
             >
               <Upload size={20} className="text-[#0A1628]/40" />

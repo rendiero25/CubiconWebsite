@@ -32,7 +32,7 @@ export default function StepPrompt({
           onChange={(e) => onPromptChange(e.target.value)}
           placeholder='Describe your icon — e.g. "Shopping cart"'
           className={clsx(
-            'w-full border-2 border-[#0A1628] rounded-md px-3 py-2.5 font-body text-sm outline-none focus:border-[#FFC300] transition-colors bg-white',
+            'w-full border-2 border-[#0A1628] rounded-md px-3 py-2.5 font-body text-sm outline-none focus:border-[#FFC300] transition-colors bg-off-white',
             shake && 'animate-[shake_0.4s_ease]',
             error && 'border-red-500',
           )}
@@ -61,7 +61,7 @@ export default function StepPrompt({
         placeholder={'Shopping cart\nCloud storage\nAnalytics dashboard'}
         rows={6}
         className={clsx(
-          'w-full border-2 border-[#0A1628] rounded-md px-3 py-2.5 font-body text-sm outline-none focus:border-[#FFC300] transition-colors resize-none bg-white',
+          'w-full border-2 border-[#0A1628] rounded-md px-3 py-2.5 font-body text-sm outline-none focus:border-[#FFC300] transition-colors resize-none bg-off-white',
           shake && 'animate-[shake_0.4s_ease]',
           error && 'border-red-500',
         )}

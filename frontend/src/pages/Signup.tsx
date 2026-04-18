@@ -119,7 +119,7 @@ export default function Signup() {
             type="button"
             onClick={handleGoogle}
             disabled={isLoading}
-            className="cursor-pointer flex items-center justify-center gap-3 w-full border-2 border-[#0A1628] rounded-md py-3 bg-white font-body font-medium text-sm text-near-black shadow-[3px_3px_0_#0A1628] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-all disabled:opacity-50"
+            className="cursor-pointer flex items-center justify-center gap-3 w-full border-2 border-[#0A1628] rounded-md py-3 bg-off-white font-body font-medium text-sm text-near-black shadow-[3px_3px_0_#0A1628] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-all disabled:opacity-50"
           >
             <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M17.64 9.205c0-.639-.057-1.252-.164-1.841H9v3.481h4.844a4.14 4.14 0 0 1-1.796 2.716v2.259h2.908c1.702-1.567 2.684-3.875 2.684-6.615Z" fill="#4285F4"/>
@@ -215,7 +215,7 @@ export default function Signup() {
             className={clsx(
               'flex items-center justify-center gap-2 w-full border-2 border-[#0A1628] font-display font-bold py-3.5 rounded-md transition-all mt-1',
               isLoading
-                ? 'bg-near-black/40 text-white cursor-not-allowed'
+                ? 'bg-near-black/40 text-off-white cursor-not-allowed'
                 : 'bg-electric-yellow text-[#0A1628] shadow-[4px_4px_0_#0A1628] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none'
             )}
           >
@@ -240,13 +240,13 @@ export default function Signup() {
           {DEMO_ICONS.map((emoji, i) => (
             <div
               key={i}
-              className="float-card opacity-0 w-20 h-20 border-2 border-white/30 rounded-xl bg-white/10 flex items-center justify-center shadow-[3px_3px_0_rgba(255,255,255,0.15)]"
+              className="float-card opacity-0 w-20 h-20 border-2 border-white/30 rounded-xl bg-off-white/10 flex items-center justify-center shadow-[3px_3px_0_rgba(255,255,255,0.15)]"
             >
               <span className="text-3xl">{emoji}</span>
             </div>
           ))}
         </div>
-        <p className="absolute bottom-8 font-body text-xs text-white/30 tracking-widest uppercase">
+        <p className="absolute bottom-8 font-body text-xs text-off-white/30 tracking-widest uppercase">
           2 free icons on signup
         </p>
       </div>
@@ -256,7 +256,7 @@ export default function Signup() {
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm px-4">
           <div
             ref={welcomeRef}
-            className="bg-white border-2 border-[#0A1628] rounded-md shadow-[8px_8px_0_#0A1628] p-8 max-w-sm w-full text-center relative"
+            className="bg-off-white border-2 border-[#0A1628] rounded-md shadow-[8px_8px_0_#0A1628] p-8 max-w-sm w-full text-center relative"
             style={{ transform: 'rotate(-1.5deg)' }}
           >
             <button

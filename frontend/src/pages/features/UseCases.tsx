@@ -79,7 +79,7 @@ export default function UseCases() {
           {CASES.map(({ icon: Icon, role, tagline, description, bg }) => (
             <div
               key={role}
-              className="uc-card border-2 border-[#0A1628] rounded-md p-6 bg-white shadow-[4px_4px_0px_#0A1628] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-all flex gap-4 items-start"
+              className="uc-card border-2 border-[#0A1628] rounded-md p-6 bg-off-white shadow-[4px_4px_0px_#0A1628] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-all flex gap-4 items-start"
             >
               <div
                 className="w-12 h-12 shrink-0 border-2 border-[#0A1628] rounded-md flex items-center justify-center shadow-[2px_2px_0_#0A1628]"

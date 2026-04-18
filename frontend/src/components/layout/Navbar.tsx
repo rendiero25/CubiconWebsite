@@ -93,7 +93,7 @@ export default function Navbar({ creditBadgeRef, noBorder }: NavbarProps = {}) {
 
         {/* Mobile Toggle */}
         <button
-          className="cursor-pointer md:hidden p-2 border-2 border-near-black rounded-md"
+          className="cursor-pointer md:hidden p-2 border-2 border-electric-yellow rounded-md text-electric-yellow"
           onClick={() => setMobileOpen(prev => !prev)}
           aria-label="Toggle menu"
         >

@@ -72,7 +72,7 @@ export default function FaqSection() {
           {FAQ_ITEMS.map((item, i) => (
             <div
               key={i}
-              className="faq-item border-2 border-[#0A1628] rounded-md bg-white shadow-[4px_4px_0px_#0A1628] overflow-hidden"
+              className="faq-item border-2 border-[#0A1628] rounded-md bg-off-white shadow-[4px_4px_0px_#0A1628] overflow-hidden"
             >
               <button
               className="cursor-pointer w-full flex items-center justify-between gap-4 px-5 py-4 text-left"
@@ -82,7 +82,7 @@ export default function FaqSection() {
                 </span>
                 <span className={clsx(
                   'shrink-0 w-7 h-7 flex items-center justify-center border-2 border-[#0A1628] rounded-md transition-colors',
-                  openIndex === i ? 'bg-[#FFC300] text-[#0A1628]' : 'bg-white text-[#0A1628]'
+                  openIndex === i ? 'bg-[#FFC300] text-[#0A1628]' : 'bg-off-white text-[#0A1628]'
                 )}>
                   {openIndex === i ? <Minus size={14} /> : <Plus size={14} />}
                 </span>

@@ -36,7 +36,7 @@ export default function HomeLeft() {
           </div>
 
           {/* Headline */}
-          <h1 className="font-display font-bold text-3xl 2xl:text-7xl 4xl:text-8xl text-near-black leading-[1.1]">
+          <h1 className="font-display font-extrabold text-3xl 2xl:text-7xl 4xl:text-8xl text-near-black leading-[1.1]">
             Icons that{' '}
             <span className="relative inline-block">
               <span className="text-electric-yellow">actually</span>
@@ -58,7 +58,7 @@ export default function HomeLeft() {
               onChange={e => setPrompt(e.target.value)}
               onKeyDown={e => e.key === 'Enter' && go()}
               placeholder="Shopping cart, analytics, rocket..."
-              className="flex-1 font-body text-sm border-2 border-near-black rounded-md px-4 py-3 bg-white focus:outline-none focus:border-electric-yellow shadow-[4px_4px_0px_var(--color-near-black)] placeholder:text-near-black/50 transition-shadow"
+              className="flex-1 font-body text-sm border-2 border-near-black rounded-md px-4 py-3 bg-off-white focus:outline-none focus:border-electric-yellow shadow-[4px_4px_0px_var(--color-near-black)] placeholder:text-near-black/50 transition-shadow"
             />
             <button
               onClick={go}

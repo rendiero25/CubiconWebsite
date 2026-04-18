@@ -36,7 +36,7 @@ export default function StepBackground({
               'cursor-pointer flex-1 border-2 border-[#0A1628] rounded-md py-2 font-body text-xs font-medium transition-colors',
               value === opt.value
                 ? 'bg-[#FFC300] text-[#0A1628]'
-                : 'bg-white text-[#0A1628] hover:bg-light-green',
+                : 'bg-off-white text-[#0A1628] hover:bg-light-green',
             )}
           >
             {opt.label}

@@ -65,7 +65,7 @@ export default function HowItWorks() {
         {STEPS.map(({ step, icon: Icon, title, description, color }) => (
           <div
             key={step}
-            className="step-card border-2 border-[#0A1628] rounded-md p-6 shadow-[4px_4px_0px_#0A1628] bg-white flex flex-col gap-4 hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-all"
+            className="step-card border-2 border-[#0A1628] rounded-md p-6 shadow-[4px_4px_0px_#0A1628] bg-off-white flex flex-col gap-4 hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-all"
           >
             <div className="flex items-start justify-between">
               <div
