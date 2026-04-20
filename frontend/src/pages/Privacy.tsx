@@ -1,4 +1,4 @@
-﻿import Navbar from '../components/layout/Navbar'
+﻿import Navbar, { type NavColors } from '../components/layout/Navbar'
 import Footer from '../components/layout/Footer'
 
 const SECTIONS = [
@@ -69,10 +69,38 @@ const SECTIONS = [
   },
 ]
 
+// ─── PRIVACY PAGE — NAVBAR COLOR OVERRIDE ────────────────────────────────────
+const PRIVACY_NAV_COLORS: Partial<NavColors> = {
+  bg:                'bg-near-black',
+  logo:              'text-electric-yellow',
+  logoHover:         'hover:text-light-green',
+  link:              'text-off-white/70',
+  linkHover:         'hover:text-electric-yellow',
+  linkActive:        'text-electric-yellow',
+  creditBadgeBg:     'bg-light-green',
+  creditBadgeBorder: 'border-near-black',
+  creditBadgeText:   'text-near-black',
+  creditBadgeIcon:   'text-electric-yellow',
+  dashboardBg:       'bg-electric-yellow',
+  dashboardText:     'text-near-black',
+  dashboardBorder:   'border-near-black',
+  dashboardShadow:   'shadow-[3px_3px_0px_var(--color-light-green)]',
+  loginText:         'text-electric-yellow',
+  loginHover:        'hover:text-off-white',
+  startFreeBg:       'bg-electric-yellow',
+  startFreeText:     'text-near-black',
+  startFreeBorder:   'border-near-black',
+  startFreeShadow:   'shadow-[3px_3px_0px_var(--color-light-green)]',
+  mobileBg:          'bg-off-white',
+  mobileLinkColor:   'text-near-black',
+  mobileToggle:      'border-electric-yellow text-electric-yellow',
+}
+// ─────────────────────────────────────────────────────────────────────────────
+
 export default function Privacy() {
   return (
     <div className="min-h-screen bg-off-white">
-      <Navbar />
+      <Navbar colors={PRIVACY_NAV_COLORS} />
 
       <section className="py-12 md:py-16 border-b-2 border-[#0A1628] bg-off-white">
         <div className="max-w-7xl mx-auto px-4 md:px-8 lg:px-16">

@@ -1,7 +1,7 @@
 ﻿import { useState, useCallback, useRef, useEffect } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import gsap from 'gsap'
-import Navbar from '../components/layout/Navbar'
+import Navbar, { type NavColors } from '../components/layout/Navbar'
 import LeftPanel from './generate/LeftPanel'
 import RightPanel from './generate/RightPanel'
 import ConfirmModal from './generate/ConfirmModal'
@@ -36,7 +36,33 @@ const DEFAULT_FORM: FormState = {
   variation: false,
 }
 
-// TODO: replace with real auth context once auth is implemented
+// ─── GENERATE APP — NAVBAR COLOR OVERRIDE ────────────────────────────────────
+const GENERATE_NAV_COLORS: Partial<NavColors> = {
+  bg:                'bg-near-black',
+  logo:              'text-electric-yellow',
+  logoHover:         'hover:text-light-green',
+  link:              'text-off-white/70',
+  linkHover:         'hover:text-electric-yellow',
+  linkActive:        'text-electric-yellow',
+  creditBadgeBg:     'bg-light-green',
+  creditBadgeBorder: 'border-near-black',
+  creditBadgeText:   'text-near-black',
+  creditBadgeIcon:   'text-electric-yellow',
+  dashboardBg:       'bg-electric-yellow',
+  dashboardText:     'text-near-black',
+  dashboardBorder:   'border-near-black',
+  dashboardShadow:   'shadow-[3px_3px_0px_var(--color-light-green)]',
+  loginText:         'text-electric-yellow',
+  loginHover:        'hover:text-off-white',
+  startFreeBg:       'bg-electric-yellow',
+  startFreeText:     'text-near-black',
+  startFreeBorder:   'border-near-black',
+  startFreeShadow:   'shadow-[3px_3px_0px_var(--color-light-green)]',
+  mobileBg:          'bg-near-black',
+  mobileLinkColor:   'text-off-white',
+  mobileToggle:      'border-electric-yellow text-electric-yellow',
+}
+// ─────────────────────────────────────────────────────────────────────────────
 
 type ToastState = {
   message: string
@@ -246,7 +272,7 @@ export default function GenerateApp() {
 
   return (
     <div className="min-h-screen bg-off-white flex flex-col">
-      <Navbar creditBadgeRef={creditBadgeRef} />
+      <Navbar creditBadgeRef={creditBadgeRef} colors={GENERATE_NAV_COLORS} />
 
       <main className="flex-1 flex flex-col lg:flex-row gap-6 max-w-7xl mx-auto w-full px-4 md:px-8 lg:px-16 py-6">
         {/* Left Panel */}

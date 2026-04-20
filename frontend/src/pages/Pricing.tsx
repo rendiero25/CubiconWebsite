@@ -2,7 +2,7 @@
 import { Link } from 'react-router-dom'
 import { Check, Zap, ChevronDown, ChevronUp } from 'lucide-react'
 import clsx from 'clsx'
-import Navbar from '../components/layout/Navbar'
+import Navbar, { type NavColors } from '../components/layout/Navbar'
 import Footer from '../components/layout/Footer'
 
 const TIERS = [
@@ -50,6 +50,34 @@ const FAQ = [
   { q: 'Metode pembayaran apa yang tersedia?', a: 'Kami mendukung transfer bank, QRIS, e-wallet (GoPay, OVO, Dana), dan kartu kredit/debit melalui Mayar.id.' },
 ]
 
+// ─── PRICING PAGE — NAVBAR COLOR OVERRIDE ────────────────────────────────────
+const PRICING_NAV_COLORS: Partial<NavColors> = {
+  bg:                'bg-near-black',
+  logo:              'text-electric-yellow',
+  logoHover:         'hover:text-light-green',
+  link:              'text-off-white/70',
+  linkHover:         'hover:text-electric-yellow',
+  linkActive:        'text-electric-yellow',
+  creditBadgeBg:     'bg-light-green',
+  creditBadgeBorder: 'border-near-black',
+  creditBadgeText:   'text-near-black',
+  creditBadgeIcon:   'text-electric-yellow',
+  dashboardBg:       'bg-electric-yellow',
+  dashboardText:     'text-near-black',
+  dashboardBorder:   'border-near-black',
+  dashboardShadow:   'shadow-[3px_3px_0px_var(--color-light-green)]',
+  loginText:         'text-electric-yellow',
+  loginHover:        'hover:text-off-white',
+  startFreeBg:       'bg-electric-yellow',
+  startFreeText:     'text-near-black',
+  startFreeBorder:   'border-near-black',
+  startFreeShadow:   'shadow-[3px_3px_0px_var(--color-light-green)]',
+  mobileBg:          'bg-off-white',
+  mobileLinkColor:   'text-near-black',
+  mobileToggle:      'border-electric-yellow text-electric-yellow',
+}
+// ─────────────────────────────────────────────────────────────────────────────
+
 // Credit cost per icon
 const CREDIT_COST = { '1K': 1, '2K': 2, '4K': 3 }
 
@@ -63,7 +91,7 @@ export default function Pricing() {
 
   return (
     <div className="min-h-screen bg-off-white">
-      <Navbar />
+      <Navbar colors={PRICING_NAV_COLORS} />
 
       {/* Header */}
       <section className="py-12 md:py-20 border-b-2 border-near-black bg-off-white text-center">

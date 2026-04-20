@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import Navbar from '../components/layout/Navbar'
+import Navbar, { type NavColors } from '../components/layout/Navbar'
 import Footer from '../components/layout/Footer'
 import { Link } from 'react-router-dom'
 import { ArrowRight, Sparkles, Wand2, Box, ImageDown, Eraser, Zap, FileImage, History, CreditCard } from 'lucide-react'
@@ -18,6 +18,34 @@ const FEATURES = [
 ]
 
 gsap.registerPlugin(ScrollTrigger)
+
+// ─── FEATURES PAGE — NAVBAR COLOR OVERRIDE ───────────────────────────────────
+const FEATURES_NAV_COLORS: Partial<NavColors> = {
+  bg:                'bg-electric-yellow',
+  logo:              'text-near-black',
+  logoHover:         'hover:text-off-white',
+  link:              'text-near-black',
+  linkHover:         'hover:text-off-white',
+  linkActive:        'text-off-white',
+  creditBadgeBg:     'bg-near-black',
+  creditBadgeBorder: 'border-near-black',
+  creditBadgeText:   'text-off-white',
+  creditBadgeIcon:   'text-electric-yellow',
+  dashboardBg:       'bg-near-black',
+  dashboardText:     'text-electric-yellow',
+  dashboardBorder:   'border-near-black',
+  dashboardShadow:   'shadow-[3px_3px_0px_var(--color-off-white)]',
+  loginText:         'text-near-black',
+  loginHover:        'hover:text-off-white',
+  startFreeBg:       'bg-near-black',
+  startFreeText:     'text-electric-yellow',
+  startFreeBorder:   'border-near-black',
+  startFreeShadow:   'shadow-[3px_3px_0px_var(--color-off-white)]',
+  mobileBg:          'bg-electric-yellow',
+  mobileLinkColor:   'text-near-black',
+  mobileToggle:      'border-near-black text-near-black',
+}
+// ─────────────────────────────────────────────────────────────────────────────
 
 const PANELS = 3
 
@@ -53,7 +81,7 @@ export default function Features() {
   return (
     <div className="bg-near-black">
       <div ref={containerRef} className="xl:h-screen xl:flex xl:flex-col">
-        <Navbar noBorder />
+        <Navbar noBorder colors={FEATURES_NAV_COLORS} />
 
         <div className="xl:flex-1 xl:min-h-0 xl:overflow-hidden">
           <div

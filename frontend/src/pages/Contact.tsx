@@ -2,7 +2,7 @@
 import { Link } from 'react-router-dom'
 import { Mail, Clock, Send, CheckCircle, ExternalLink } from 'lucide-react'
 import clsx from 'clsx'
-import Navbar from '../components/layout/Navbar'
+import Navbar, { type NavColors } from '../components/layout/Navbar'
 import Footer from '../components/layout/Footer'
 
 const SUBJECTS = ['General', 'Billing', 'Bug Report', 'Partnership']
@@ -19,6 +19,34 @@ interface FormState {
   subject: string
   message: string
 }
+
+// ─── CONTACT PAGE — NAVBAR COLOR OVERRIDE ────────────────────────────────────
+const CONTACT_NAV_COLORS: Partial<NavColors> = {
+  bg:                'bg-near-black',
+  logo:              'text-electric-yellow',
+  logoHover:         'hover:text-light-green',
+  link:              'text-off-white/70',
+  linkHover:         'hover:text-electric-yellow',
+  linkActive:        'text-electric-yellow',
+  creditBadgeBg:     'bg-light-green',
+  creditBadgeBorder: 'border-near-black',
+  creditBadgeText:   'text-near-black',
+  creditBadgeIcon:   'text-electric-yellow',
+  dashboardBg:       'bg-electric-yellow',
+  dashboardText:     'text-near-black',
+  dashboardBorder:   'border-near-black',
+  dashboardShadow:   'shadow-[3px_3px_0px_var(--color-light-green)]',
+  loginText:         'text-electric-yellow',
+  loginHover:        'hover:text-off-white',
+  startFreeBg:       'bg-electric-yellow',
+  startFreeText:     'text-near-black',
+  startFreeBorder:   'border-near-black',
+  startFreeShadow:   'shadow-[3px_3px_0px_var(--color-light-green)]',
+  mobileBg:          'bg-off-white',
+  mobileLinkColor:   'text-near-black',
+  mobileToggle:      'border-electric-yellow text-electric-yellow',
+}
+// ─────────────────────────────────────────────────────────────────────────────
 
 const EMPTY_FORM: FormState = { name: '', email: '', subject: 'General', message: '' }
 
@@ -55,7 +83,7 @@ export default function Contact() {
 
   return (
     <div className="min-h-screen bg-off-white">
-      <Navbar />
+      <Navbar colors={CONTACT_NAV_COLORS} />
 
       {/* Header */}
       <section className="py-12 md:py-16 border-b-2 border-[#0A1628] bg-off-white">
