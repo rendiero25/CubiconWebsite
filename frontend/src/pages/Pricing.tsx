@@ -1,6 +1,6 @@
 ﻿import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { Check, Zap, ChevronDown, ChevronUp } from 'lucide-react'
+import { Check, Zap, ChevronDown } from 'lucide-react'
 import clsx from 'clsx'
 import Navbar, { type NavColors } from '../components/layout/Navbar'
 import Footer from '../components/layout/Footer'
@@ -9,7 +9,7 @@ const TIERS = [
   {
     name: 'Starter',
     credits: 30,
-    price: 'Rp39.000',
+    price: 'Rp 39.000',
     badge: null,
     features: ['30 credits', '1K & 2K resolution', 'Transparent background', 'PNG export', 'Basic history (7 days)'],
     cta: 'Get Starter',
@@ -18,7 +18,7 @@ const TIERS = [
   {
     name: 'Basic',
     credits: 100,
-    price: 'Rp129.000',
+    price: 'Rp 129.000',
     badge: null,
     features: ['100 credits', 'All resolutions (1K–4K)', 'Transparent + Solid + Gradient BG', 'PNG export', 'History 30 days', 'Share to Explore'],
     cta: 'Get Basic',
@@ -27,7 +27,7 @@ const TIERS = [
   {
     name: 'Pro',
     credits: 300,
-    price: 'Rp399.000',
+    price: 'Rp 399.000',
     badge: '🔥 Popular',
     features: ['300 credits', 'All resolutions', 'All background types', 'Batch generation up to 10', 'Style reference upload', 'Priority render queue', 'Variations ×3', 'Unlimited history'],
     cta: 'Get Pro',
@@ -36,7 +36,7 @@ const TIERS = [
   {
     name: 'Studio',
     credits: 1000,
-    price: 'Rp1.299.000',
+    price: 'Rp 1.299.000',
     badge: '💎 Best Value',
     features: ['1000 credits', 'All Pro features', 'Batch up to 50 icons', 'Dedicated support', 'Commercial license', 'API access (coming soon)'],
     cta: 'Get Studio',
@@ -50,12 +50,11 @@ const FAQ = [
   { q: 'Metode pembayaran apa yang tersedia?', a: 'Kami mendukung transfer bank, QRIS, e-wallet (GoPay, OVO, Dana), dan kartu kredit/debit melalui Mayar.id.' },
 ]
 
-// ─── PRICING PAGE — NAVBAR COLOR OVERRIDE ────────────────────────────────────
 const PRICING_NAV_COLORS: Partial<NavColors> = {
   bg:                'bg-near-black',
   logo:              'text-electric-yellow',
   logoHover:         'hover:text-light-green',
-  link:              'text-off-white/70',
+  link:              'text-off-white',
   linkHover:         'hover:text-electric-yellow',
   linkActive:        'text-electric-yellow',
   creditBadgeBg:     'bg-light-green',
@@ -76,217 +75,260 @@ const PRICING_NAV_COLORS: Partial<NavColors> = {
   mobileLinkColor:   'text-near-black',
   mobileToggle:      'border-electric-yellow text-electric-yellow',
 }
-// ─────────────────────────────────────────────────────────────────────────────
 
-// Credit cost per icon
 const CREDIT_COST = { '1K': 1, '2K': 2, '4K': 3 }
 
 export default function Pricing() {
   const [iconCount, setIconCount] = useState(10)
-  const [resolution, setResolution] = useState<'1K' | '2K' | '4K'>('2K')
+  const [resolutions, setResolutions] = useState<Set<'1K' | '2K' | '4K'>>(new Set(['2K']))
   const [openFaq, setOpenFaq] = useState<number | null>(null)
 
-  const totalCost = iconCount * CREDIT_COST[resolution]
+  const toggleResolution = (r: '1K' | '2K' | '4K') => {
+    setResolutions(prev => {
+      if (prev.has(r) && prev.size === 1) return prev
+      const next = new Set(prev)
+      next.has(r) ? next.delete(r) : next.add(r)
+      return next
+    })
+  }
+
+  const costPerIcon = (['1K', '2K', '4K'] as const).reduce(
+    (sum, r) => sum + (resolutions.has(r) ? CREDIT_COST[r] : 0), 0
+  )
+  const totalCost = iconCount * costPerIcon
   const recommended = TIERS.find((t) => t.credits >= totalCost) ?? TIERS[TIERS.length - 1]
 
   return (
-    <div className="min-h-screen bg-off-white">
-      <Navbar colors={PRICING_NAV_COLORS} />
+    <div className="flex flex-col bg-near-black min-h-screen lg:h-screen lg:overflow-hidden">
+      <Navbar noBorder colors={PRICING_NAV_COLORS} />
 
-      {/* Header */}
-      <section className="py-12 md:py-20 border-b-2 border-near-black bg-off-white text-center">
-        <div className="max-w-7xl mx-auto px-4 md:px-8 lg:px-16 ">
-          <span className="inline-block bg-light-green border-2 border-near-black px-3 py-1 font-body text-xs font-semibold uppercase tracking-wider mb-4">
-            Pricing
-          </span>
-          <h1 className="font-display font-bold text-4xl md:text-5xl text-near-black">
-            Bayar sesuai kebutuhan.
-          </h1>
-          <p className="font-body text-base text-near-black/60 mt-3 max-w-md mx-auto">
-            Tidak ada subscription bulanan. Beli credit sekali, pakai selamanya.
-          </p>
-        </div>
-      </section>
+      <div className="px-3 4xl:mx-auto flex-1 flex flex-col lg:flex-row lg:min-h-0 lg:overflow-hidden pb-3">
 
-      {/* Pricing Cards */}
-      <section className="py-14 md:py-20">
-        <div className="max-w-7xl mx-auto px-4 md:px-8 lg:px-16 ">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-            {TIERS.map((tier) => (
-              <div
-                key={tier.name}
-                className={clsx(
-                  'relative border-2 border-near-black rounded-md flex flex-col',
-                  tier.highlight
-                    ? 'bg-electric-yellow text-near-black shadow-[6px_6px_0_near-black]'
-                    : 'bg-off-white text-near-black shadow-[4px_4px_0_near-black]'
-                )}
-              >
-                {tier.badge && (
-                  <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 whitespace-nowrap bg-near-black text-off-white font-display font-bold text-xs px-3 py-1 rounded-full border-2 border-near-black">
-                    {tier.badge}
+        {/* ── LEFT: Header + Pricing Cards ── */}
+        <div className="w-full lg:w-[58%] shrink-0 flex flex-col pb-2 pr-0 lg:pr-1.5 mb-1 lg:mb-0">
+          <div className="flex-1 py-7 sm:py-8 lg:py-10 2xl:py-14 flex flex-col gap-5 bg-off-white border-2 border-near-black rounded-md overflow-hidden shadow-[3px_3px_0px_var(--color-electric-yellow)] px-4 sm:px-6 md:px-8">
+
+            {/* Header */}
+            <div className="shrink-0">
+              <span className="inline-block bg-light-green border-2 border-near-black px-3 py-1 font-body text-xs font-semibold uppercase tracking-wider mb-3 shadow-[2px_2px_0px_var(--color-near-black)]">
+                Pricing
+              </span>
+              <h1 className="font-display font-extrabold text-3xl md:text-4xl lg:text-4xl 2xl:text-5xl text-near-black leading-[1.1]">
+                Bayar sesuai{' '}
+                <span className="relative inline-block">
+                  <span className="text-electric-yellow">kebutuhan.</span>
+                  <span className="absolute -bottom-0.5 left-0 w-full h-0.75 bg-electric-yellow rounded-sm" />
+                </span>
+              </h1>
+              <p className="font-body text-sm text-near-black mt-2">
+                Tidak ada subscription. Beli credit sekali, pakai selamanya.
+              </p>
+            </div>
+
+            {/* Pricing Cards — 2×2 grid */}
+            <div className="grid grid-cols-2 gap-3 flex-1 min-h-0">
+              {TIERS.map((tier) => (
+                <div
+                  key={tier.name}
+                  className={clsx(
+                    'relative border-2 border-near-black rounded-md flex flex-col overflow-hidden',
+                    tier.highlight
+                      ? 'bg-electric-yellow shadow-[3px_3px_0px_var(--color-near-black)]'
+                      : 'bg-off-white shadow-[3px_3px_0px_var(--color-near-black)]'
+                  )}
+                >
+                  {tier.badge && (
+                    <div className="absolute -top-px left-0 right-0 flex justify-center">
+                      <span className="bg-near-black text-off-white font-display font-bold text-[9px] px-2.5 py-1 rounded-b-md border-x-2 border-b-2 border-near-black whitespace-nowrap">
+                        {tier.badge}
+                      </span>
+                    </div>
+                  )}
+
+                  <div className={clsx('p-3 border-b-2 mt-0', tier.badge ? 'pt-5' : '', tier.highlight ? 'border-near-black/20' : 'border-near-black/10')}>
+                    <p className="mt-2 sm:mt-0 font-display font-bold text-sm text-near-black">{tier.name}</p>
+                    <p className="font-display font-extrabold text-xs xl:text-xl text-near-black mt-0.5">{tier.price}</p>
+                    <div className="flex items-center gap-1 mt-1">
+                      <Zap size={11} className={tier.highlight ? 'text-near-black' : 'text-electric-yellow'} />
+                      <span className="font-body text-xs text-near-black">{tier.credits} credits</span>
+                    </div>
                   </div>
-                )}
 
-                <div className={clsx('p-6 border-b-2', tier.highlight ? 'border-white/30' : 'border-near-black')}>
-                  <p className="font-display font-bold text-lg">{tier.name}</p>
-                  <p className={clsx('font-display font-extrabold text-3xl mt-1', tier.highlight ? 'text-off-white' : 'text-near-black')}>
-                    {tier.price}
-                  </p>
-                  <div className={clsx('flex items-center gap-1.5 mt-2', tier.highlight ? 'text-off-white/80' : 'text-near-black/60')}>
-                    <Zap size={13} />
-                    <span className="font-body text-sm">{tier.credits} credits</span>
+                  <div className="p-3 flex flex-col gap-1.5 flex-1 min-h-0 overflow-hidden">
+                    {tier.features.slice(0, 4).map((f) => (
+                      <div key={f} className="flex items-start gap-1.5">
+                        <Check size={11} className={clsx('mt-0.5 shrink-0', tier.highlight ? 'text-near-black' : 'text-electric-yellow')} />
+                        <span className="font-body text-xs text-near-black leading-snug">{f}</span>
+                      </div>
+                    ))}
+                    {tier.features.length > 4 && (
+                      <span className="font-body text-[10px] text-near-black">+{tier.features.length - 4} more</span>
+                    )}
+                  </div>
+
+                  <div className="p-3 pt-0 shrink-0">
+                    <Link
+                      to="/app"
+                      className={clsx(
+                        'block text-center font-display font-bold text-xs px-3 py-2 border-2 border-near-black rounded-md transition-all hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none',
+                        tier.highlight
+                          ? 'bg-near-black text-off-white shadow-[2px_2px_0px_var(--color-light-green)]'
+                          : 'bg-electric-yellow text-near-black shadow-[2px_2px_0px_var(--color-near-black)]'
+                      )}
+                    >
+                      {tier.cta}
+                    </Link>
                   </div>
                 </div>
+              ))}
+            </div>
 
-                <div className="p-6 flex flex-col gap-3 flex-1">
-                  {tier.features.map((f) => (
-                    <div key={f} className="flex items-start gap-2.5">
-                      <Check size={14} className={clsx('mt-0.5 shrink-0', tier.highlight ? 'text-near-black' : 'text-electric-yellow')} />
-                      <span className={clsx('font-body text-sm', tier.highlight ? 'text-off-white/90' : 'text-near-black/80')}>{f}</span>
+          </div>
+        </div>
+
+        {/* ── RIGHT: Credit Calculator + FAQ ── */}
+        <div className="flex-1 min-h-0 overflow-y-auto lg:overflow-hidden pb-2 pl-1.5 pr-1">
+          <div className="flex flex-col gap-2 lg:h-full">
+
+            {/* Credit Calculator */}
+            <div className="bg-light-green border-2 border-near-black rounded-md p-4 sm:p-5 flex flex-col gap-4 shadow-[3px_3px_0px_var(--color-off-white)]">
+              <div>
+                <span className="font-body text-[10px] font-bold text-near-black uppercase">Credit Calculator</span>
+                <h2 className="font-display font-semibold text-lg md:text-xl 2xl:text-2xl text-near-black mt-1 leading-snug">
+                  Berapa icon yang kamu butuhkan?
+                </h2>
+                <p className="font-body text-xs text-near-black mt-1">
+                  Masukkan estimasi, kami rekomendasikan paket terbaik.
+                </p>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div className="flex flex-col gap-1.5">
+                  <label className="font-body text-xs font-medium text-near-black">Jumlah icon</label>
+                  <input
+                    type="number"
+                    min={1}
+                    max={9999}
+                    value={iconCount}
+                    onChange={(e) => setIconCount(Math.max(1, parseInt(e.target.value) || 1))}
+                    className="border-2 border-near-black rounded-md px-3 py-2.5 font-body text-sm bg-off-white outline-none focus:border-electric-yellow transition-colors shadow-[2px_2px_0px_var(--color-near-black)]"
+                  />
+                </div>
+                <div className="flex flex-col gap-1.5">
+                  <label className="font-body text-xs font-medium text-near-black">Resolusi</label>
+                  <div className="flex gap-2">
+                    {(['1K', '2K', '4K'] as const).map((r) => (
+                      <button
+                        key={r}
+                        onClick={() => toggleResolution(r)}
+                        className={clsx(
+                          'cursor-pointer flex-1 py-2.5 border-2 border-near-black rounded-md font-display font-bold text-sm transition-all',
+                          resolutions.has(r)
+                            ? 'bg-near-black text-off-white'
+                            : 'bg-off-white text-near-black hover:bg-electric-yellow'
+                        )}
+                      >
+                        {r}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              <div className="border-2 border-near-black rounded-md bg-off-white shadow-[2px_2px_0px_var(--color-near-black)] overflow-hidden">
+                {/* Per-resolution breakdown */}
+                <div className="divide-y divide-near-black">
+                  {(['1K', '2K', '4K'] as const).filter(r => resolutions.has(r)).map(r => (
+                    <div key={r} className="flex items-center justify-between px-4 py-2.5">
+                      <div className="flex items-center gap-2">
+                        <span className="font-display font-bold text-xs bg-near-black text-off-white px-1.5 py-0.5 rounded">{r}</span>
+                        <span className="font-body text-xs text-near-black">{iconCount} icon × {CREDIT_COST[r]} cr</span>
+                      </div>
+                      <span className="font-display font-bold text-sm text-near-black">{iconCount * CREDIT_COST[r]} cr</span>
                     </div>
                   ))}
                 </div>
-
-                <div className="p-6 pt-0">
-                  <Link
-                    to="/app"
-                    className={clsx(
-                      'block text-center font-display font-bold px-4 py-3 border-2 border-near-black rounded-md transition-all hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none',
-                      tier.highlight
-                        ? 'bg-off-white text-electric-yellow shadow-[3px_3px_0_near-black]'
-                        : 'bg-electric-yellow text-near-black shadow-[3px_3px_0_near-black]'
-                    )}
-                  >
-                    {tier.cta}
-                  </Link>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Credit Calculator */}
-      <section className="py-14 bg-off-white border-t-2 border-b-2 border-near-black">
-        <div className="max-w-3xl mx-auto px-4 md:px-8 lg:px-16">
-          <div className="text-center mb-8">
-            <h2 className="font-display font-semibold text-2xl md:text-3xl text-near-black">
-              Berapa icon yang kamu butuhkan?
-            </h2>
-            <p className="font-body text-sm text-near-black/60 mt-2">
-              Masukkan estimasi, kami rekomendasikan paket terbaik.
-            </p>
-          </div>
-
-          <div className="border-2 border-near-black rounded-md bg-off-white p-6 shadow-[4px_4px_0_near-black] flex flex-col gap-5">
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div className="flex flex-col gap-2">
-                <label className="font-body text-xs font-medium text-near-black">Jumlah icon</label>
-                <input
-                  type="number"
-                  min={1}
-                  max={9999}
-                  value={iconCount}
-                  onChange={(e) => setIconCount(Math.max(1, parseInt(e.target.value) || 1))}
-                  className="border-2 border-near-black rounded-md px-3 py-2.5 font-body text-sm bg-off-white outline-none focus:border-electric-yellow transition-colors"
-                />
-              </div>
-              <div className="flex flex-col gap-2">
-                <label className="font-body text-xs font-medium text-near-black">Resolusi</label>
-                <div className="flex gap-2">
-                  {(['1K', '2K', '4K'] as const).map((r) => (
-                    <button
-                      key={r}
-                      onClick={() => setResolution(r)}
-                      className={clsx(
-                        'cursor-pointer flex-1 py-2.5 border-2 border-near-black rounded-md font-display font-bold text-sm transition-all',
-                        resolution === r
-                          ? 'bg-near-black text-off-white'
-                          : 'bg-off-white text-near-black hover:bg-light-green'
-                      )}
-                    >
-                      {r}
-                    </button>
-                  ))}
-                </div>
-              </div>
-            </div>
-
-            <div className="border-2 border-near-black rounded-md bg-off-white p-4 flex items-center justify-between gap-4 flex-wrap">
-              <div>
-                <p className="font-body text-xs text-near-black/60">Estimasi credit dibutuhkan</p>
-                <p className="font-display font-extrabold text-2xl text-near-black mt-0.5">
-                  {totalCost} <span className="text-base font-semibold text-near-black/60">credits</span>
-                </p>
-              </div>
-              <div className="text-right">
-                <p className="font-body text-xs text-near-black/60">Rekomendasi paket</p>
-                <p className={clsx('font-display font-bold text-lg', recommended.highlight ? 'text-electric-yellow' : 'text-near-black')}>
-                  {recommended.name}
-                  <span className="font-body font-normal text-sm text-near-black/60 ml-1.5">{recommended.price}</span>
-                </p>
-              </div>
-            </div>
-
-            <Link
-              to="/app"
-              className="text-center cursor-pointer bg-electric-yellow text-near-black font-display font-bold px-6 py-3 border-2 border-near-black rounded-md shadow-[4px_4px_0_near-black] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-all"
-            >
-              Mulai dengan {recommended.name}
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* FAQ */}
-      <section className="py-14">
-        <div className="max-w-2xl mx-auto px-4 md:px-8 lg:px-16">
-          <h2 className="font-display font-semibold text-2xl text-near-black text-center mb-8">
-            Pertanyaan umum
-          </h2>
-          <div className="flex flex-col gap-3">
-            {FAQ.map((item, i) => (
-              <div key={i} className="border-2 border-near-black rounded-md bg-off-white shadow-[3px_3px_0_near-black] overflow-hidden">
-                <button
-                  onClick={() => setOpenFaq(openFaq === i ? null : i)}
-                  className="cursor-pointer w-full flex items-center justify-between px-5 py-4 text-left"
-                >
-                  <span className="font-display font-semibold text-sm text-near-black">{item.q}</span>
-                  {openFaq === i ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
-                </button>
-                {openFaq === i && (
-                  <div className="px-5 pb-4 border-t-2 border-near-black pt-3">
-                    <p className="font-body text-sm text-near-black/70 leading-relaxed">{item.a}</p>
+                {/* Total */}
+                <div className="flex items-center justify-between gap-4 px-4 py-3 bg-near-black/5 border-t-2 border-near-black/10">
+                  <div>
+                    <p className="font-body text-xs text-near-black">Total estimasi</p>
+                    <p className="font-display font-extrabold text-2xl text-near-black mt-0.5">
+                      {totalCost} <span className="text-sm font-semibold text-near-black">credits</span>
+                    </p>
                   </div>
-                )}
+                  <div className="text-right">
+                    <p className="font-body text-xs text-near-black">Total icon dihasilkan</p>
+                    <p className="font-display font-extrabold text-2xl text-near-black mt-0.5">
+                      {iconCount * resolutions.size}
+                      <span className="text-sm font-semibold text-near-black ml-1">icon</span>
+                    </p>
+                    {resolutions.size > 1 && (
+                      <p className="font-body text-[10px] text-near-black mt-0.5">
+                        {iconCount} × {resolutions.size} resolusi
+                      </p>
+                    )}
+                  </div>
+                </div>
+                {/* Recommendation */}
+                <div className="flex items-center justify-between gap-4 px-4 py-2.5 border-t border-near-black/10">
+                  <p className="font-body text-xs text-near-black">Rekomendasi paket</p>
+                  <p className={clsx('font-display font-bold text-base', recommended.highlight ? 'text-electric-yellow' : 'text-near-black')}>
+                    {recommended.name}
+                    <span className="font-body font-normal text-sm text-near-black ml-1.5">{recommended.price}</span>
+                  </p>
+                </div>
               </div>
-            ))}
+
+              <Link
+                to="/app"
+                className="text-center cursor-pointer bg-electric-yellow text-near-black font-display font-bold px-6 py-3 border-2 border-near-black rounded-md shadow-[3px_3px_0px_var(--color-near-black)] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-all text-sm"
+              >
+                Mulai dengan {recommended.name}
+              </Link>
+            </div>
+
+            {/* FAQ */}
+            <div className="bg-near-black border-2 border-electric-yellow rounded-md p-4 sm:p-5 flex flex-col gap-3 shadow-[3px_3px_0px_var(--color-electric-yellow)] flex-1">
+              <span className="font-body text-[10px] font-bold text-electric-yellow uppercase shrink-0">FAQ</span>
+
+              <div className="flex flex-col gap-2">
+                {FAQ.map((item, i) => (
+                  <div key={i} className="border border-electric-yellow rounded-md overflow-hidden">
+                    <button
+                      onClick={() => setOpenFaq(openFaq === i ? null : i)}
+                      className="cursor-pointer w-full text-left flex items-center justify-between gap-3 p-3 transition-colors"
+                    >
+                      <span className="font-display font-semibold text-xs text-off-white hover:text-electric-yellow">{item.q}</span>
+                      <ChevronDown
+                        size={13}
+                        className={clsx('shrink-0 text-electric-yellow transition-transform', openFaq === i && 'rotate-180')}
+                      />
+                    </button>
+                    {openFaq === i && (
+                      <div className="px-3 pb-3">
+                        <p className="font-body text-xs text-electric-yellow leading-relaxed">{item.a}</p>
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+
+              <div className="mt-auto pt-2 border-t border-electric-yellow">
+                <p className="font-body text-xs text-off-white">
+                  Masih ada pertanyaan?{' '}
+                  <a href="mailto:hello@cubicon.app" className="text-electric-yellow hover:underline">
+                    hello@cubicon.app
+                  </a>
+                </p>
+              </div>
+            </div>
+
           </div>
         </div>
-      </section>
 
-      {/* CTA Banner */}
-      <section className="py-14 bg-near-black border-t-2 border-near-black">
-        <div className="max-w-7xl mx-auto px-4 md:px-8 lg:px-16  flex flex-col md:flex-row items-center justify-between gap-6">
-          <div>
-            <h2 className="font-display font-bold text-2xl md:text-3xl text-off-white">
-              Mulai gratis, upgrade kapanpun.
-            </h2>
-            <p className="font-body text-sm text-off-white/60 mt-1">
-              2 icon gratis untuk semua user baru. Tidak perlu kartu kredit.
-            </p>
-          </div>
-          <Link
-            to="/signup"
-            className="shrink-0 cursor-pointer bg-off-white text-near-black font-display font-bold px-6 py-3 border-2 border-white rounded-md shadow-[4px_4px_0_rgba(255,255,255,0.2)] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-all"
-          >
-            Daftar Gratis →
-          </Link>
-        </div>
-      </section>
+      </div>
 
-      <Footer />
+      <Footer noBorder />
     </div>
   )
 }
