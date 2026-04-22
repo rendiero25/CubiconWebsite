@@ -5,7 +5,8 @@
       "Bash(supabase --version)",
       "Bash(psql --version)",
       "Bash(node -e ':*)",
-      "Bash(npm start *)"
+      "Bash(npm start *)",
+      "Bash(npm run *)"
     ]
   }
 }

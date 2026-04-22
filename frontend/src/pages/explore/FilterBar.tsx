@@ -1,87 +1,68 @@
-﻿import { Search, X } from 'lucide-react'
 import clsx from 'clsx'
 
-const STYLES = ['Clay Pastel', 'Realistic Dark', 'Neon Flat', 'Matte Minimal', 'Glass Morphism']
-const RESOLUTIONS = ['1K', '2K', '4K']
-const SORTS = [
-  { label: 'Latest', value: 'latest' },
-  { label: 'Trending', value: 'trending' },
+const STYLES = [
+  { value: 'clay-pastel',      label: 'Clay Pastel' },
+  { value: 'realistic-dark',   label: 'Realistic Dark' },
+  { value: 'neon-flat',        label: 'Neon Flat' },
+  { value: 'matte-minimal',    label: 'Matte Minimal' },
+  { value: 'glass-morphism',   label: 'Glass Morphism' },
 ]
 
 interface FilterBarProps {
-  search: string
   style: string
-  resolution: string
   sort: string
   onChange: (key: string, value: string) => void
 }
 
-export default function FilterBar({ search, style, resolution, sort, onChange }: FilterBarProps) {
+export default function FilterBar({ style, sort, onChange }: FilterBarProps) {
   return (
-    <div className="flex flex-col gap-3">
-      {/* Search */}
-      <div className="relative">
-        <Search size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-near-black/40 pointer-events-none" />
-        <input
-          value={search}
-          onChange={(e) => onChange('search', e.target.value)}
-          placeholder="Search icons by description..."
-          className="w-full pl-9 pr-9 py-2.5 border-2 border-[#0A1628] rounded-md font-body text-sm bg-off-white outline-none focus:border-electric-yellow transition-colors"
-        />
-        {search && (
+    <div className="flex flex-col gap-4">
+      {/* Style pills + Sort toggle */}
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        {/* Style pills */}
+        <div className="flex flex-wrap gap-2">
           <button
-            onClick={() => onChange('search', '')}
-            className="cursor-pointer absolute right-3 top-1/2 -translate-y-1/2 text-near-black/40 hover:text-near-black"
+            onClick={() => onChange('style', '')}
+            className={clsx(
+              'cursor-pointer border-2 border-[#0A1628] rounded-full px-4 py-1.5 font-body text-xs font-semibold transition-all',
+              !style
+                ? 'bg-near-black text-off-white shadow-[2px_2px_0px_#0A1628]'
+                : 'bg-off-white text-near-black hover:bg-light-green'
+            )}
           >
-            <X size={14} />
+            All
           </button>
-        )}
-      </div>
-
-      {/* Filter row */}
-      <div className="flex flex-wrap items-center gap-2">
-        <select
-          value={style}
-          onChange={(e) => onChange('style', e.target.value)}
-          className={clsx(
-            'cursor-pointer border-2 border-[#0A1628] rounded-md px-3 py-1.5 font-body text-xs font-medium bg-off-white outline-none transition-colors',
-            style && 'bg-light-green'
-          )}
-        >
-          <option value="">All Styles</option>
           {STYLES.map((s) => (
-            <option key={s} value={s}>{s}</option>
-          ))}
-        </select>
-
-        <select
-          value={resolution}
-          onChange={(e) => onChange('resolution', e.target.value)}
-          className={clsx(
-            'cursor-pointer border-2 border-[#0A1628] rounded-md px-3 py-1.5 font-body text-xs font-medium bg-off-white outline-none transition-colors',
-            resolution && 'bg-light-green'
-          )}
-        >
-          <option value="">All Resolutions</option>
-          {RESOLUTIONS.map((r) => (
-            <option key={r} value={r}>{r}</option>
-          ))}
-        </select>
-
-        {/* Sort — pushed to right */}
-        <div className="flex gap-1 ml-auto">
-          {SORTS.map((s) => (
             <button
               key={s.value}
-              onClick={() => onChange('sort', s.value)}
+              onClick={() => onChange('style', style === s.value ? '' : s.value)}
               className={clsx(
-                'cursor-pointer border-2 border-[#0A1628] rounded-md px-3 py-1.5 font-body text-xs font-medium transition-all',
-                sort === s.value
-                  ? 'bg-near-black text-off-white'
+                'cursor-pointer border-2 border-[#0A1628] rounded-full px-4 py-1.5 font-body text-xs font-semibold transition-all',
+                style === s.value
+                  ? 'bg-near-black text-off-white shadow-[2px_2px_0px_#0A1628]'
                   : 'bg-off-white text-near-black hover:bg-light-green'
               )}
             >
               {s.label}
+            </button>
+          ))}
+        </div>
+
+        {/* Latest / Trending toggle */}
+        <div className="flex border-2 border-[#0A1628] rounded-md overflow-hidden shrink-0">
+          {(['latest', 'trending'] as const).map((s) => (
+            <button
+              key={s}
+              onClick={() => onChange('sort', s)}
+              className={clsx(
+                'cursor-pointer px-4 py-1.5 font-body text-xs font-semibold capitalize transition-all',
+                sort === s
+                  ? 'bg-near-black text-off-white'
+                  : 'bg-off-white text-near-black hover:bg-light-green',
+                s === 'trending' && 'border-l-2 border-[#0A1628]'
+              )}
+            >
+              {s === 'latest' ? 'Latest' : 'Trending'}
             </button>
           ))}
         </div>
