@@ -82,6 +82,7 @@ export default function Pricing() {
   const [iconCount, setIconCount] = useState(10)
   const [resolutions, setResolutions] = useState<Set<'1K' | '2K' | '4K'>>(new Set(['2K']))
   const [openFaq, setOpenFaq] = useState<number | null>(null)
+  const [openFeatureTier, setOpenFeatureTier] = useState<string | null>(null)
 
   const toggleResolution = (r: '1K' | '2K' | '4K') => {
     setResolutions(prev => {
@@ -99,7 +100,7 @@ export default function Pricing() {
   const recommended = TIERS.find((t) => t.credits >= totalCost) ?? TIERS[TIERS.length - 1]
 
   return (
-    <div className="flex flex-col bg-near-black min-h-screen lg:h-screen lg:overflow-hidden">
+    <div className="flex flex-col bg-near-black min-h-screen lg:h-screen lg:overflow-hidden" onClick={() => setOpenFeatureTier(null)}>
       <Navbar noBorder colors={PRICING_NAV_COLORS} />
 
       <div className="px-3 4xl:mx-auto flex-1 flex flex-col lg:flex-row lg:min-h-0 lg:overflow-hidden pb-3">
@@ -127,14 +128,15 @@ export default function Pricing() {
 
             {/* Pricing Cards — 2×2 grid */}
             <div className="grid grid-cols-2 gap-3 flex-1 min-h-0">
-              {TIERS.map((tier) => (
+              {TIERS.map((tier, tierIdx) => (
                 <div
                   key={tier.name}
                   className={clsx(
-                    'relative border-2 border-near-black rounded-md flex flex-col overflow-hidden',
+                    'relative border-2 border-near-black rounded-md flex flex-col',
                     tier.highlight
                       ? 'bg-electric-yellow shadow-[3px_3px_0px_var(--color-near-black)]'
-                      : 'bg-off-white shadow-[3px_3px_0px_var(--color-near-black)]'
+                      : 'bg-off-white shadow-[3px_3px_0px_var(--color-near-black)]',
+                    openFeatureTier === tier.name ? 'z-50' : 'z-0'
                   )}
                 >
                   {tier.badge && (
@@ -155,15 +157,23 @@ export default function Pricing() {
                   </div>
 
                   <div className="p-3 flex flex-col gap-1.5 flex-1 min-h-0 overflow-hidden">
-                    {tier.features.slice(0, 4).map((f) => (
-                      <div key={f} className="flex items-start gap-1.5">
+                    {tier.features.map((f, idx) => (
+                      <div key={f} className={clsx('flex items-start gap-1.5', idx <= 3 && 'lg:hidden 2xl:flex', idx >= 4 && 'lg:hidden 3xl:flex')}>
                         <Check size={11} className={clsx('mt-0.5 shrink-0', tier.highlight ? 'text-near-black' : 'text-electric-yellow')} />
-                        <span className="font-body text-xs text-near-black leading-snug">{f}</span>
+                        <span className="font-body text-xs text-near-black leading-snug">{f}</span> 
                       </div>
                     ))}
-                    {tier.features.length > 4 && (
-                      <span className="font-body text-[10px] text-near-black">+{tier.features.length - 4} more</span>
-                    )}
+
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        setOpenFeatureTier(openFeatureTier === tier.name ? null : tier.name)
+                      }}
+                      className="hidden lg:flex 3xl:hidden mt-auto pt-1.5 w-full items-center justify-start gap-1 font-body text-xs font-medium text-near-black hover:text-electric-yellow transition-colors cursor-pointer"
+                    >
+                      See features
+                      <ChevronDown size={12} className={clsx('transition-transform', openFeatureTier === tier.name && 'rotate-180')} />
+                    </button>
                   </div>
 
                   <div className="p-3 pt-0 shrink-0">
@@ -179,6 +189,29 @@ export default function Pricing() {
                       {tier.cta}
                     </Link>
                   </div>
+
+                  {openFeatureTier === tier.name && (
+                    <div
+                      onClick={(e) => e.stopPropagation()}
+                      className={clsx(
+                        'hidden lg:block 3xl:hidden',
+                        'absolute bottom-0 z-50 w-44',
+                        'bg-off-white border-2 border-near-black rounded-md p-3',
+                        'shadow-[3px_3px_0px_var(--color-near-black)] max-h-72 overflow-y-auto',
+                        tierIdx % 2 === 0 ? 'left-full ml-2' : 'right-full mr-2'
+                      )}
+                    >
+                      <p className="font-display font-bold text-xs text-near-black mb-2 pb-2 border-b border-near-black/10">{tier.name} — All Features</p>
+                      <div className="flex flex-col gap-1.5">
+                        {tier.features.map((f) => (
+                          <div key={f} className="flex items-start gap-1.5">
+                            <Check size={11} className={clsx('mt-0.5 shrink-0', tier.highlight ? 'text-near-black' : 'text-electric-yellow')} />
+                            <span className="font-body text-xs text-near-black leading-snug">{f}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
                 </div>
               ))}
             </div>
