@@ -1,5 +1,4 @@
 ﻿import { useEffect, useRef } from 'react'
-import clsx from 'clsx'
 import gsap from 'gsap'
 import { Download, RefreshCw, Share2 } from 'lucide-react'
 import JSZip from 'jszip'
@@ -8,7 +7,7 @@ import type { GenerateState, GenerateResult, FormState } from './types'
 interface Props {
   generateState: GenerateState
   result: GenerateResult | null
-  form: Pick<FormState, 'mode' | 'background'>
+  form: Pick<FormState, 'mode'>
   onRegenerate: () => void
   onShareToExplore: () => void
 }
@@ -21,7 +20,6 @@ export default function RightPanel({
   onShareToExplore,
 }: Props) {
   const cubeRef = useRef<HTMLDivElement>(null)
-  const previewBg = form.background === 'transparent' ? 'bg-off-white' : 'bg-light-green'
 
   useEffect(() => {
     if (generateState !== 'loading' || !cubeRef.current) return
@@ -75,15 +73,15 @@ export default function RightPanel({
     )
   }
 
-  /* ── Batch result ── */
-  if (form.mode === 'batch' && result?.imageUrls) {
+  /* ── Variation ×3 result ── */
+  if (result?.imageUrls?.length) {
     return (
       <div className="flex flex-col gap-4 h-full">
         <div className="grid grid-cols-2 md:grid-cols-3 gap-3 flex-1 overflow-y-auto">
           {result.imageUrls.map((url, i) => (
             <div
               key={i}
-              className={clsx('rounded-md overflow-hidden aspect-square flex items-center justify-center', previewBg)}
+              className="rounded-md overflow-hidden aspect-square flex items-center justify-center bg-off-white"
             >
               {url ? (
                 <img
@@ -140,7 +138,7 @@ export default function RightPanel({
     <div className="h-full flex flex-col gap-4">
       {/* Icon Preview — fills remaining vertical space */}
       <div id='divparent' className="flex-1 min-h-0 w-full rounded-md overflow-hidden">
-        <div className={clsx('w-full h-full flex items-center justify-center', previewBg)}>
+        <div className="w-full h-full flex items-center justify-center bg-off-white">
           {result?.imageUrl ? (
             <img
               src={result.imageUrl}

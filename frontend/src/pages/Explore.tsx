@@ -1,6 +1,7 @@
-﻿import { useState, useEffect, useCallback, useRef } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import { Sparkles, ImageOff } from 'lucide-react'
+import gsap from 'gsap'
 import Navbar, { type NavColors } from '../components/layout/Navbar'
 import Footer from '../components/layout/Footer'
 import FilterBar from './explore/FilterBar'
@@ -46,11 +47,12 @@ const EXPLORE_NAV_COLORS: Partial<NavColors> = {
 // ─────────────────────────────────────────────────────────────────────────────
 
 const INITIAL_FILTERS: Filters = { search: '', style: '', resolution: '', sort: 'latest' }
-const PAGE_SIZE = 20
+const PAGE_SIZE = 21 // multiple of 3 → fills columns evenly
 
 export default function Explore() {
   const { user } = useAuth()
   const scrollRef = useRef<HTMLDivElement>(null)
+  const iconsRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     document.body.style.overflow = 'hidden'
@@ -68,6 +70,7 @@ export default function Explore() {
     el.addEventListener('wheel', onWheel, { passive: false })
     return () => el.removeEventListener('wheel', onWheel)
   }, [])
+
   const [icons, setIcons] = useState<PublicIcon[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -111,16 +114,58 @@ export default function Explore() {
     setFilters((prev) => ({ ...prev, [key]: value }))
   }
 
+  // GSAP: stagger entrance per column (column-flow order), then subtle float on middle row
+  useEffect(() => {
+    if (isLoading || icons.length === 0) return
+    const container = iconsRef.current
+    if (!container) return
+
+    const ctx = gsap.context(() => {
+      const cards = container.querySelectorAll<HTMLElement>('.icon-card-item')
+      if (!cards.length) return
+
+      gsap.fromTo(
+        cards,
+        { y: 60, opacity: 0, scale: 0.88 },
+        {
+          y: 0,
+          opacity: 1,
+          scale: 1,
+          duration: 0.5,
+          stagger: { each: 0.05, from: 'start' },
+          ease: 'power3.out',
+          clearProps: 'scale,y',
+          onComplete() {
+            // Only float the middle row (index % 3 === 1) — safe from clip boundaries
+            cards.forEach((card, i) => {
+              if (i % 3 !== 1) return
+              gsap.to(card, {
+                y: -6,
+                duration: 2 + (i % 5) * 0.4,
+                repeat: -1,
+                yoyo: true,
+                ease: 'sine.inOut',
+                delay: (i % 7) * 0.2,
+              })
+            })
+          },
+        }
+      )
+    }, container)
+
+    return () => ctx.revert()
+  }, [isLoading])
+
   const handleToggleVisibility = async (id: string) => {
-    // Optimistic: remove from explore list immediately (making private)
     setIcons((prev) => prev.filter((ic) => ic.id !== id))
     try {
       await supabase.from('icons').update({ is_public: false }).eq('id', id)
     } catch {
-      // On failure, re-fetch to restore correct state
       fetchIcons(filters, 0, false)
     }
   }
+
+  const GRID_CLS = 'grid grid-rows-3 2xl:grid-rows-4 3xl:grid-rows-5 grid-flow-col auto-cols-[180px] gap-3'
 
   return (
     <div className="h-screen flex flex-col overflow-hidden bg-off-white">
@@ -129,7 +174,7 @@ export default function Explore() {
       </div>
 
       {/* Filter bar */}
-      <div className="shrink-0 py-4 bg-off-white">
+      <div className="shrink-0 p-4 bg-off-white">
         <div className="max-w-7xl mx-auto">
           <FilterBar
             style={filters.style}
@@ -139,26 +184,31 @@ export default function Explore() {
         </div>
       </div>
 
-      {/* Icons — fills remaining height, always-mounted scroll container */}
+      {/* Icons — 3-row column-flow grid, horizontal scroll */}
       <div
         ref={scrollRef}
-        className="flex-1 flex gap-4 overflow-x-auto overflow-y-hidden py-8 scrollbar-hide snap-x snap-mandatory items-stretch"
+        className="flex-1 flex overflow-x-auto overflow-y-hidden px-8 py-4 gap-6 scrollbar-hide"
       >
         {error ? (
-          <div className="w-full flex flex-col items-center justify-center gap-4 shrink-0">
+          <div className="flex-1 flex flex-col items-center justify-center gap-4">
             <div className="w-14 h-14 bg-red-50 border-2 border-near-black rounded-md flex items-center justify-center shadow-[4px_4px_0_near-black]">
               <ImageOff size={22} className="text-red-400" />
             </div>
             <p className="font-body text-sm text-near-black/60">{error}</p>
           </div>
         ) : isLoading && icons.length === 0 ? (
-          Array.from({ length: PAGE_SIZE }).map((_, i) => (
-            <div key={i} className="snap-start shrink-0 w-48 sm:w-56 border-2 border-near-black rounded-md bg-off-white shadow-[4px_4px_0_near-black] overflow-hidden animate-pulse">
-              <div className="h-full bg-light-green/50" />
-            </div>
-          ))
+          <div className={`${GRID_CLS} shrink-0`}>
+            {Array.from({ length: PAGE_SIZE }).map((_, i) => (
+              <div
+                key={i}
+                className="border-2 border-near-black rounded-md bg-off-white shadow-[4px_4px_0_#0A1628] overflow-hidden animate-pulse"
+              >
+                <div className="h-full bg-light-green/50" />
+              </div>
+            ))}
+          </div>
         ) : icons.length === 0 ? (
-          <div className="w-full flex flex-col items-center justify-center gap-5 shrink-0">
+          <div className="flex-1 flex flex-col items-center justify-center gap-5">
             <div className="w-20 h-20 bg-light-green border-2 border-near-black rounded-xl flex items-center justify-center shadow-[4px_4px_0_near-black]">
               <Sparkles size={32} className="text-electric-yellow" />
             </div>
@@ -179,17 +229,25 @@ export default function Explore() {
           </div>
         ) : (
           <>
-            {icons.map((icon) => (
-              <div key={icon.id} className="snap-start shrink-0 w-48 sm:w-56">
-                <IconCard
-                  icon={icon}
-                  isOwner={icon.user_id === user?.id}
-                  onToggleVisibility={handleToggleVisibility}
-                />
-              </div>
-            ))}
+            {/* Grid: top→bottom per column, then wraps to next column */}
+            <div ref={iconsRef} className={`${GRID_CLS} shrink-0`}>
+              {icons.map((icon) => (
+                <div
+                  key={icon.id}
+                  className="icon-card-item group overflow-hidden hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-all"
+                >
+                  <IconCard
+                    icon={icon}
+                    isOwner={icon.user_id === user?.id}
+                    onToggleVisibility={handleToggleVisibility}
+                  />
+                </div>
+              ))}
+            </div>
+
+            {/* Load More — lives outside the grid as a flex sibling */}
             {hasMore && (
-              <div className="snap-start shrink-0 w-48 sm:w-56 flex items-center justify-center">
+              <div className="shrink-0 self-center">
                 <button
                   onClick={handleLoadMore}
                   disabled={isLoading}

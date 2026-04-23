@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const { GoogleGenerativeAI } = require('@google/generative-ai')
+const { GoogleGenAI } = require('@google/genai')
 const { supabase } = require('../supabase')
 
 // Use production key when NODE_ENV=production, otherwise fall back to dev key
@@ -19,72 +19,74 @@ if (!geminiKey) {
 
 const CREDIT_COST = { '1K': 1, '2K': 2, '4K': 3 }
 
-const STYLE_PROMPTS = {
-  'clay-pastel':
-    'soft 3D clay render style, pastel colors, smooth rounded shapes, matte finish, cute and friendly aesthetic',
-  glassmorphism:
-    'glassmorphism style, frosted glass material, translucent surfaces, subtle reflections, modern and sleek',
-  'flat-minimal':
-    'flat design style, minimal detail, bold solid colors, clean geometric shapes, simple and modern',
-  'neon-glow':
-    'neon glow style, vibrant neon colors, glowing light effects, dark background contrast, cyberpunk aesthetic',
-  'retro-pixel':
-    'retro pixel art style, 16-bit or 8-bit aesthetic, crisp pixels, limited color palette, nostalgic game art',
-  metallic:
-    'metallic chrome style, shiny metal material, specular highlights, industrial and premium feel',
+const ANGLE_MAP = {
+  isometric:    'isometric 45-degree equal-axis angle view',
+  front_34:     'front three-quarter view, slight perspective depth',
+  top_down:     'top-down bird\'s eye view, looking straight down',
+  cinematic:    'low cinematic angle, slight upward tilt, dramatic perspective',
+  floating_sym: 'perfectly centered front-facing view, fully symmetrical',
+}
+
+const STYLE_TEMPLATES = {
+  clay_pastel: (obj, angle, bg) =>
+    `A 3D icon of a ${obj}, ${angle}, soft clay material, pastel color palette, matte finish, rounded puffy edges, subtle ambient occlusion, smooth clay texture, gentle studio lighting, ${bg}, centered composition, no text, no watermark, no shadow`,
+  studio_float: (obj, angle, bg) =>
+    `A photorealistic ${obj}, ${angle}, product photography style, soft studio lighting with subtle key light from upper left, ${bg}, high detail surface texture, sharp focus, commercial product shot aesthetic, square 1:1 composition, centered subject, no text, no watermark, no humans`,
+  frosted_glass: (obj, angle, bg) =>
+    `A 3D icon of a ${obj}, ${angle}, frosted matte translucent glass material, monochromatic cool blue tones, soft embossed surface detail, sandblasted texture, subtle inner glow, soft ambient lighting, no harsh shadows, ${bg}, centered composition, no text, no watermark`,
+  obsidian: (obj, angle, bg) =>
+    `A 3D icon of a ${obj}, ${angle}, glossy jet black material, chrome silver edge highlights, deep reflective surfaces, luxury dark tech aesthetic, dramatic rim lighting, high contrast, ${bg}, centered composition, no text, no watermark`,
+  holographic: (obj, angle, bg) =>
+    `A 3D icon of a ${obj}, ${angle}, iridescent holographic crystal material, rainbow chromatic light dispersion, prismatic refraction, translucent with multicolor light play, futuristic ethereal look, soft dark vignette lighting, glowing edges, ${bg}, centered composition, no text, no watermark`,
+  soft_render: (obj, angle, bg) =>
+    `A 3D icon of a ${obj}, ${angle}, soft semi-realistic 3D render, muted natural colors, slightly toy-like proportions, smooth clean surfaces, diffused HDRI studio lighting, no harsh shadows, subtle soft ground shadow, ${bg}, Blender render aesthetic, centered composition, no text, no watermark`,
 }
 
 /**
- * Build a comprehensive Gemini prompt from icon generation params.
+ * Build the final Gemini prompt from icon generation params.
  */
-function buildPrompt({ prompt, style, resolution, background, bgColor, bgGradient }) {
-  const styleDesc = STYLE_PROMPTS[style] || STYLE_PROMPTS['clay-pastel']
+function buildPrompt({ prompt, mode, style, angle, hasStyleRef }) {
+  // Always white background — client removes it after generation
+  const bgDesc = 'pure white background, flat and clean, no gradients, no vignette'
 
-  let bgDesc
-  if (background === 'transparent') {
-    // Use solid white so client-side background removal gets a clean, uniform
-    // surface to cut — "transparent" prompts produce uneven gray/off-white
-    // gradients that cause ragged edges after removal.
-    bgDesc = 'solid pure white (#ffffff) background, flat and clean, no shadows, no gradients, no vignette'
-  } else if (background === 'gradient' && bgGradient?.length === 2) {
-    bgDesc = `gradient background from ${bgGradient[0]} to ${bgGradient[1]}`
+  let fullPrompt
+  if (mode === 'free') {
+    fullPrompt = `${prompt}, rendered as a clean 3D icon, ${bgDesc}, centered square 1:1 composition, no text, no watermark, no humans`
   } else {
-    bgDesc = `solid ${bgColor || '#ffffff'} background`
+    const angleDesc = ANGLE_MAP[angle] || ANGLE_MAP.isometric
+    const templateFn = STYLE_TEMPLATES[style] || STYLE_TEMPLATES.clay_pastel
+    fullPrompt = templateFn(prompt, angleDesc, bgDesc)
   }
 
-  const resDesc = resolution === '4K' ? 'ultra high detail' : resolution === '2K' ? 'high detail' : 'clean detail'
+  if (hasStyleRef) {
+    fullPrompt += ', closely matching the visual style of the uploaded reference image'
+  }
 
-  return [
-    `Create a single 3D isometric icon of: ${prompt}.`,
-    `Style: ${styleDesc}.`,
-    `Background: ${bgDesc}.`,
-    `Quality: ${resDesc}, sharp edges, perfectly centered composition, STRICT 1:1 square aspect ratio, the image width and height must be exactly equal.`,
-    'The icon should be professional, visually striking, and suitable for app or product use.',
-    'Do not include any text, labels, or watermarks in the image.',
-  ].join(' ')
+  return fullPrompt
 }
 
 /**
  * Call Gemini image generation model and return base64 data URL.
  */
-async function callGemini({ prompt, style, resolution, background, bgColor, bgGradient, isAdmin }) {
+async function callGemini({ prompt, mode, style, angle, resolution, hasStyleRef, isAdmin }) {
   const apiKey = isAdmin ? adminFreeKey : geminiKey
-  const ai = new GoogleGenerativeAI(apiKey ?? '')
+  const ai = new GoogleGenAI({ apiKey: apiKey ?? '' })
 
-  const model = ai.getGenerativeModel({
+  const fullPrompt = buildPrompt({ prompt, mode, style, angle, hasStyleRef })
+
+  const result = await ai.models.generateContent({
     model: 'gemini-3.1-flash-image-preview',
-  })
-
-  const fullPrompt = buildPrompt({ prompt, style, resolution, background, bgColor, bgGradient })
-
-  const result = await model.generateContent({
-    contents: [{ role: 'user', parts: [{ text: fullPrompt }] }],
-    generationConfig: {
-      responseModalities: ['IMAGE'],
+    contents: fullPrompt,
+    config: {
+      responseModalities: ['TEXT', 'IMAGE'],
+      imageConfig: {
+        imageSize: resolution, // "1K" | "2K" | "4K" — must be uppercase
+        aspectRatio: '1:1',
+      },
     },
   })
 
-  const parts = result.response.candidates?.[0]?.content?.parts ?? []
+  const parts = result.candidates?.[0]?.content?.parts ?? []
   const imagePart = parts.find((p) => p.inlineData)
 
   if (!imagePart) {
@@ -123,7 +125,7 @@ async function deductCredits(userId, amount) {
 
 router.post('/', async (req, res) => {
   try {
-    const { prompt, style, resolution, background, bgColor, bgGradient, userId, isAdmin } = req.body
+    const { prompt, mode, style, angle, hasStyleRef, resolution, userId, isAdmin } = req.body
 
     if (!prompt) {
       return res.status(400).json({ error: 'Prompt is required' })
@@ -144,11 +146,11 @@ router.post('/', async (req, res) => {
 
     const imageUrl = await callGemini({
       prompt,
+      mode,
       style,
+      angle,
+      hasStyleRef,
       resolution,
-      background,
-      bgColor,
-      bgGradient,
       isAdmin,
     })
 

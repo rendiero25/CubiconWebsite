@@ -1,36 +1,23 @@
-﻿import clsx from 'clsx'
+import clsx from 'clsx'
 import type { GenerateMode } from './types'
-import { getBatchLines } from './types'
 
 interface Props {
   mode: GenerateMode
   prompt: string
-  batchText: string
-  onPromptChange: (v: string) => void
-  onBatchChange: (v: string) => void
+  onChange: (v: string) => void
   shake: boolean
   error: string | null
 }
 
-export default function StepPrompt({
-  mode,
-  prompt,
-  batchText,
-  onPromptChange,
-  onBatchChange,
-  shake,
-  error,
-}: Props) {
-  const lineCount = getBatchLines(batchText).length
-
-  if (mode === 'single') {
+export default function StepPrompt({ mode, prompt, onChange, shake, error }: Props) {
+  if (mode === 'preset') {
     return (
       <div>
-        <p className="font-body text-sm font-medium text-[#0A1628] mb-2">Prompt</p>
+        <p className="font-body text-sm font-medium text-[#0A1628] mb-2">Object</p>
         <input
           value={prompt}
-          onChange={(e) => onPromptChange(e.target.value)}
-          placeholder='Describe your icon — e.g. "Shopping cart"'
+          onChange={(e) => onChange(e.target.value)}
+          placeholder='Type an object name — e.g. "Shopping cart"'
           className={clsx(
             'w-full border-2 border-[#0A1628] rounded-md px-3 py-2.5 font-body text-sm outline-none focus:border-[#FFC300] transition-colors bg-off-white',
             shake && 'animate-[shake_0.4s_ease]',
@@ -44,33 +31,18 @@ export default function StepPrompt({
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-2">
-        <p className="font-body text-sm font-medium text-[#0A1628]">Prompts</p>
-        <span
-          className={clsx(
-            'font-body text-xs font-medium',
-            lineCount > 0 && lineCount < 3 ? 'text-red-500' : 'text-[#FFC300]',
-          )}
-        >
-          {lineCount}/10 icons
-        </span>
-      </div>
+      <p className="font-body text-sm font-medium text-[#0A1628] mb-2">Prompt</p>
       <textarea
-        value={batchText}
-        onChange={(e) => onBatchChange(e.target.value)}
-        placeholder={'Shopping cart\nCloud storage\nAnalytics dashboard'}
-        rows={6}
+        value={prompt}
+        onChange={(e) => onChange(e.target.value)}
+        placeholder={`Write your full prompt — e.g. "A glowing crystal ball floating above a wooden table"`}
+        rows={4}
         className={clsx(
           'w-full border-2 border-[#0A1628] rounded-md px-3 py-2.5 font-body text-sm outline-none focus:border-[#FFC300] transition-colors resize-none bg-off-white',
           shake && 'animate-[shake_0.4s_ease]',
           error && 'border-red-500',
         )}
       />
-      {lineCount > 0 && lineCount < 3 && (
-        <p className="font-body text-xs text-amber-600 mt-1">
-          Minimum 3 icons for batch mode
-        </p>
-      )}
       {error && <p className="font-body text-xs text-red-500 mt-1">{error}</p>}
     </div>
   )

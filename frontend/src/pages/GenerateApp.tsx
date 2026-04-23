@@ -1,4 +1,4 @@
-﻿import { useState, useCallback, useRef, useEffect } from 'react'
+import { useState, useCallback, useRef, useEffect } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import gsap from 'gsap'
 import Navbar, { type NavColors } from '../components/layout/Navbar'
@@ -15,35 +15,32 @@ import { uploadIcon, blobUrlToBase64, saveIcon } from '../api/icons'
 import { removeBackground } from '@imgly/background-removal'
 import { makeSquare } from '../utils/imageUtils'
 import type { FormState, GenerateState, GenerateResult } from './generate/types'
+import { calcCost } from './generate/types'
 
 // isnet_fp16: half-precision ISNet — 2–3× faster than isnet, near-identical accuracy
 const BG_REMOVAL_CONFIG = {
   model: 'isnet_fp16' as const,
   output: { format: 'image/png' as const, quality: 1 },
 }
-import { getBatchLines, calcCost } from './generate/types'
 
 const DEFAULT_FORM: FormState = {
-  mode: 'single',
+  mode: 'preset',
   prompt: '',
-  batchText: '',
-  style: 'clay-pastel',
+  style: 'clay_pastel',
+  angle: 'isometric',
   resolution: '1K',
-  background: 'transparent',
-  bgColor: '#ffffff',
-  bgGradient: ['#FFC300', '#FFF5CC'],
   referenceFile: null,
   variation: false,
 }
 
 // ─── GENERATE APP — NAVBAR COLOR OVERRIDE ────────────────────────────────────
 const GENERATE_NAV_COLORS: Partial<NavColors> = {
-  bg:                'bg-near-black',
-  logo:              'text-electric-yellow',
-  logoHover:         'hover:text-light-green',
-  link:              'text-off-white/70',
-  linkHover:         'hover:text-electric-yellow',
-  linkActive:        'text-electric-yellow',
+  bg:                'bg-gradient-to-r from-electric-yellow via-electric-yellow to-near-black',
+  logo:              'text-near-black',
+  logoHover:         'hover:text-off-white',
+  link:              'text-near-black',
+  linkHover:         'hover:text-off-white',
+  linkActive:        'text-off-white',
   creditBadgeBg:     'bg-light-green',
   creditBadgeBorder: 'border-near-black',
   creditBadgeText:   'text-near-black',
@@ -52,15 +49,15 @@ const GENERATE_NAV_COLORS: Partial<NavColors> = {
   dashboardText:     'text-near-black',
   dashboardBorder:   'border-near-black',
   dashboardShadow:   'shadow-[3px_3px_0px_var(--color-light-green)]',
-  loginText:         'text-electric-yellow',
+  loginText:         'text-near-black',
   loginHover:        'hover:text-off-white',
-  startFreeBg:       'bg-electric-yellow',
-  startFreeText:     'text-near-black',
+  startFreeBg:       'bg-near-black',
+  startFreeText:     'text-electric-yellow',
   startFreeBorder:   'border-near-black',
-  startFreeShadow:   'shadow-[3px_3px_0px_var(--color-light-green)]',
-  mobileBg:          'bg-near-black',
-  mobileLinkColor:   'text-off-white',
-  mobileToggle:      'border-electric-yellow text-electric-yellow',
+  startFreeShadow:   'shadow-[3px_3px_0px_var(--color-off-white)]',
+  mobileBg:          'bg-electric-yellow',
+  mobileLinkColor:   'text-near-black',
+  mobileToggle:      'border-near-black text-near-black',
 }
 // ─────────────────────────────────────────────────────────────────────────────
 
@@ -117,24 +114,12 @@ export default function GenerateApp() {
   }
 
   const validate = (): boolean => {
-    if (form.mode === 'single') {
-      if (!form.prompt.trim()) {
-        setPromptError('Please describe your icon')
-        triggerShake()
-        return false
-      }
-    } else {
-      const lines = getBatchLines(form.batchText)
-      if (lines.length < 3) {
-        setPromptError(`Add at least 3 prompts for batch mode (${lines.length} found)`)
-        triggerShake()
-        return false
-      }
-      if (lines.length > 10) {
-        setPromptError('Maximum 10 icons per batch')
-        triggerShake()
-        return false
-      }
+    if (!form.prompt.trim()) {
+      setPromptError(
+        form.mode === 'preset' ? 'Please enter an object name' : 'Please write your prompt',
+      )
+      triggerShake()
+      return false
     }
     setPromptError(null)
     return true
@@ -142,7 +127,6 @@ export default function GenerateApp() {
 
   const persistIcon = useCallback(async (imageUrl: string, prompt: string, style: string, resolution: string, userId: string) => {
     try {
-      // Blob URLs (from bg removal) must be converted to base64 before sending to backend
       const dataUrl = imageUrl.startsWith('blob:') ? await blobUrlToBase64(imageUrl) : imageUrl
       const cloudinaryUrl = await uploadIcon(dataUrl, `icon-${userId.slice(0, 8)}`)
       await saveIcon({ userId, prompt, style, resolution, url: cloudinaryUrl })
@@ -172,7 +156,7 @@ export default function GenerateApp() {
     setGenerateState('loading')
     setResult(null)
 
-    // Deduct credits with red GSAP flash (all users, including admin)
+    // Optimistic credit deduction with GSAP flash
     const prevCredits = credits
     setCredits((prev) => (prev ?? 0) - cost)
     if (creditBadgeRef.current) {
@@ -185,60 +169,55 @@ export default function GenerateApp() {
 
     try {
       const baseParams = {
+        prompt: activeForm.prompt,
+        mode: activeForm.mode,
         style: activeForm.style,
+        angle: activeForm.angle,
+        hasStyleRef: !!activeForm.referenceFile,
         resolution: activeForm.resolution,
-        background: activeForm.background,
-        bgColor: activeForm.bgColor,
-        bgGradient: activeForm.bgGradient,
         userId: user?.id,
         isAdmin,
       }
 
-      if (activeForm.mode === 'batch') {
-        const lines = getBatchLines(activeForm.batchText)
-        const results = await Promise.all(
-          lines.map((prompt) => generateIcon({ prompt, ...baseParams })),
-        )
+      const processImage = async (imageUrl: string): Promise<string> => {
+        if (!imageUrl) return ''
+        const blob = await removeBackground(imageUrl, BG_REMOVAL_CONFIG)
+        const b64 = await blobUrlToBase64(URL.createObjectURL(blob))
+        return makeSquare(b64)
+      }
+
+      if (withVariation) {
+        // Variation ×3: call API 3 times with the same prompt
+        const results = await Promise.all([
+          generateIcon(baseParams),
+          generateIcon(baseParams),
+          generateIcon(baseParams),
+        ])
         const imageUrls = await Promise.all(
-          results.map(async (r) => {
-            if (activeForm.background === 'transparent' && r.imageUrl) {
-              const blob = await removeBackground(r.imageUrl, BG_REMOVAL_CONFIG)
-              const b64 = await blobUrlToBase64(URL.createObjectURL(blob))
-              return makeSquare(b64)
-            }
-            return r.imageUrl ? makeSquare(r.imageUrl) : ''
-          }),
+          results.map((r) => processImage(r.imageUrl ?? '')),
         )
         setResult({ imageUrls })
-        // Persist each icon to Supabase
         if (user?.id) {
           void Promise.allSettled(
-            lines.map(async (prompt, i) => {
-              const finalUrl = imageUrls[i] ?? results[i]?.imageUrl ?? ''
-              await persistIcon(finalUrl, prompt, activeForm.style, activeForm.resolution, user.id)
-            }),
+            imageUrls.map((url) =>
+              persistIcon(url, activeForm.prompt, activeForm.style, activeForm.resolution, user.id),
+            ),
           )
         }
         if (isAdmin) {
           recordAdminUsage({
             timestamp: new Date().toISOString(),
-            prompt: `[Batch ×${lines.length}] ${lines[0] ?? ''}`,
+            prompt: `[×3 variation] ${activeForm.prompt}`,
             style: activeForm.style,
             resolution: activeForm.resolution,
             creditsUsed: cost,
           })
         }
       } else {
-        const r = await generateIcon({ prompt: activeForm.prompt, ...baseParams })
-        let finalImageUrl = r.imageUrl ?? ''
-        if (activeForm.background === 'transparent' && r.imageUrl) {
-          const blob = await removeBackground(r.imageUrl, BG_REMOVAL_CONFIG)
-          finalImageUrl = await blobUrlToBase64(URL.createObjectURL(blob))
-        }
-        if (finalImageUrl) finalImageUrl = await makeSquare(finalImageUrl)
+        const r = await generateIcon(baseParams)
+        const finalImageUrl = await processImage(r.imageUrl ?? '')
         r.imageUrl = finalImageUrl
         setResult(r)
-        // Persist icon to Supabase
         if (user?.id) {
           void persistIcon(finalImageUrl, activeForm.prompt, activeForm.style, activeForm.resolution, user.id)
         }
@@ -255,7 +234,7 @@ export default function GenerateApp() {
       setGenerateState('success')
     } catch (err) {
       setGenerateState('error')
-      setCredits(prevCredits) // rollback on failure (both admin and non-admin)
+      setCredits(prevCredits)
       setToast({
         message: (err as Error).message || 'Generation failed. Please try again.',
         type: 'error',

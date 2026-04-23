@@ -1,4 +1,4 @@
-﻿import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { Wand2, Lock } from 'lucide-react'
 import type { PublicIcon } from '../../api/icons'
 
@@ -12,13 +12,13 @@ export default function IconCard({ icon, isOwner, onToggleVisibility }: IconCard
   const encoded = encodeURIComponent(icon.prompt)
 
   return (
-    <div className="group hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-all overflow-hidden">
-      {/* Image */}
-      <div className="aspect-square flex items-center justify-center relative overflow-hidden">
+    <div className="h-full w-full overflow-hidden">
+      {/* Image — fills the grid cell */}
+      <div className="h-full w-full flex items-center justify-center relative overflow-hidden">
         <img
           src={icon.url}
           alt={icon.prompt}
-          className="w-3/4 h-3/4 object-contain group-hover:scale-105 transition-transform duration-300"
+          className="w-4/5 h-4/5 object-contain group-hover:scale-105 transition-transform duration-300"
           loading="lazy"
         />
         {/* Hover overlay */}
@@ -39,19 +39,6 @@ export default function IconCard({ icon, isOwner, onToggleVisibility }: IconCard
           )}
         </div>
       </div>
-
-      {/* Meta */}
-      {/* <div className="p-3 flex flex-col gap-1.5">
-        <p className="font-body text-sm font-medium text-near-black truncate">{icon.prompt}</p>
-        <div className="flex gap-1.5 flex-wrap">
-          <span className="font-body text-xs text-near-black/60 border border-[#0A1628]/20 rounded px-1.5 py-0.5 bg-off-white">
-            {icon.style}
-          </span>
-          <span className="font-body text-xs font-semibold text-electric-yellow border border-electric-yellow/30 rounded px-1.5 py-0.5 bg-light-green">
-            {icon.resolution}
-          </span>
-        </div>
-      </div> */}
     </div>
   )
 }

@@ -1,7 +1,8 @@
-﻿import clsx from 'clsx'
+import clsx from 'clsx'
 import StepMode from './StepMode'
 import StepPrompt from './StepPrompt'
 import StepStyle from './StepStyle'
+import StepAngle from './StepAngle'
 import StepResolution from './StepResolution'
 import StepReference from './StepReference'
 import type { FormState, GenerateState } from './types'
@@ -42,13 +43,16 @@ export default function LeftPanel({
       <StepPrompt
         mode={form.mode}
         prompt={form.prompt}
-        batchText={form.batchText}
-        onPromptChange={(v) => onChange('prompt', v)}
-        onBatchChange={(v) => onChange('batchText', v)}
+        onChange={(v) => onChange('prompt', v)}
         shake={shake}
         error={promptError}
       />
-      <StepStyle value={form.style} onChange={(v) => onChange('style', v)} />
+      {form.mode === 'preset' && (
+        <>
+          <StepStyle value={form.style} onChange={(v) => onChange('style', v)} />
+          <StepAngle value={form.angle} onChange={(v) => onChange('angle', v)} />
+        </>
+      )}
       <StepResolution
         value={form.resolution}
         onChange={(v) => onChange('resolution', v)}
@@ -63,8 +67,8 @@ export default function LeftPanel({
           This will use{' '}
           <span className="font-bold text-near-black">
             {cost} credit{cost !== 1 ? 's' : ''}
-          </span>{' '}
-          · You have{' '}
+          </span>
+          {' '}· You have{' '}
           <span className={clsx('font-bold', hasEnough ? 'text-electric-yellow' : 'text-red-500')}>
             {credits} remaining
           </span>

@@ -1,12 +1,13 @@
-﻿import clsx from 'clsx'
+import clsx from 'clsx'
 import type { IconStyle } from './types'
 
 const STYLES: { value: IconStyle; label: string; icon: string }[] = [
-  { value: 'clay-pastel', label: 'Clay Pastel', icon: '🏺' },
-  { value: 'realistic-dark', label: 'Realistic Dark', icon: '🖤' },
-  { value: 'neon-flat', label: 'Neon Flat', icon: '🌈' },
-  { value: 'matte-minimal', label: 'Matte Minimal', icon: '🤍' },
-  { value: 'glass-morphism', label: 'Glass Morphism', icon: '🔮' },
+  { value: 'clay_pastel', label: 'Clay Pastel', icon: '🏺' },
+  { value: 'studio_float', label: 'Studio Float', icon: '📸' },
+  { value: 'frosted_glass', label: 'Frosted Glass', icon: '🧊' },
+  { value: 'obsidian', label: 'Obsidian', icon: '⚫' },
+  { value: 'holographic', label: 'Holographic', icon: '🌈' },
+  { value: 'soft_render', label: 'Soft Render', icon: '🎯' },
 ]
 
 interface Props {

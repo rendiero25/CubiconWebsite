@@ -2,11 +2,11 @@ const BASE_URL = import.meta.env.VITE_API_BASE_URL ?? 'http://localhost:3001'
 
 export interface GenerateParams {
   prompt: string
+  mode: string
   style: string
+  angle: string
+  hasStyleRef: boolean
   resolution: string
-  background: string
-  bgColor?: string
-  bgGradient?: [string, string]
   userId?: string
   isAdmin?: boolean
 }

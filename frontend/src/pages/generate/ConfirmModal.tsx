@@ -2,14 +2,15 @@
 import clsx from 'clsx'
 import { X } from 'lucide-react'
 import type { FormState } from './types'
-import { calcCost, getBatchLines } from './types'
+import { calcCost } from './types'
 
 const STYLE_LABELS: Record<string, string> = {
-  'clay-pastel': '🏺 Clay Pastel',
-  'realistic-dark': '🖤 Realistic Dark',
-  'neon-flat': '🌈 Neon Flat',
-  'matte-minimal': '🤍 Matte Minimal',
-  'glass-morphism': '🔮 Glass Morphism',
+  clay_pastel: '🏺 Clay Pastel',
+  studio_float: '📸 Studio Float',
+  frosted_glass: '🧊 Frosted Glass',
+  obsidian: '⚫ Obsidian',
+  holographic: '🌈 Holographic',
+  soft_render: '🎯 Soft Render',
 }
 
 interface Props {
@@ -27,11 +28,7 @@ export default function ConfirmModal({ form, credits, isAdmin, onCancel, onConfi
   const totalCost = variation ? baseCost * 3 : baseCost
   const canAfford = isAdmin || credits >= totalCost
 
-  const batchLines = getBatchLines(form.batchText)
-  const promptPreview =
-    form.mode === 'batch'
-      ? batchLines[0] + (batchLines.length > 1 ? ` +${batchLines.length - 1} more` : '')
-      : form.prompt
+  const promptPreview = form.prompt
 
   return (
     <div
@@ -56,7 +53,7 @@ export default function ConfirmModal({ form, credits, isAdmin, onCancel, onConfi
           <div className="bg-off-white border-2 border-near-black rounded-md p-3 flex flex-col gap-1">
             <p className="font-body text-sm font-medium text-near-black">📦 {promptPreview}</p>
             <p className="font-body text-sm text-near-black/60">
-              {STYLE_LABELS[form.style]} · {form.resolution} · {form.background}
+              {form.mode === 'preset' ? `${STYLE_LABELS[form.style]} · ${form.angle.replace('_', ' ')} · ` : 'Free Prompt · '}{form.resolution}
             </p>
           </div>
 

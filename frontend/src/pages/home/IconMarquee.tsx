@@ -81,7 +81,7 @@ export default function IconMarquee() {
         {items.map((icon, i) => (
           <div
             key={`${icon.id}-${i}`}
-            className="w-40 xl:w-55 2xl:w-30 3xl:w-40 4xl:w-60 shrink-0 overflow-hidden"
+            className="w-40 xl:w-55 2xl:w-30 4xl:w-60 shrink-0 overflow-hidden"
             title={icon.prompt}
           >
             {icon.url ? (

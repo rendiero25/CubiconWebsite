@@ -6,7 +6,8 @@
       "Bash(psql --version)",
       "Bash(node -e ':*)",
       "Bash(npm start *)",
-      "Bash(npm run *)"
+      "Bash(npm run *)",
+      "Bash(dir G:\\\\WebsiteDevelopment\\\\CubiconWebsite\\\\frontend *)"
     ]
   }
 }
