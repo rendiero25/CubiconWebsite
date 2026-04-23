@@ -7,7 +7,9 @@
       "Bash(node -e ':*)",
       "Bash(npm start *)",
       "Bash(npm run *)",
-      "Bash(dir G:\\\\WebsiteDevelopment\\\\CubiconWebsite\\\\frontend *)"
+      "Bash(dir G:\\\\WebsiteDevelopment\\\\CubiconWebsite\\\\frontend *)",
+      "Bash(pkill -f \"vite\")",
+      "Bash(pkill -f \"node backend/src/index.js\")"
     ]
   }
 }
