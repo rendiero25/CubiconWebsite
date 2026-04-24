@@ -1,1 +1,0 @@
-Tambahkan 2 mode generate di @frontend/src/pages/GenerateApp.tsx based updategenerate.md. Bagian fungsi prompt sesuaikan dengan kode yang ada (Untuk mencegah error).  
