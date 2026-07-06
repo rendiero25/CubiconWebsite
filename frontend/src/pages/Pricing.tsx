@@ -2,7 +2,7 @@
 import { Link } from 'react-router-dom'
 import { Check, Zap, ChevronDown } from 'lucide-react'
 import clsx from 'clsx'
-import Navbar, { type NavColors } from '../components/layout/Navbar'
+import Navbar from '../components/layout/Navbar'
 import Footer from '../components/layout/Footer'
 
 const TIERS = [
@@ -50,32 +50,6 @@ const FAQ = [
   { q: 'Metode pembayaran apa yang tersedia?', a: 'Kami mendukung transfer bank, QRIS, e-wallet (GoPay, OVO, Dana), dan kartu kredit/debit melalui Mayar.id.' },
 ]
 
-const PRICING_NAV_COLORS: Partial<NavColors> = {
-  bg:                'bg-near-black',
-  logo:              'text-electric-yellow',
-  logoHover:         'hover:text-light-green',
-  link:              'text-off-white',
-  linkHover:         'hover:text-electric-yellow',
-  linkActive:        'text-electric-yellow',
-  creditBadgeBg:     'bg-light-green',
-  creditBadgeBorder: 'border-near-black',
-  creditBadgeText:   'text-near-black',
-  creditBadgeIcon:   'text-electric-yellow',
-  dashboardBg:       'bg-electric-yellow',
-  dashboardText:     'text-near-black',
-  dashboardBorder:   'border-near-black',
-  dashboardShadow:   'shadow-[3px_3px_0px_var(--color-light-green)]',
-  loginText:         'text-electric-yellow',
-  loginHover:        'hover:text-off-white',
-  startFreeBg:       'bg-electric-yellow',
-  startFreeText:     'text-near-black',
-  startFreeBorder:   'border-near-black',
-  startFreeShadow:   'shadow-[3px_3px_0px_var(--color-light-green)]',
-  mobileBg:          'bg-off-white',
-  mobileLinkColor:   'text-near-black',
-  mobileToggle:      'border-electric-yellow text-electric-yellow',
-}
-
 const CREDIT_COST = { '1K': 1, '2K': 2, '4K': 3 }
 
 export default function Pricing() {
@@ -101,7 +75,7 @@ export default function Pricing() {
 
   return (
     <div className="flex flex-col bg-near-black min-h-screen lg:h-screen lg:overflow-hidden" onClick={() => setOpenFeatureTier(null)}>
-      <Navbar noBorder colors={PRICING_NAV_COLORS} />
+      <Navbar noBorder />
 
       <div className="px-3 4xl:mx-auto flex-1 flex flex-col lg:flex-row lg:min-h-0 lg:overflow-hidden pb-3">
 

@@ -169,7 +169,7 @@ export default function HomeRight() {
         {/* ── HOW IT WORKS ── */}
         <div className="bg-off-white border-2 border-near-black rounded-md p-3 sm:p-4 flex flex-col gap-2 shadow-[3px_3px_0px_var(--color-electric-yellow)] overflow-hidden">
           <div className="flex items-center justify-between shrink-0">
-            <span className="font-body text-[10px] font-bold text-near-black uppercase">How It Works</span>
+            <span className="font-body text-[11px] font-bold text-near-black uppercase">How It Works</span>
             <NavArrows idx={stepIdx} total={STEPS.length} setIdx={setStepIdx} />
           </div>
 
@@ -195,7 +195,7 @@ export default function HomeRight() {
         {/* ── PRICING ── */}
         <div className="bg-light-green border-2 border-near-black rounded-md p-3 sm:p-4 flex flex-col gap-2 shadow-[3px_3px_0px_var(--color-off-white)] overflow-hidden 2xl:row-span-2">
           <div className="flex items-center justify-between shrink-0">
-            <span className="font-body text-[10px] font-bold text-near-black uppercase">Pricing</span>
+            <span className="font-body text-[11px] font-bold text-near-black uppercase">Pricing</span>
             <NavArrows idx={planIdx} total={PLANS.length} setIdx={setPlanIdx} />
           </div>
           <div className="flex flex-col gap-1.5 lg:flex-1 lg:min-h-0 overflow-hidden pr-0.5">
@@ -203,7 +203,7 @@ export default function HomeRight() {
               <div className="flex flex-col items-start 2xl:gap-2">
                 <p className="font-display font-bold text-base 2xl:text-2xl text-near-black leading-tight">{plan.name}</p>
                 {plan.badge && (
-                  <span className="font-body text-[9px] font-semibold bg-electric-yellow text-near-black border border-near-black px-1.5 py-0.5 rounded-full shrink-0">
+                  <span className="font-body text-[11px] font-semibold bg-electric-yellow text-near-black border border-near-black px-1.5 py-0.5 rounded-full shrink-0">
                     {plan.badge}
                   </span>
                 )}
@@ -212,7 +212,7 @@ export default function HomeRight() {
                 
                 <div className="flex items-center gap-1">
                   <Zap size={10} className="text-electric-yellow" />
-                  <span className="font-body font-bold text-[10px] 2xl:text-sm text-near-black">{plan.credits} credits</span>
+                  <span className="font-body font-bold text-[11px] 2xl:text-sm text-near-black">{plan.credits} credits</span>
                 </div>
               </div>
             </div>
@@ -221,7 +221,7 @@ export default function HomeRight() {
               {plan.features.slice(0, 3).map(f => (
                 <li key={f} className="flex items-center gap-1 shrink-0">
                   <Check size={10} className="text-near-black shrink-0" />
-                  <span className="font-body text-[10px] text-near-black">{f}</span>
+                  <span className="font-body text-[11px] text-near-black">{f}</span>
                 </li>
               ))}
               <li className="font-body text-xs text-near-black/40 shrink-0">···</li>
@@ -248,7 +248,7 @@ export default function HomeRight() {
         {/* ── USE CASES (2xl+) ── */}
         <div className="hidden 2xl:flex col-span-1 bg-electric-yellow border-2 border-near-black rounded-md p-4 flex-col gap-3 shadow-[3px_3px_0px_var(--color-off-white)] overflow-hidden">
           <div className="flex items-center justify-between shrink-0">
-            <span className="font-body text-[9px] font-bold text-near-black uppercase">Made for</span>
+            <span className="font-body text-[11px] font-bold text-near-black uppercase">Made for</span>
             <NavArrows idx={ucIdx} total={USE_CASES.length} setIdx={setUcIdx} nextRef={ucNextRef} />
           </div>
 
@@ -285,7 +285,7 @@ export default function HomeRight() {
         {/* ── FEATURES ── */}
         <div className="bg-near-black border-2 border-electric-yellow/50 rounded-md shadow-[3px_3px_0px_var(--color-electric-yellow)] p-3 sm:p-4 flex flex-col gap-2 overflow-hidden">
           <div className="flex items-center justify-between shrink-0">
-            <span className="font-body text-[10px] font-bold text-electric-yellow uppercase">Features</span>
+            <span className="font-body text-[11px] font-bold text-electric-yellow uppercase">Features</span>
             <NavArrows idx={featIdx} total={FEATURE_TOTAL} setIdx={setFeatIdx} isDark />
           </div>
           
@@ -327,7 +327,7 @@ export default function HomeRight() {
         {/* ── REVIEWS ── */}
         <div className="bg-off-white border-2 border-near-black rounded-md p-3 sm:p-4 flex flex-col gap-2 shadow-[3px_3px_0px_var(--color-electric-yellow)] overflow-hidden">
           <div className="flex items-center justify-between shrink-0">
-            <span className="font-body text-[10px] font-bold text-near-black uppercase">User Reviews</span>
+            <span className="font-body text-[11px] font-bold text-near-black uppercase">User Reviews</span>
             <NavArrows idx={reviewIdx} total={REVIEWS.length} setIdx={setReviewIdx} />
           </div>
           <div className="flex flex-col gap-1.5 lg:flex-1 lg:min-h-0 overflow-hidden">
@@ -340,7 +340,7 @@ export default function HomeRight() {
             <p className="font-body text-xs 2xl:text-sm 3xl:text-lg 4xl:text-3xl text-near-black leading-relaxed line-clamp-3">"{review.text}"</p>
             <div className="shrink-0 mt-auto">
               <p className="font-display font-bold text-sm text-near-black">{review.name}</p>
-              <p className="font-body text-[10px] text-navy-muted">{review.role}</p>
+              <p className="font-body text-[11px] text-navy-muted">{review.role}</p>
             </div>
           </div>
           <PaginationDots total={REVIEWS.length} idx={reviewIdx} setIdx={setReviewIdx} />
@@ -350,14 +350,14 @@ export default function HomeRight() {
         <div className="shadow-[3px_3px_0px_var(--color-off-white)] bg-light-green border-2 border-near-black rounded-md p-3 sm:p-4 flex flex-col gap-2 overflow-hidden">
           <div className="flex items-center gap-2 shrink-0">
             <Sparkles size={11} className="text-near-black" />
-            <span className="font-body text-[10px] font-bold text-near-black uppercase">What is New</span>
+            <span className="font-body text-[11px] font-bold text-near-black uppercase">What is New</span>
           </div>
 
           <div className="flex flex-col gap-2 lg:flex-1 lg:min-h-0 overflow-hidden">
             {UPDATES.map(({ tag, text }) => (
               <div key={text} className="flex items-start gap-2">
                 <span className={clsx(
-                  'font-body text-[9px] font-bold px-1.5 py-0.5 rounded shrink-0 mt-0.5',
+                  'font-body text-[11px] font-bold px-1.5 py-0.5 rounded shrink-0 mt-0.5',
                   tag === 'New' ? 'bg-electric-yellow text-near-black' : 'bg-near-black/30 text-near-black/60',
                 )}>{tag}</span>
                 <p className="font-body text-xs 2xl:text-sm 3xl:text-md 4xl:text-xl text-near-black leading-relaxed line-clamp-2">{text}</p>
@@ -368,7 +368,7 @@ export default function HomeRight() {
 
         {/* ── CONTACT ── */}
         <div className="bg-electric-yellow border-2 border-near-black rounded-md p-3 sm:p-4 flex flex-col gap-2 shadow-[3px_3px_0px_var(--color-off-white)] overflow-hidden">
-          <span className="font-body text-[10px] font-bold text-near-black uppercase shrink-0">Contact</span>
+          <span className="font-body text-[11px] font-bold text-near-black uppercase shrink-0">Contact</span>
           <div className="lg:flex-1 lg:min-h-0 overflow-hidden flex flex-col gap-1">
             <p className="font-display font-bold text-base text-near-black">Get in touch</p>
             <p className="font-body text-xs 2xl:text-sm 3xl:text-lg 4xl:text-3xl text-near-black">Questions, feedback, or partnership?</p>

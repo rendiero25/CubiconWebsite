@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import { Sparkles, ImageOff } from 'lucide-react'
 import gsap from 'gsap'
-import Navbar, { type NavColors } from '../components/layout/Navbar'
+import Navbar from '../components/layout/Navbar'
 import Footer from '../components/layout/Footer'
 import FilterBar from './explore/FilterBar'
 import IconCard from './explore/IconCard'
@@ -17,34 +17,6 @@ interface Filters {
   resolution: string
   sort: string
 }
-
-// ─── EXPLORE PAGE — NAVBAR COLOR OVERRIDE ────────────────────────────────────
-const EXPLORE_NAV_COLORS: Partial<NavColors> = {
-  bg:                'bg-near-black',
-  logo:              'text-electric-yellow',
-  logoHover:         'hover:text-light-green',
-  link:              'text-off-white/70',
-  linkHover:         'hover:text-electric-yellow',
-  linkActive:        'text-electric-yellow',
-  creditBadgeBg:     'bg-light-green',
-  creditBadgeBorder: 'border-near-black',
-  creditBadgeText:   'text-near-black',
-  creditBadgeIcon:   'text-electric-yellow',
-  dashboardBg:       'bg-electric-yellow',
-  dashboardText:     'text-near-black',
-  dashboardBorder:   'border-near-black',
-  dashboardShadow:   'shadow-[3px_3px_0px_var(--color-light-green)]',
-  loginText:         'text-electric-yellow',
-  loginHover:        'hover:text-off-white',
-  startFreeBg:       'bg-electric-yellow',
-  startFreeText:     'text-near-black',
-  startFreeBorder:   'border-near-black',
-  startFreeShadow:   'shadow-[3px_3px_0px_var(--color-light-green)]',
-  mobileBg:          'bg-off-white',
-  mobileLinkColor:   'text-near-black',
-  mobileToggle:      'border-electric-yellow text-electric-yellow',
-}
-// ─────────────────────────────────────────────────────────────────────────────
 
 const INITIAL_FILTERS: Filters = { search: '', style: '', resolution: '', sort: 'latest' }
 const PAGE_SIZE = 21 // multiple of 3 → fills columns evenly
@@ -170,7 +142,7 @@ export default function Explore() {
   return (
     <div className="h-screen flex flex-col overflow-hidden bg-off-white">
       <div className="shrink-0">
-        <Navbar colors={EXPLORE_NAV_COLORS} />
+        <Navbar />
       </div>
 
       {/* Filter bar */}
